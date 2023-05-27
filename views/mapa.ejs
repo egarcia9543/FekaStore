@@ -24,9 +24,15 @@
     </div>
 
     <script>
-        let mapa = L.map('mapa').setView([<%= clientes.ubicacion.longitud %>, <%= clientes.ubicacion.latitud %>], 11);
+//        let mapa = L.map('mapa').setView([<%= clientes.ubicacion.longitud %>, <%= clientes.ubicacion.latitud %>], 20);
+
+        let mapa = L.map('mapa').setView([<%= clientes.ubicacion.centro %>], <%=clientes.ubicacion.zoom%>);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(mapa);
-    </script>
+
+        let marcador = L.marker([<%= clientes.ubicacion.centro%>]).addTo(mapa);
+        
+        //navigator.geolocation
+        </script>
 </body>
 
 </html>

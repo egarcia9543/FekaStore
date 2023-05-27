@@ -1,11 +1,15 @@
 const cliente = require('../models/clientes')
 
+exports.landing = async (req, res) => {
+    res.render('index')
+}
+
 exports.listaCliente = async (req, res) => {
     res.render('userCrud');
 }
 
 exports.mapa = async (req, res) => {
-    let clienteU = await cliente.findOne({"cedula": "2"});
+    let clienteU = await cliente.findOne({"cedula": "1011391910"});
     res.render('mapa', {
         "clientes": clienteU
     })
@@ -17,8 +21,8 @@ exports.nuevoCliente = async (req, res) => {
         cedula: req.body.cedulaCliente,
         telefono: req.body.telefonoCliente,
         ubicacion: {
-            longitud: req.body.ubicacionLat,
-            latitud: req.body.ubicacionLon
+            centro: [req.body.ubicacionLat, req.body.ubicacionLon],
+            zoom: 20
         },
         totalComprado: req.body.totalCompradoCliente
     });

@@ -11,7 +11,7 @@ const schemaVendedor = new mongoose.Schema({
         unique: true
     },
     ventasDespachadas: {
-        type: String
+        type: Array
     }
 });
 

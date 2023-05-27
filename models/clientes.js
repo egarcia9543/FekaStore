@@ -14,21 +14,27 @@ const schemaCliente = new mongoose.Schema({
         requiered: true
     },
     ubicacion: {
-        latitud: {
-            type: Number,
+        centro: {
+            type: Array,
             required: true
         },
-        longitud: {
+        zoom: {
             type: Number,
             required: true
         }
     },
     totalComprado: {
-        type: Number
+        type: Number,
+        default: 0
     },
-    // historialCompras: {
-    //     type: Array
-    // }
+    historialCompras: {
+        type: Array,
+        default: []
+    },
+    password: {
+        type: String,
+        requiered: true
+    }
 });
 
 
