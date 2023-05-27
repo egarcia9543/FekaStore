@@ -1,0 +1,24 @@
+{
+  "name": "posesteban",
+  "version": "1.0.0",
+  "description": "aplicacionPOS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "Esteban - @egarcia9543",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^7.2.0",
+    "morgan": "^1.10.0",
+    "router": "^1.3.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
