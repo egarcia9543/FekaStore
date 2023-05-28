@@ -3,30 +3,30 @@ const mongoose = require('../config/connection');
 const schemaProducto = new mongoose.Schema({
     referencia: {
         type: String,
-        requiered: true
+        required: true
     },
     nombre: {
         type: String,
-        requiered: true
+        required: true
     },
     descripcion: {
         type: String,
-        requiered: true
+        required: true
     },
     precio: {
         type: Number,
-        requiered: true
+        required: true
     },
     stock: {
         type: Number
     },
     imagen: {
         type: String,
-        requiered: true
+        required: true
     },
     habilitado: {
         type: Boolean,
-        requiered: true
+        required: true
     }
 });
 

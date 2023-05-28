@@ -2,16 +2,16 @@ const mongoose = require('../config/connection');
 const schemaCliente = new mongoose.Schema({
     nombre: {
         type: String,
-        requiered: true
+        required: true
     },
     cedula: {
         type: String,
-        requiered: true,
+        required: true,
         unique: true
     },
     telefono: {
         type: String,
-        requiered: true
+        required: true
     },
     ubicacion: {
         centro: {
@@ -20,7 +20,7 @@ const schemaCliente = new mongoose.Schema({
         },
         zoom: {
             type: Number,
-            required: true
+            default: 20
         }
     },
     totalComprado: {
@@ -33,7 +33,7 @@ const schemaCliente = new mongoose.Schema({
     },
     password: {
         type: String,
-        requiered: true
+        required: true
     }
 });
 

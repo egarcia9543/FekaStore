@@ -19,5 +19,5 @@ app.listen(PORT, () => {
     console.log(`Servidor en línea puerto ${PORT}`);
 })
 
-app.use('/api/v1/', ruta)
+app.use('/store/v1/', ruta)
 app.use(logger("dev"));

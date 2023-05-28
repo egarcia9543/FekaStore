@@ -4,15 +4,8 @@ exports.landing = async (req, res) => {
     res.render('index')
 }
 
-exports.listaCliente = async (req, res) => {
-    res.render('userCrud');
-}
-
-exports.mapa = async (req, res) => {
-    let clienteU = await cliente.findOne({"cedula": "1011391910"});
-    res.render('mapa', {
-        "clientes": clienteU
-    })
+exports.registroCliente = async (req, res) => {
+    res.render('signup')
 }
 
 exports.nuevoCliente = async (req, res) => {
@@ -21,11 +14,25 @@ exports.nuevoCliente = async (req, res) => {
         cedula: req.body.cedulaCliente,
         telefono: req.body.telefonoCliente,
         ubicacion: {
-            centro: [req.body.ubicacionLat, req.body.ubicacionLon],
-            zoom: 20
+            centro: [req.body.latitudCliente, req.body.longitudCliente],
         },
-        totalComprado: req.body.totalCompradoCliente
+        password: req.body.pswdCliente
     });
     await nuevoCliente.save();
-    res.redirect('userCrud');
+    res.redirect('index');
 }
+
+
+
+
+
+exports.mapa = async (req, res) => {
+    let clienteU = await cliente.findOne({"cedula": "1010033459"});
+    res.render('mapa', {
+        "clientes": clienteU
+    })
+}
+
+//Libreria nodemail
+//Autenticacion 2 pasos gmail
+//

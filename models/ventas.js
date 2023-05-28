@@ -3,31 +3,31 @@ const mongoose = require('../config/connection');
 const schemaVenta = new mongoose.Schema({
     productosVenta: {
         type: Array,
-        requiered: true
+        required: true
     },
     subtotal: {
         type: Number,
-        requiered: true
+        required: true
     },
     fechaVenta: {
         type: Date,
-        requiered: true
+        required: true
     },
     impuesto: {
         type: Number,
-        requiered: true
+        required: true
     },
     totalVenta: {
         type: Number,
-        requiered: true
+        required: true
     },
     cliente: {
         type: Object,
-        requiered: true
+        required: true
     },
     vendedor: {
         type: Object,
-        requiered: true
+        required: true
     }
 })
 
