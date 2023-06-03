@@ -4,7 +4,7 @@ const schemaCliente = new mongoose.Schema({
         type: String,
         required: true
     },
-    cedula: {
+    email : {
         type: String,
         required: true,
         unique: true

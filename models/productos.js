@@ -26,7 +26,7 @@ const schemaProducto = new mongoose.Schema({
     },
     habilitado: {
         type: Boolean,
-        required: true
+        default: true
     }
 });
 

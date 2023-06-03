@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/indexHead') %>
+</head>
+
+<body>
+    <header>
+        <%- include('partials/indexHeader') %>
+    </header>
+    <main>
+        <section class="d-flex flex-wrap">
+            <% productos.forEach(producto=> { %>
+                <div class="card m-3" style="width: 18rem;">
+                    <img src="<%= producto.imagen %>" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= producto.nombre %></h5>
+                        <p class="card-text"><%= producto.descripcion %></p>
+                    </div>
+                </div>
+            <% });%>
+        </section>
+    </main>
+</body>
+    <%- include('partials/indexModals') %>
+</html>
