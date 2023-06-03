@@ -63,10 +63,14 @@ exports.loginCliente = async (req, res) => {
     const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
     const token = usuario && usuario._id ? jwt.sign({id: usuario._id}, secret, {expiresIn: '1hr'}) : false;
     
+    res.cookie('token', token, {
+        httpOnly: true.valueOf,
+        maxAge: 3600,
+    })
 
     try {
         if (usuario && passwordCorrect) {
-            return res.status(200).json({message: 'Bienvenido'});
+            return res.status(200).json({message: `Bienvenido ${token}`});
         } else {
             return res.status(401).json({message: 'El correo o la contraseña son incorrectos'});
         }
@@ -91,14 +95,20 @@ exports.loginCliente = async (req, res) => {
 
 }
 
-
+exports.tokenVerification = async(req, res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
 
 
 
 
 
 exports.mapa = async (req, res) => {
-    let clienteU = await cliente.findOne({"email": "testf@gmail.com"});
+    let clienteU = await cliente.findOne({"email": "testsena@gmail.com"});
     res.render('mapa', {
         "clientes": clienteU
     })
