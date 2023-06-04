@@ -3,6 +3,12 @@
 
 <head>
     <%- include('partials/indexHead') %>
+    <style>
+        .imagenCarrito {
+            width: 120px;
+            height: 120px;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,11 +23,38 @@
                     <div class="card-body">
                         <h5 class="card-title"><%= producto.nombre %></h5>
                         <p class="card-text"><%= producto.descripcion %></p>
+                        <p class="card-text">Precio: <%= producto.precio %></p>
                     </div>
+                    <button class="btn btn-dark" onclick="carrito(producto)"><i class="bi bi-cart"></i></button>
                 </div>
             <% });%>
         </section>
     </main>
 </body>
     <%- include('partials/indexModals') %>
+    <script>
+        function carrito(nombre, imagen){
+            const cart = document.getElementById('offcanvasBody');
+            let item = document.createElement('div')
+            let nombreProducto = document.createElement('p')
+            nombreProducto.textContent = nombre
+            let imagenProducto = document.createElement('img')
+            imagenProducto.classList.add('imagenCarrito')
+            imagenProducto.src = imagen
+
+            item.appendChild(nombreProducto)
+            item.appendChild(imagenProducto)
+            nombre
+            
+            cart.appendChild(item);
+        }
+
+        function agregarAlCarrito(){
+            //en la cookie se guarda un arreglo con los productos del carrito
+            //leo la cookie del carrito a ver si ya hay algo
+            //si hay algo, adiciono el ultimo producto seleccionado
+            //guardo de nuevo el arreglo como cookie que ya está actualizado
+
+        }
+    </script>
 </html>

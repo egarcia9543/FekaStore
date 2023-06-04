@@ -1,24 +1,26 @@
 const express = require('express');
-const routeClientes = require('../controller/functions')
+const routeController = require('../controller/functions')
 
 const router = express.Router();
 
 
 //Clientes
-router.get('/registroclientes', routeClientes.registroCliente);
-router.post('/nuevocliente', routeClientes.nuevoCliente);
-router.post('/login', routeClientes.loginCliente)
+router.get('/registroclientes', routeController.registroCliente);
+router.post('/nuevocliente', routeController.nuevoCliente);
+router.post('/login', routeController.loginCliente)
 
-router.get('/mapa', routeClientes.mapa);
-router.get('/index', routeClientes.landing);
+router.get('/test', routeController.tokenVerification)
+
+router.get('/mapa', routeController.mapa);
+router.get('/index', routeController.landing);
 
 
 
 
 //Productos
-router.get('/registroproductos', routeClientes.registroProducto);
-router.post('/nuevoproducto', routeClientes.nuevoProducto);
-router.get('/catalogo', routeClientes.catalogo);
+router.get('/registroproductos', routeController.registroProducto);
+router.post('/nuevoproducto', routeController.nuevoProducto);
+router.get('/catalogo', routeController.catalogo);
 
 
 module.exports = router

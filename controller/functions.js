@@ -63,7 +63,7 @@ exports.loginCliente = async (req, res) => {
     const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
     const token = usuario && usuario._id ? jwt.sign({id: usuario._id}, secret, {expiresIn: '1hr'}) : false;
     
-    res.cookie('token', token, {
+    res.cookie('tokenLeandro', token, {
         httpOnly: true.valueOf,
         maxAge: 3600,
     })
@@ -95,15 +95,35 @@ exports.loginCliente = async (req, res) => {
 
 }
 
-exports.tokenVerification = async(req, res) => {
+exports.tokenVerification = async(req, res, next) => {
     try {
-        
+        const token = req.cookies.token;
+        if(!token){
+            res.status(401).json({
+                error: "No estás autorizado"
+            })
+            return;
+        }
+        jwt.verify(token, secret, (err, user) => {
+            if(err){
+                return res.status(401).json({
+                    message: "Token inválido"
+                })
+            }
+            req.id = user.id
+            console.log(req.id)
+            next();
+            return;
+        })
+
     } catch (error) {
         
     }
 }
 
-
+exports.userInfo = async(req, res) => {
+    
+}
 
 
 
