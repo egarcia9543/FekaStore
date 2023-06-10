@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('partials/indexHead') %>
+</head>
+<body>
+    <!-- aptinjijhcvcssnk -->
+    <header>
+        <%- include('partials/indexHeader') %>
+    </header>
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <form method="post" action="email">
+                            <div class="mb-3">
+                                <label for="asunto" class="form-label">Asunto</label>
+                                <input type="text" class="form-control" name="asunto">
+                            </div>
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Email address</label>
+                              <input type="email" class="form-control" id="exampleInputEmail1" name="emailAddress">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="emailText"></textarea>
+                              </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 const cliente = require('../models/clientes')
 const producto = require('../models/productos')
 
+const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const secret = process.env.jwtSecret
@@ -20,11 +21,11 @@ exports.nuevoCliente = async (req, res, next) => {
     const email = req.body.emailCliente;
     const password = req.body.pswdCliente;
     const hashedPassword = await bcrypt.hash(password, 12);
-    
-    const userEmail = await cliente.findOne({email});
+
+    const userEmail = await cliente.findOne({ email });
 
     try {
-        if (!email || !password ) {
+        if (!email || !password) {
             return res.json({
                 message: 'Por favor ingrese todos los campos'
             });
@@ -51,18 +52,18 @@ exports.nuevoCliente = async (req, res, next) => {
     } catch (error) {
         console.error(error);
     }
-next();
+    next();
 }
 
 exports.loginCliente = async (req, res) => {
     //const {email, password} = req.body;
     const email = req.body.emailLogin;
     const password = req.body.pwdLogin;
-    const usuario = await cliente.findOne({email});
+    const usuario = await cliente.findOne({ email });
 
     const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
-    const token = usuario && usuario._id ? jwt.sign({id: usuario._id}, secret, {expiresIn: '1hr'}) : false;
-    
+    const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
+
     res.cookie('tokenLeandro', token, {
         httpOnly: true.valueOf,
         maxAge: 3600,
@@ -70,9 +71,9 @@ exports.loginCliente = async (req, res) => {
 
     try {
         if (usuario && passwordCorrect) {
-            return res.status(200).json({message: `Bienvenido ${token}`});
+            return res.status(200).json({ message: `Bienvenido ${token}` });
         } else {
-            return res.status(401).json({message: 'El correo o la contraseña son incorrectos'});
+            return res.status(401).json({ message: 'El correo o la contraseña son incorrectos' });
         }
     } catch (error) {
         console.error(error);
@@ -81,31 +82,31 @@ exports.loginCliente = async (req, res) => {
     // try {
     //     if (!usuario) {
     //         return res.status(400).json({message: 'El correo no existe'});
-    //     } 
+    //     } var nodemailer = require('nodemailer');
 
     //     const passwordCorrecta = await bcrypt.compare(password, usuario.password);
     //     if (!passwordCorrecta) {
     //         return res.status(400).json({message: 'Contraseña incorrecta'});
     //     }
-        
+
     // } catch (error) {
-        
+
     // }
-    
+
 
 }
 
-exports.tokenVerification = async(req, res, next) => {
+exports.tokenVerification = async (req, res, next) => {
     try {
         const token = req.cookies.token;
-        if(!token){
+        if (!token) {
             res.status(401).json({
                 error: "No estás autorizado"
             })
             return;
         }
         jwt.verify(token, secret, (err, user) => {
-            if(err){
+            if (err) {
                 return res.status(401).json({
                     message: "Token inválido"
                 })
@@ -117,18 +118,18 @@ exports.tokenVerification = async(req, res, next) => {
         })
 
     } catch (error) {
-        
+
     }
 }
 
-exports.userInfo = async(req, res) => {
-    
+exports.userInfo = async (req, res) => {
+
 }
 
 
 
 exports.mapa = async (req, res) => {
-    let clienteU = await cliente.findOne({"email": "testsena@gmail.com"});
+    let clienteU = await cliente.findOne({ "email": "testsena@gmail.com" });
     res.render('mapa', {
         "clientes": clienteU
     })
@@ -171,6 +172,59 @@ exports.catalogo = async (req, res) => {
 }
 
 exports.addCart = async (req, res) => {
+    let cart = []
     let productoAgregado = await producto.findById(req.body.idCart);
     console.log(productoAgregado)
+    cart.push(productoAgregado)
+    console.log(cart)
+}
+
+
+
+exports.contacto = (req, res) => {
+    res.render('formulario')
+}
+
+exports.sendEmail = () => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'egarcia9543@misena.edu.co',
+            pass: 'aptinjijhcvcssnk'
+        }
+    });
+
+    let mailOptions = {
+        from: 'egarcia9543@misena.edu.co',
+        to: '',
+        subject: 'Sending Email using Node.js',
+        text: 'That was easy!'
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+
+    // let correos = ['egarcia9543@misena.edu.co']
+
+    // correos.forEach(correo => {
+    //     let mailOptions = {
+    //         from: 'Hola',
+    //         to: correo,
+    //         subject: 'SPAM',
+    //         text: 'HolaMundo'
+    //     }
+
+    //     transporter.sendMail(mailOptions, function (error, info) {
+    //         if (error) {
+    //             console.err(error)
+    //         } else {
+    //             console.log('Email enviado: '+ info.response)
+    //         }
+    //     })
+    // })
 }
