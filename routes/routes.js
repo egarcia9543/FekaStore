@@ -21,6 +21,7 @@ router.get('/index', routeController.landing);
 router.get('/registroproductos', routeController.registroProducto);
 router.post('/nuevoproducto', routeController.nuevoProducto);
 router.get('/catalogo', routeController.catalogo);
+router.post('/addtocart', routeController.addCart);
 
 
 module.exports = router

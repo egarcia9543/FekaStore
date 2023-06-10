@@ -169,3 +169,8 @@ exports.catalogo = async (req, res) => {
         "productos": productos
     })
 }
+
+exports.addCart = async (req, res) => {
+    let productoAgregado = await producto.findById(req.body.idCart);
+    console.log(productoAgregado)
+}
