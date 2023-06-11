@@ -1,6 +1,7 @@
 const express = require('express');
 const routeController = require('../controller/functions')
 const routeExcel = require('../controller/excelfornode')
+const routeGraficos = require('../controller/graficos')
 
 const router = express.Router();
 
@@ -28,6 +29,6 @@ router.post('/nuevoproducto', routeController.nuevoProducto);
 router.get('/catalogo', routeController.catalogo);
 router.post('/addtocart', routeController.addCart);
 router.get('/excel', routeExcel.descargarExcel)
-
+router.get('/graficos', routeGraficos.graficos)
 
 module.exports = router
