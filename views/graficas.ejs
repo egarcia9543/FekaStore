@@ -3,7 +3,10 @@
 <head>
   <title>Gráfico de Stock</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">
+</head>
+<body>
+  <div id="chart-container"></div>
+  <script>
     google.charts.load('current', {packages: ['corechart']});
     google.charts.setOnLoadCallback(drawChart);
 
@@ -12,9 +15,14 @@
       data.addColumn('string', 'Producto');
       data.addColumn('number', 'Stock');
 
-      <% productos.forEach(function(product) { %>
-        data.addRow(['<%= product.nombre %>', <%= product.stock %>]);
-      <% }); %>
+      // <% productos.forEach(function(product) { %>
+      //   data.addRow(['<%= product.nombre %>', <%= product.stock %>]);
+      // <% }); %>
+        data.addRow(['<%= productos[0].nombre %>', <%= productos[0].stock %>]);
+        data.addRow(['<%= productos[1].nombre %>', <%= productos[1].stock %>]);
+        data.addRow(['<%= productos[2].nombre %>', <%= productos[2].stock %>]);
+        data.addRow(['<%= productos[3].nombre %>', <%= productos[3].stock %>]);
+        data.addRow(['<%= productos[4].nombre %>', <%= productos[4].stock %>]);
 
       let options = {
         title: 'Gráfico de Stock de Productos',
@@ -26,8 +34,5 @@
       chart.draw(data, options);
     }
   </script>
-</head>
-<body>
-  <div id="chart-container"></div>
 </body>
 </html>
