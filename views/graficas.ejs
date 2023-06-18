@@ -1,52 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <title>Gráfico de Stock</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
 
-</head>
+    function drawChart() {
+      let data = new google.visualization.DataTable();
+      data.addColumn('string', 'Producto');
+      data.addColumn('number', 'Stock');
 
-<body>
+      <% productos.forEach(function(product) { %>
+        data.addRow(['<%= product.nombre %>', <%= product.stock %>]);
+      <% }); %>
 
-    
-    <canvas id="myChart" style="width:100%;max-width:700px">
-    
-    </canvas>
+      let options = {
+        title: 'Gráfico de Stock de Productos',
+        width: 800,
+        height: 400
+      };
 
-
-</body>
-
-
-<script>
-    const xValues = []
-    const yValues = []
-
-    productos.forEach(producto => {
-        xValues.push(producto.nombre);
-        yValues.push(producto.stock);
-    });
-
-
-new Chart("myChart", {
-  type: "bar",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    title: {
-      display: true,
-      text: "World Wine Production 2018"
+      let chart = new google.visualization.ColumnChart(document.getElementById('chart-container'));
+      chart.draw(data, options);
     }
-  }
-});
-</script>
-
+  </script>
+</head>
+<body>
+  <div id="chart-container"></div>
+</body>
 </html>

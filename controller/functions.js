@@ -187,27 +187,27 @@ exports.contacto = (req, res) => {
 
 exports.sendEmail = () => {
     let transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: 'gmail',  //Se define que servicio de correo se va a utilizar para enviar el mensaje
         auth: {
-            user: 'egarcia9543@misena.edu.co',
-            pass: 'aptinjijhcvcssnk'
+            user: 'egarcia9543@misena.edu.co', //se pone el correo que va a enviar el mensaje
+            pass: 'aptinjijhcvcssnk' //Contraseña de aplicación generada
         }
     });
 
     let mailOptions = {
-        from: 'egarcia9543@misena.edu.co',
-        to: '',
-        subject: 'Sending Email using Node.js',
-        text: 'That was easy!'
-      };
-      
-      transporter.sendMail(mailOptions, function(error, info){
+        from: 'egarcia9543@misena.edu.co', //Correo que va a enviar el mensaje
+        to: 'egarcia9543@misena.edu.co', //correo que lo va a recibir
+        subject: 'Sending Email using Node.js', //asunto del correo
+        text: 'That was easy!' //texto del correo
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          console.log(error);
+            console.log(error);
         } else {
-          console.log('Email sent: ' + info.response);
+            console.log('Email sent: ' + info.response);
         }
-      });
+    });
 
     // let correos = ['egarcia9543@misena.edu.co']
 
