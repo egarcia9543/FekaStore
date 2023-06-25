@@ -1,6 +1,7 @@
-let shoppingCart = JSON.parse(localStorage.getItem('carrito')) || [];
+var shoppingCart = JSON.parse(localStorage.getItem('carrito')) || [];
 let cartContent = document.getElementById('offcanvasBody');
 let totalPriceContainer = document.getElementById('totalPrice');
+
 
 function totalCarrito() {
     const total = shoppingCart.reduce((acc, el) => acc + parseFloat(el.precio) * el.cantidad, 0);
@@ -28,12 +29,20 @@ function agregarAlCarrito(id, precio, nombre, imagen, cantidad) {
         shoppingCart.push(producto);
     }
     console.log(shoppingCart);
+
     //Sumar el total de los productos
     totalCarrito();
 
     saveLocalStorage();
     actualizarCarritoDOM();
-    }
+}
+
+
+function restar(){
+    let cantidad = document.getElementById('cantidad').value
+    
+}
+
 
 function saveLocalStorage() {
     localStorage.setItem('carrito', JSON.stringify(shoppingCart));
@@ -51,7 +60,7 @@ function eliminarProducto(id) {
 }
 
 function actualizarCarritoDOM() {
-    // Limpiar el contenido del carrito antes de actualizarlo
+    // Limpiar el contenido del carrito antes de actualizarlo54999999999995
     cartContent.innerHTML = '';
 
     // Recorrer los productos en el carrito y crear los elementos en el DOM
@@ -64,15 +73,21 @@ function actualizarCarritoDOM() {
                 <img src="${producto.imagen}" class="imagenCarrito rounded">
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <p class="m-0 ms-3 fw-bold">${producto.nombre}</p>
-                    <p class="m-0 ms-3 fw-bold">Cantidad: ${producto.cantidad}</p>
+                    <div class="d-flex justify-content-between align-items-center ms-3">
+                        <button class="btn restar" onclick="restar()">-</button>
+                        <input class="m-2" id="cantidad" readonly value="${producto.cantidad}" style="max-width: 30px"></input>
+                        <button class="btn sumar">+</button>
+                    </div>
                 </div>
             </div>
-            <p class="m-0 fw-bold text-success">$${producto.precio * producto.cantidad}</p>
+            <p class="m-0 fw-bold text-success">$${(producto.precio * producto.cantidad).toFixed(2)}</p>
             <button class="btn btn-danger" onclick="eliminarProducto('${producto.id}')"><i class="bi bi-trash"></i></button>
         `;
         cartContent.appendChild(productDetail);
     });
     totalCarrito();
 }
+
+
 
 actualizarCarritoDOM();

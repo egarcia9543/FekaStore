@@ -3,12 +3,6 @@
 
 <head>
     <%- include('partials/indexHead') %>
-        <style>
-            .imagenCarrito {
-                width: 120px;
-                height: 120px;
-            }
-        </style>
 </head>
 
 <body>
@@ -16,9 +10,9 @@
         <%- include('partials/indexHeader') %>
     </header>
     <main>
-        <section class="d-flex flex-wrap justify-content-center">
+        <section class="d-flex flex-wrap justify-content-center" id="productsContainer">
             <% productos.forEach(producto=> { %>
-                <div class="card m-3" style="width: 17rem;">
+                <div class="card m-3 productCard" style="width: 17rem;">
                     <img src="<%= producto.imagen %>" class="card-img-top object-fit-contain">
                     <div class="card-body d-flex justify-content-between">
                         <div class="d-flex flex-column justify-content-center">
@@ -37,11 +31,18 @@
                 </div>
                 <% });%>
         </section>
+        <div class="d-flex justify-content-center paginationContainer">
+            <button class="btn btn-dark" id="previous"><i class="bi bi-arrow-left-square-fill"></i></button>
+            <div id="paginationNumbers">
+
+            </div>
+            <button class="btn btn-dark" id="next"><i class="bi bi-arrow-right-square-fill"></i></button>
+        </div>
     </main>
 </body>
 <%- include('partials/indexModals') %>
     <script>
-    <%- include('test.js') %>
+    <%- include('test.js'); %>
     </script>
 
 </html>
