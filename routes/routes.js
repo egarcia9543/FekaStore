@@ -27,7 +27,8 @@ router.get('/email', routeController.sendEmail)
 router.get('/registroproductos', routeController.registroProducto);
 router.post('/nuevoproducto', routeController.nuevoProducto);
 router.get('/catalogo', routeController.catalogo);
-router.post('/addtocart', routeController.addCart);
+
+
 router.get('/excel', routeExcel.descargarExcel)
 router.get('/graficos', routeGraficos.graficos)
 

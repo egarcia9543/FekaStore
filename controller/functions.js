@@ -10,7 +10,10 @@ const secret = process.env.jwtSecret
 
 
 exports.landing = async (req, res) => {
-    res.render('index')
+    let productos = await producto.find();
+    res.render('index', {
+        "productos": productos
+    })
 }
 
 exports.registroCliente = async (req, res) => {
@@ -170,16 +173,6 @@ exports.catalogo = async (req, res) => {
         "productos": productos
     })
 }
-
-exports.addCart = async (req, res) => {
-    let cart = []
-    let productoAgregado = await producto.findById(req.body.idCart);
-    console.log(productoAgregado)
-    cart.push(productoAgregado)
-    console.log(cart)
-}
-
-
 
 exports.contacto = (req, res) => {
     res.render('formulario')
