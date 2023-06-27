@@ -1,6 +1,4 @@
 const cliente = require('../models/clientes')
-const producto = require('../models/productos')
-
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -10,10 +8,7 @@ const secret = process.env.jwtSecret
 
 
 exports.landing = async (req, res) => {
-    let productos = await producto.find();
-    res.render('index', {
-        "productos": productos
-    })
+    res.render('index')
 }
 
 exports.registroCliente = async (req, res) => {
@@ -129,8 +124,6 @@ exports.userInfo = async (req, res) => {
 
 }
 
-
-
 exports.mapa = async (req, res) => {
     let clienteU = await cliente.findOne({ "email": "testsena@gmail.com" });
     res.render('mapa', {
@@ -138,60 +131,24 @@ exports.mapa = async (req, res) => {
     })
 }
 
-//Libreria nodemail
-//Autenticacion 2 pasos gmail
-//
-
-
-
-
-
-
-
-//Productos
-
-exports.registroProducto = async (req, res) => {
-    res.render('registroProductos')
-}
-
-exports.nuevoProducto = async (req, res) => {
-    const nuevoProducto = new producto({
-        referencia: req.body.referenciaProducto,
-        nombre: req.body.nombreProducto,
-        descripcion: req.body.descripcionProducto,
-        precio: req.body.precioProducto,
-        stock: req.body.stockProducto,
-        imagen: req.body.imagenProducto
-    })
-    nuevoProducto.save();
-    res.redirect('/store/v1/catalogo');
-}
-
-exports.catalogo = async (req, res) => {
-    let productos = await producto.find();
-    res.render('catalogo', {
-        "productos": productos
-    })
-}
-
 exports.contacto = (req, res) => {
     res.render('formulario')
 }
 
-exports.sendEmail = () => {
+exports.sendEmail = (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',  //Se define que servicio de correo se va a utilizar para enviar el mensaje
         auth: {
             user: 'egarcia9543@misena.edu.co', //se pone el correo que va a enviar el mensaje
-            pass: 'aptinjijhcvcssnk' //Contraseña de aplicación generada
+            pass: `${process.env.GPASS}` //Contraseña de aplicación generada
         }
     });
 
     let mailOptions = {
         from: 'egarcia9543@misena.edu.co', //Correo que va a enviar el mensaje
-        to: 'egarcia9543@misena.edu.co', //correo que lo va a recibir
-        subject: 'Sending Email using Node.js', //asunto del correo
-        text: 'That was easy!' //texto del correo
+        to: req.body.emailAddress, //correo que lo va a recibir
+        subject: req.body.asunto, //asunto del correo
+        text: req.body.mensaje //texto del correo
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -199,25 +156,7 @@ exports.sendEmail = () => {
             console.log(error);
         } else {
             console.log('Email sent: ' + info.response);
+            res.redirect('index')
         }
     });
-
-    // let correos = ['egarcia9543@misena.edu.co']
-
-    // correos.forEach(correo => {
-    //     let mailOptions = {
-    //         from: 'Hola',
-    //         to: correo,
-    //         subject: 'SPAM',
-    //         text: 'HolaMundo'
-    //     }
-
-    //     transporter.sendMail(mailOptions, function (error, info) {
-    //         if (error) {
-    //             console.err(error)
-    //         } else {
-    //             console.log('Email enviado: '+ info.response)
-    //         }
-    //     })
-    // })
 }

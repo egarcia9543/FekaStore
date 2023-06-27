@@ -1,7 +1,8 @@
 const express = require('express');
-const routeController = require('../controller/functions')
+const routeController = require('../controller/usuario')
 const routeExcel = require('../controller/excelfornode')
 const routeGraficos = require('../controller/graficos')
+const functionsProducts = require('../controller/productos')
 
 const router = express.Router();
 
@@ -18,17 +19,19 @@ router.get('/index', routeController.landing);
 
 
 
-router.get('/contact', routeController.contacto)
-router.get('/email', routeController.sendEmail)
+router.get('/recuperar', routeController.contacto)
+router.post('/email', routeController.sendEmail)
 
 
 
 //Productos
-router.get('/registroproductos', routeController.registroProducto);
-router.post('/nuevoproducto', routeController.nuevoProducto);
-router.get('/catalogo', routeController.catalogo);
+router.get('/registroproductos', functionsProducts.registroProducto);
+router.post('/nuevoproducto', functionsProducts.nuevoProducto);
+router.get('/catalogo', functionsProducts.catalogo);
 
 
+
+//Otros
 router.get('/excel', routeExcel.descargarExcel)
 router.get('/graficos', routeGraficos.graficos)
 
