@@ -1,0 +1,15 @@
+img.imagenCarrito {
+    width: 100px;
+    height: 100px;
+}
+
+.men__category,
+.women__category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}

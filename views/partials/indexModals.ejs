@@ -54,7 +54,7 @@
 
 <!-- Detalles -->
 <div class="modal" tabindex="-1" id="detailModal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Detalles del producto</h5>
@@ -172,7 +172,7 @@
             productDetail.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'mb-3');
             productDetail.innerHTML = `
             <div class="d-flex align-items-center">
-                <img src="${producto.imagen}" class="imagenCarrito rounded">
+                <img src="${producto.imagen}${producto.nombre}" class="imagenCarrito rounded">
                 <div>
                     <div class="d-flex justify-content-center flex-column align-items-center">
                         <p class="m-0 fw-bold">${producto.nombre}</p>
@@ -197,8 +197,8 @@
     function verDetalles(id, precio, nombre, imagen, descripcion, stock) {
         let details = document.getElementById('details');
         details.innerHTML = `
-        <div class="d-flex justify-content-center">
-            <img src="${imagen}" class="rounded w-5">
+        <div class="d-flex justify-content-center w-50">
+            <img src="${imagen}${nombre}" class="rounded img-fluid object-fit-cover">
         </div>
         <div class="d-flex flex-column justify-content-center align-items-center w-50">
             <p class="fw-bold text-center">${nombre}</p>
