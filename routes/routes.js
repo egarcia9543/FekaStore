@@ -1,35 +1,39 @@
 const express = require('express');
-const routeController = require('../controller/usuario')
+const userFunctions = require('../controller/usuario')
 const routeExcel = require('../controller/excelfornode')
 const routeGraficos = require('../controller/graficos')
-const functionsProducts = require('../controller/productos')
+const productFunctions = require('../controller/productos')
+const adminFunctions = require('../controller/admin')
+
 
 const router = express.Router();
 
 
 //Clientes
-router.get('/registroclientes', routeController.registroCliente);
-router.post('/nuevocliente', routeController.nuevoCliente);
-router.post('/login', routeController.loginCliente)
+router.get('/registroclientes', userFunctions.registroCliente);
+router.post('/nuevocliente', userFunctions.nuevoCliente);
+router.post('/login', userFunctions.loginCliente)
 
-router.get('/test', routeController.tokenVerification)
+router.get('/test', userFunctions.tokenVerification)
 
-router.get('/mapa', routeController.mapa);
-router.get('/index', routeController.landing);
+router.get('/mapa', userFunctions.mapa);
+router.get('/index', userFunctions.landing);
 
 
 
-router.get('/recuperar', routeController.contacto)
-router.post('/email', routeController.sendEmail)
+router.get('/recuperar', userFunctions.contacto)
+router.post('/email', userFunctions.sendEmail)
 
 
 
 //Productos
-router.get('/registroproductos', functionsProducts.registroProducto);
-router.post('/nuevoproducto', functionsProducts.nuevoProducto);
-router.get('/catalogo', functionsProducts.catalogo);
+router.get('/registroproductos', productFunctions.registroProducto);
+router.post('/nuevoproducto', productFunctions.nuevoProducto);
+router.get('/catalogo', productFunctions.catalogo);
 
-
+//Admin
+router.get('/indexadmin', adminFunctions.landingAdmin);
+router.get('/datatableproductos', adminFunctions.listOfProducts);
 
 //Otros
 router.get('/excel', routeExcel.descargarExcel)

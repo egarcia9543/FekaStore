@@ -14,7 +14,7 @@ exports.nuevoProducto = async (req, res) => {
         imagen: req.body.imagenProducto
     })
     nuevoProducto.save();
-    res.redirect('/store/v1/catalogo');
+    res.redirect('/store/v1/datatableproductos');
 }
 
 exports.catalogo = async (req, res) => {

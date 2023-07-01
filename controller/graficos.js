@@ -5,5 +5,5 @@ exports.graficos = async (req, res)=> {
 
     res.render('graficas', {
         productos
-    })
+    });
 }

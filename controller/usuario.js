@@ -7,11 +7,11 @@ const secret = process.env.jwtSecret
 
 
 
-exports.landing = async (req, res) => {
+exports.landing = (req, res) => {
     res.render('index')
 }
 
-exports.registroCliente = async (req, res) => {
+exports.registroCliente = (req, res) => {
     res.render('signup')
 }
 

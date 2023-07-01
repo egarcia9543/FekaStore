@@ -43,7 +43,6 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     totalCarrito();
 
     saveLocalStorage();
-    actualizarCarritoDOM();
 }
 
 function restar(id, precio) {
@@ -109,7 +108,7 @@ function actualizarCarritoDOM() {
                         <button class="btn restar" onclick="restar('${producto.id}', '${producto.precio}')">-</button>
                             <input class="m-1 form-control form-control-xs text-center" readonly value="${producto.cantidad}"></input>
                         <button class="btn sumar" onclick="sumar('${producto.id}', '${producto.precio}', '${producto.stock}')">+</button>
-                    </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -150,7 +149,7 @@ function verDetalles(id, precio, nombre, imagen, descripcion, stock) {
     let footer = document.getElementById('modalFooter');
     footer.innerHTML = `
     <button type="button" class="btn btn-primary" onclick="agregarAlCarrito('${id}', '${precio}', '${nombre}', '${imagen}', '${stock}', 1)">Agregar al Carrito</button>
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
     `;
 }
 
@@ -159,5 +158,3 @@ function finCompra(total) {
     localStorage.clear();
     location.reload();
 }
-
-actualizarCarritoDOM();
