@@ -107,7 +107,7 @@ function actualizarCarritoDOM() {
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center ms-4 me-4">
                         <button class="btn restar" onclick="restar('${producto.id}', '${producto.precio}')">-</button>
-                            <input class="m-1 form-control form-control-xs text-center" id="cantidad" readonly value="${producto.cantidad}"></input>
+                            <input class="m-1 form-control form-control-xs text-center" readonly value="${producto.cantidad}"></input>
                         <button class="btn sumar" onclick="sumar('${producto.id}', '${producto.precio}', '${producto.stock}')">+</button>
                     </div>
                 </div>
