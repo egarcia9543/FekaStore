@@ -1,5 +1,6 @@
-const producto = require('../models/productos')
-const cliente = require('../models/clientes')
+const producto = require('../models/productos');
+const cliente = require('../models/clientes');
+const vendedor = require('../models/vendedores');
 
 
 exports.landingAdmin =  (req, res) => {
@@ -18,4 +19,11 @@ exports.listOfClients = async (req, res) => {
     res.render('admin/listOfClients', {
         "clientes": clientes
     });
-}
+};
+
+exports.listOfWorkers = async (req, res) => {
+    let vendedores = await vendedor.find();
+    res.render('admin/listOfWorkers', {
+        "vendedores": vendedores
+    });
+};

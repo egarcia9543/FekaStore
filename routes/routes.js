@@ -35,6 +35,7 @@ router.get('/catalogo', productFunctions.catalogo);
 router.get('/indexadmin', adminFunctions.landingAdmin);
 router.get('/datatableproductos', adminFunctions.listOfProducts);
 router.get('/datatableclientes', adminFunctions.listOfClients);
+router.get('/datatablevendedores', adminFunctions.listOfWorkers);
 
 //Otros
 router.get('/excel', routeExcel.descargarExcel)

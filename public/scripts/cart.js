@@ -37,10 +37,7 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     } else {
         shoppingCart.push(producto);
     }
-    alert('Producto agregado al carrito');
-
-    //Sumar el total de los productos
-    totalCarrito();
+    alert('Producto agregado al carrito');    
 
     saveLocalStorage();
 }
