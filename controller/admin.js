@@ -12,3 +12,10 @@ exports.listOfProducts = async (req, res) => {
         "productos": productos
     });
 };
+
+exports.listOfClients = async (req, res) => {
+    let clientes = await cliente.find();
+    res.render('admin/listOfClients', {
+        "clientes": clientes
+    });
+}

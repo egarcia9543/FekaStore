@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/indexHead'); %>
+        <!-- Datatable -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="card mb-4">
+            <div class="card-body d-flex justify-content-between">
+                <a class="btn btn-primary" href="indexadmin">Inicio <i class="bi bi-house-fill"></i></a>
+                <a class="btn btn-outline-success" href="registroproductos">Agregar producto <i
+                        class="bi bi-database-fill-add"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <table id="products" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Ubicación</th>
+                    <th scope="col">Total Comprado</th>
+                    <th scope="col">Historial de Compras</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% clientes.forEach(cliente=> { %>
+                    <tr>
+                        <td>
+                            <%= cliente.nombre %>
+                        </td>
+                        <td>
+                            <%= cliente.email %>
+                        </td>
+                        <td>
+                            <%= cliente.telefono %>
+                        </td>
+                        <td>
+                            <%= cliente.ubicacion %>
+                        </td>
+                        <td>
+                            <%= cliente.totalComprado %>
+                        </td>
+                        <td>
+                            <%= cliente.historialCompras %>
+                        </td>
+                        <td class="d-flex">
+                            <button class="btn btn-warning me-2"><i class="bi bi-pen-fill"></i></button>
+                            <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script>
+    $('#products').DataTable();
+</script>
+
+</html>
