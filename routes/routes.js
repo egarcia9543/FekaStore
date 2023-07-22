@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 
 const userFunctions = require('../controller/usuario')
 const routeExcel = require('../controller/excelfornode')
@@ -13,10 +12,10 @@ const router = express.Router();
 
 //Clientes
 router.get('/registroclientes', userFunctions.registroCliente);
+router.get('/signin', userFunctions.renderLogin);
 router.post('/nuevocliente', userFunctions.nuevoCliente);
-router.post('/login', userFunctions.loginCliente)
+router.post('/login', userFunctions.loginCLiente);
 
-router.get('/test', userFunctions.tokenVerification)
 
 router.get('/mapa', userFunctions.mapa);
 router.get('/index', userFunctions.landing);

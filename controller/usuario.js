@@ -2,9 +2,10 @@ const cliente = require('../models/clientes')
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
-const secret = process.env.jwtSecret
-//jwtSecret = '235fe06beb59e31f0a7f03edce80b19c7ad35b6bd4614f104f6ff9d4fc26f403481526'
+const { json } = require('express');
+const secret = process.env.JWT_SECRET
+const expires = process.env.JWT_EXPIRE
+//JWT_SECRET = '235fe06beb59e31f0a7f03edce80b19c7ad35b6bd4614f104f6ff9d4fc26f403481526'
 
 
 
@@ -16,10 +17,10 @@ exports.registroCliente = (req, res) => {
     res.render('signup')
 }
 
-exports.nuevoCliente = async (req, res, next) => {
+exports.nuevoCliente = async (req, res) => {
     const email = req.body.emailCliente;
     const password = req.body.pswdCliente;
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const passwordEncriptada = await bcrypt.hash(password, 12);
 
     const userEmail = await cliente.findOne({ email });
 
@@ -36,69 +37,95 @@ exports.nuevoCliente = async (req, res, next) => {
             });
         }
 
-        const nuevoCliente = new cliente({
+        const clienteRegistrado = new cliente({
             nombre: req.body.nombreCliente,
             email: email,
             telefono: req.body.telefonoCliente,
             ubicacion: {
                 centro: [req.body.latitudCliente, req.body.longitudCliente],
             },
-            password: hashedPassword
+            password: passwordEncriptada
         })
-        await nuevoCliente.save();
-        res.redirect('index');
+        await clienteRegistrado.save();
+        const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires, });
+        res.cookie({ 'token': token }).json({ success: true, message: 'Usuario registrado satisfactoriamente', data: clienteRegistrado });
 
     } catch (error) {
-        console.error(error);
+        return res.json({ error: error });
     }
-    next();
 }
 
-exports.loginUsuario = async (req, res) => {
-
-
+exports.renderLogin = async (req, res) => {
+    res.render('signin');
 }
 
-exports.loginCliente = passport.authenticate('local', {
-})
-    
-    
-    // //const {email, password} = req.body;
-    // const email = req.body.emailLogin;
-    // const password = req.body.pwdLogin;
-    // const usuario = await cliente.findOne({ email });
+exports.loginCLiente = async (req, res) => {
+    try {
+        const email = req.body.emailLogin;
+        const password = req.body.pwdLogin;
+        if (!email || !password) {
+            console.log(email, password);
+            return res.json({ error: 'Ingresa todas las credenciales' });
+        }
 
-    // const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
-    // const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
+        const clienteRegistrado = await cliente.findOne({ email: req.body.emailLogin });
+        console.log(clienteRegistrado)
+        if (!clienteRegistrado) {
+            return res.json({ error: 'Este usuario no existe' });
+        }
 
-    // res.cookie('tokenLeandro', token, {
-    //     httpOnly: true.valueOf,
-    //     maxAge: 3600,
-    // })
+        const passwordCorrecta = await bcrypt.compare(password, clienteRegistrado.password);
+        if (!passwordCorrecta) {
+            return res.json({ error: 'Contraseña incorrecta' });
+        }
+        console.log(email,clienteRegistrado._id, secret, expires)
+        // const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
+        const token = await jwt.sign({ id: email }, secret, { expiresIn: expires });
+        res.send(token)
+        res.cookie( 'token', token, { httpOnly: true });
+        res.json({ success: true, message: 'Inicio de sesión exitoso' });
 
-    // try {
-    //     if (usuario && passwordCorrect) {
-    //         return res.status(200).json({ message: `Bienvenido ${token}` });
-    //     } else {
-    //         return res.status(401).json({ message: 'El correo o la contraseña son incorrectos' });
-    //     }
-    // } catch (error) {
-    //     console.error(error);
-    // }
+    } catch (err) {
+        return res.json({ error: err });
+    }
+}
+// const {email, password} = req.body;
+// const email = req.body.emailLogin;
+// const password = req.body.pwdLogin;
+// const usuario = await cliente.findOne({ email });
 
-    // // try {
-    // //     if (!usuario) {
-    // //         return res.status(400).json({message: 'El correo no existe'});
-    // //     } var nodemailer = require('nodemailer');
+// const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
+// const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
 
-    // //     const passwordCorrecta = await bcrypt.compare(password, usuario.password);
-    // //     if (!passwordCorrecta) {
-    // //         return res.status(400).json({message: 'Contraseña incorrecta'});
-    // //     }
+// res.cookie('tokenLeandro', token, {
+//     httpOnly: true.valueOf,
+//     maxAge: 3600,
+// })
 
-    // // } catch (error) {
+// try {
+//     if (usuario && passwordCorrect) {
+//         return res.status(200).json({ message: `Bienvenido ${token}` });
+//     } else {
+//         return res.status(401).json({ message: 'El correo o la contraseña son incorrectos' });
+//     }
+// } catch (error) {
+//     console.error(error);
+// }
 
-    // // }
+// try {
+//     if (!usuario) {
+//         return res.status(400).json({message: 'El correo no existe'});
+//     } var nodemailer = require('nodemailer');
+
+//     const passwordCorrecta = await bcrypt.compare(password, usuario.password);
+//     if (!passwordCorrecta) {
+//         return res.status(400).json({message: 'Contraseña incorrecta'});
+//     }        // const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
+
+
+// } catch (error) {
+
+// }
 
 
 exports.tokenVerification = async (req, res, next) => {

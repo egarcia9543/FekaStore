@@ -6,9 +6,8 @@ const path = require('path')
 const cors = require('cors')
 
 const express = require('express');
-const ruta = require('./routes/routes')
-const passport = require('passport');
-require ('./config/passport');
+const ruta = require('./routes/routes');
+const cookieParser = require("cookie-parser");
 const app = express();
 
 
@@ -19,14 +18,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 app.use(express.urlencoded({ extended: true }));  //Usar express.json
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 
 app.use('/store/v1/', ruta)
 app.use(logger("dev"));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 const PORT = process.env.PORT || 6666;
