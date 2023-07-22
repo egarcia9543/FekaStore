@@ -1,4 +1,6 @@
 const express = require('express');
+const passport = require('passport');
+
 const userFunctions = require('../controller/usuario')
 const routeExcel = require('../controller/excelfornode')
 const routeGraficos = require('../controller/graficos')
@@ -36,6 +38,8 @@ router.get('/indexadmin', adminFunctions.landingAdmin);
 router.get('/datatableproductos', adminFunctions.listOfProducts);
 router.get('/datatableclientes', adminFunctions.listOfClients);
 router.get('/datatablevendedores', adminFunctions.listOfWorkers);
+router.get('/habilitado/:id', adminFunctions.actualizarHabilitado);
+router.post('/actualizarproducto', adminFunctions.actualizarDataProducto);
 
 //Otros
 router.get('/excel', routeExcel.descargarExcel)

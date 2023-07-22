@@ -27,3 +27,21 @@ exports.listOfWorkers = async (req, res) => {
         "vendedores": vendedores
     });
 };
+
+exports.actualizarHabilitado = async (req, res) => {
+    let estadoProducto = await producto.findById(req.params.id);
+    estadoProducto.habilitado = !estadoProducto.habilitado;
+    await estadoProducto.save();
+    res.redirect('/store/v1/datatableproductos');
+};
+
+exports.actualizarDataProducto = async (req, res) => {
+    await producto.findByIdAndUpdate(req.body.id, {
+        referencia: req.body.referencia,
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion,
+        stock: req.body.stock,
+        precio: req.body.precio,
+    });
+    res.redirect('/store/v1/datatableproductos');
+};

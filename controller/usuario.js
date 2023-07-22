@@ -1,7 +1,8 @@
 const cliente = require('../models/clientes')
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const secret = process.env.jwtSecret
 //jwtSecret = '235fe06beb59e31f0a7f03edce80b19c7ad35b6bd4614f104f6ff9d4fc26f403481526'
 
@@ -44,7 +45,7 @@ exports.nuevoCliente = async (req, res, next) => {
             },
             password: hashedPassword
         })
-        nuevoCliente.save();
+        await nuevoCliente.save();
         res.redirect('index');
 
     } catch (error) {
@@ -53,46 +54,52 @@ exports.nuevoCliente = async (req, res, next) => {
     next();
 }
 
-exports.loginCliente = async (req, res) => {
-    //const {email, password} = req.body;
-    const email = req.body.emailLogin;
-    const password = req.body.pwdLogin;
-    const usuario = await cliente.findOne({ email });
-
-    const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
-    const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
-
-    res.cookie('tokenLeandro', token, {
-        httpOnly: true.valueOf,
-        maxAge: 3600,
-    })
-
-    try {
-        if (usuario && passwordCorrect) {
-            return res.status(200).json({ message: `Bienvenido ${token}` });
-        } else {
-            return res.status(401).json({ message: 'El correo o la contraseña son incorrectos' });
-        }
-    } catch (error) {
-        console.error(error);
-    }
-
-    // try {
-    //     if (!usuario) {
-    //         return res.status(400).json({message: 'El correo no existe'});
-    //     } var nodemailer = require('nodemailer');
-
-    //     const passwordCorrecta = await bcrypt.compare(password, usuario.password);
-    //     if (!passwordCorrecta) {
-    //         return res.status(400).json({message: 'Contraseña incorrecta'});
-    //     }
-
-    // } catch (error) {
-
-    // }
+exports.loginUsuario = async (req, res) => {
 
 
 }
+
+exports.loginCliente = passport.authenticate('local', {
+})
+    
+    
+    // //const {email, password} = req.body;
+    // const email = req.body.emailLogin;
+    // const password = req.body.pwdLogin;
+    // const usuario = await cliente.findOne({ email });
+
+    // const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
+    // const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
+
+    // res.cookie('tokenLeandro', token, {
+    //     httpOnly: true.valueOf,
+    //     maxAge: 3600,
+    // })
+
+    // try {
+    //     if (usuario && passwordCorrect) {
+    //         return res.status(200).json({ message: `Bienvenido ${token}` });
+    //     } else {
+    //         return res.status(401).json({ message: 'El correo o la contraseña son incorrectos' });
+    //     }
+    // } catch (error) {
+    //     console.error(error);
+    // }
+
+    // // try {
+    // //     if (!usuario) {
+    // //         return res.status(400).json({message: 'El correo no existe'});
+    // //     } var nodemailer = require('nodemailer');
+
+    // //     const passwordCorrecta = await bcrypt.compare(password, usuario.password);
+    // //     if (!passwordCorrecta) {
+    // //         return res.status(400).json({message: 'Contraseña incorrecta'});
+    // //     }
+
+    // // } catch (error) {
+
+    // // }
+
 
 exports.tokenVerification = async (req, res, next) => {
     try {
