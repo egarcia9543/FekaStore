@@ -11,11 +11,12 @@ function totalCarrito() {
         totalPriceContainer.innerHTML = `
         <div class="d-flex justify-content-evenly align-items-center mt-3 mb-3">
             <p class="text-center fw-bold text-success m-0">Total: $${total.toFixed(2)}</p>
-            <button type="button" class="btn btn-success" onclick="finCompra('${total}')">Finalizar compra</button>
+            <a href="/store/v1/realizarcompra" class="btn btn-success">Finalizar compra</a>
         </div>`;
+        }
     }
-}
-
+    // <button type="button" class="btn btn-success" onclick="finCompra('${total}')">Finalizar compra</button>
+    
 function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     //Creamos el objeto con los parametros que recibe la funcion
     let producto = {
@@ -150,8 +151,8 @@ function verDetalles(id, precio, nombre, imagen, descripcion, stock) {
     `;
 }
 
-function finCompra(total) {
-    alert(`Pago por $${total} realizado con éxito`);
-    localStorage.clear();
-    location.reload();
-}
+// function finCompra(total) {
+//     alert(`Pago por $${total} realizado con éxito`);
+//     localStorage.clear();
+//     location.reload();
+// }

@@ -48,7 +48,7 @@ exports.nuevoCliente = async (req, res) => {
         })
         await clienteRegistrado.save();
         const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires, });
-        res.cookie({ 'token': token }).json({ success: true, message: 'Usuario registrado satisfactoriamente', data: clienteRegistrado });
+        res.cookie('token', token).redirect('perfil');
 
     } catch (error) {
         return res.json({ error: error });
@@ -64,99 +64,62 @@ exports.loginCLiente = async (req, res) => {
         const email = req.body.emailLogin;
         const password = req.body.pwdLogin;
         if (!email || !password) {
-            console.log(email, password);
             return res.json({ error: 'Ingresa todas las credenciales' });
         }
-
         const clienteRegistrado = await cliente.findOne({ email: req.body.emailLogin });
-        console.log(clienteRegistrado)
         if (!clienteRegistrado) {
             return res.json({ error: 'Este usuario no existe' });
         }
-
         const passwordCorrecta = await bcrypt.compare(password, clienteRegistrado.password);
         if (!passwordCorrecta) {
             return res.json({ error: 'Contraseña incorrecta' });
         }
-        console.log(email,clienteRegistrado._id, secret, expires)
-        // const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
-        const token = await jwt.sign({ id: email }, secret, { expiresIn: expires });
-        res.send(token)
-        res.cookie( 'token', token, { httpOnly: true });
-        res.json({ success: true, message: 'Inicio de sesión exitoso' });
-
+        const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires });
+        return res.cookie( 'token',  token ).redirect('perfil');
+        
     } catch (err) {
         return res.json({ error: err });
     }
 }
-// const {email, password} = req.body;
-// const email = req.body.emailLogin;
-// const password = req.body.pwdLogin;
-// const usuario = await cliente.findOne({ email });
-
-// const passwordCorrect = usuario && usuario.password ? await bcrypt.compare(password, usuario.password) : false;
-// const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
-
-// res.cookie('tokenLeandro', token, {
-//     httpOnly: true.valueOf,
-//     maxAge: 3600,
-// })
-
-// try {
-//     if (usuario && passwordCorrect) {
-//         return res.status(200).json({ message: `Bienvenido ${token}` });
-//     } else {
-//         return res.status(401).json({ message: 'El correo o la contraseña son incorrectos' });
-//     }
-// } catch (error) {
-//     console.error(error);
-// }
-
-// try {
-//     if (!usuario) {
-//         return res.status(400).json({message: 'El correo no existe'});
-//     } var nodemailer = require('nodemailer');
-
-//     const passwordCorrecta = await bcrypt.compare(password, usuario.password);
-//     if (!passwordCorrecta) {
-//         return res.status(400).json({message: 'Contraseña incorrecta'});
-//     }        // const token = usuario && usuario._id ? jwt.sign({ id: usuario._id }, secret, { expiresIn: '1hr' }) : false;
-
-
-// } catch (error) {
-
-// }
-
 
 exports.tokenVerification = async (req, res, next) => {
     try {
         const token = req.cookies.token;
         if (!token) {
-            res.status(401).json({
-                error: "No estás autorizado"
-            })
+            res.redirect('signin');
             return;
         }
         jwt.verify(token, secret, (err, user) => {
             if (err) {
                 return res.status(401).json({
                     message: "Token inválido"
-                })
+                });
             }
             req.id = user.id
-            console.log(req.id)
             next();
             return;
         })
 
     } catch (error) {
-
+        console.log(error)
     }
 }
 
-exports.userInfo = async (req, res) => {
-
+exports.perfilCliente = async (req, res) => {
+    try {
+        const clienteLogeado = await cliente.findById(req.id);
+        res.render('perfil', {
+            "perfilCliente": clienteLogeado
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
+
+exports.logout = async (req, res) => {
+    res.clearCookie('token').redirect('index')
+}
+
 
 exports.mapa = async (req, res) => {
     let clienteU = await cliente.findOne({ "email": "testsena@gmail.com" });
