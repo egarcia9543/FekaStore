@@ -1,6 +1,8 @@
 const producto = require('../models/productos');
-const cliente = require('../models/clientes');
+const usuarios = require('../models/usuarios')
 const vendedor = require('../models/vendedores');
+const cliente = require('../models/clientes')
+const bcrypt = require('bcrypt');
 
 
 exports.landingAdmin =  (req, res) => {
@@ -20,6 +22,49 @@ exports.listOfClients = async (req, res) => {
         "clientes": clientes
     });
 };
+
+exports.vendedorRegistro = (req, res) => {
+    res.render('admin/formularioRegistroVendedor');
+}
+
+exports.nuevoVendedor = async(req, res) => {
+    const email = req.body.emailVendedor;
+    const password = req.body.pswdVendedor
+    const passwordEncriptada = await bcrypt.hash(req.body.pswdVendedor, 12)
+
+    const vendedorRegistrado = await vendedor.findOne({email});
+
+    try {
+        if (!email || !password) {
+            return res.json({
+                message: 'Por favor ingrese todos los campos'
+            });
+        }
+        if (vendedorRegistrado) {
+            return res.json({
+                message: 'Este correo ya está registrado'
+            });
+        }
+
+        const nuevoVendedor = new vendedor({
+            nombreCompleto: req.body.nombreVendedor,
+            documento: req.body.documentoVendedor,
+            correo: email,
+            password: passwordEncriptada
+        });
+        await nuevoVendedor.save();
+
+        const usuarioTipoVendedor = new usuarios({
+            email: nuevoVendedor.correo,
+            password: nuevoVendedor.password,
+            rol: 'vendedor'
+        });
+        await usuarioTipoVendedor.save();
+
+    } catch (error) {
+        return res.json({error: error})
+    }
+}
 
 exports.listOfWorkers = async (req, res) => {
     let vendedores = await vendedor.find();

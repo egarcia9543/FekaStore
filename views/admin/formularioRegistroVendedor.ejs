@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include ('../partials/indexHead') %>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Formulario de Registro</h3>
+                        <form action="nuevovendedor" method="post">
+                            <div class="mb-3">
+                                <label for="nombreVendedor" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreVendedor"
+                                    placeholder="Ingresa tu nombre" name="nombreVendedor" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="documentoVendedor" class="form-label">Documento:</label>
+                                <input type="text" class="form-control" id="documentoVendedor"
+                                    placeholder="Ingresa tu documento" name="documentoVendedor" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="emailVendedor" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="emailVendedor"
+                                    placeholder="Ingresa tu email" name="emailVendedor" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="pswdVendedor" class="form-label">Contraseña:</label>
+                                <input type="password" class="form-control" id="pswdVendedor"
+                                    placeholder="Ingresa tu contraseña" name="pswdVendedor" required>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Registrarse</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -21,7 +21,8 @@
 
 <script>
     function finalizarCompra(){
-        localStorage.clear();
+        const carrito = localStorage.getItem('carrito');
+        console.log(carrito);
     }
 </script>
 </html>

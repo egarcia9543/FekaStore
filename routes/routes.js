@@ -45,6 +45,8 @@ router.get('/datatableclientes', adminFunctions.listOfClients);
 router.get('/datatablevendedores', adminFunctions.listOfWorkers);
 router.get('/habilitado/:id', adminFunctions.actualizarHabilitado);
 router.post('/actualizarproducto', adminFunctions.actualizarDataProducto);
+router.get('/registrovendedor', adminFunctions.vendedorRegistro);
+router.post('/nuevovendedor', adminFunctions.nuevoVendedor);
 
 //Otros
 router.get('/excel', routeExcel.descargarExcel)

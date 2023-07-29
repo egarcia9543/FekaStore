@@ -28,7 +28,9 @@ function renderProductos() {
         contenidoCheckout.appendChild(productDetail);
     });
     precioTotal();
+    
 }
+
 
 let subtotalContenedor = document.getElementById('datosCompra');
 

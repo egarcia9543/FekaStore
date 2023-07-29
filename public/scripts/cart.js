@@ -154,4 +154,3 @@ function verDetalles(id, precio, nombre, imagen, descripcion, stock) {
     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
     `;
 }
-z|

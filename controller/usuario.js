@@ -1,6 +1,7 @@
-const cliente = require('../models/clientes')
+const cliente = require('../models/clientes');
+const usuarios = require('../models/usuarios');
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET
 const expires = process.env.JWT_EXPIRE
@@ -43,9 +44,15 @@ exports.nuevoCliente = async (req, res) => {
             ubicacion: {
                 centro: [req.body.latitudCliente, req.body.longitudCliente],
             },
-            password: passwordEncriptada
+            password: passwordEncriptada,
         })
         await clienteRegistrado.save();
+        const usuarioTipoCliente = new usuarios({
+            email: clienteRegistrado.email,
+            password: clienteRegistrado.password,
+            rol: 'cliente'
+        })
+        await usuarioTipoCliente.save();
         const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires, });
         res.cookie('token', token).redirect('perfil');
 
@@ -65,19 +72,23 @@ exports.loginCLiente = async (req, res) => {
         if (!email || !password) {
             return res.json({ error: 'Ingresa todas las credenciales' });
         }
-        const clienteRegistrado = await cliente.findOne({ email: req.body.emailLogin });
-        if (!clienteRegistrado) {
+        const usuarioRegistrado = await usuarios.findOne({ email: req.body.emailLogin });
+        if (!usuarioRegistrado) {
             return res.json({ error: 'Este usuario no existe' });
         }
-        const passwordCorrecta = await bcrypt.compare(password, clienteRegistrado.password);
-        if (!passwordCorrecta) {
+        const passwordCorrecta = await bcrypt.compare(password, usuarioRegistrado.password);
+        if (passwordCorrecta) {
+            const token = jwt.sign({ id: usuarioRegistrado._id }, secret, { expiresIn: expires });
+            if (usuarioRegistrado.rol === 'cliente') {
+                return res.cookie( 'token',  token ).redirect('perfil');
+            } else {
+                return res.cookie('token', token).redirect('indexadmin');
+            }
+        } else {
             return res.json({ error: 'Contraseña incorrecta' });
         }
-        const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires });
-        return res.cookie( 'token',  token ).redirect('perfil');
-        
     } catch (err) {
-        return res.json({ error: err });
+        console.log(err)
     }
 }
 
@@ -89,7 +100,7 @@ exports.tokenVerification = async (req, res, next) => {
             return;
         }
         jwt.verify(token, secret, (err, user) => {
-            if (err) {
+            if (err) {perfil
                 return res.status(401).json({
                     message: "Token inválido"
                 });
@@ -106,9 +117,10 @@ exports.tokenVerification = async (req, res, next) => {
 
 exports.perfilCliente = async (req, res) => {
     try {
-        const clienteLogeado = await cliente.findById(req.id);
+        const clienteLogeado = await usuarios.findById(req.id);
+        const infoCliente = await cliente.findOne({email: clienteLogeado.email})
         res.render('perfil', {
-            "perfilCliente": clienteLogeado
+            "perfilCliente": infoCliente
         })
     } catch (error) {
         console.log(error)
@@ -134,7 +146,7 @@ exports.contacto = (req, res) => {
 exports.sendEmail = async (req, res) => {
     const nuevaContrasena = Math.random().toString(36).slice(-8);
     const passwordEncriptada = await bcrypt.hash(nuevaContrasena, 12);
-    const clienteRecuperando =  await cliente.findOneAndUpdate({"email": req.body.emailAddress}, {"password": passwordEncriptada});
+    const clienteRecuperando =  await usuarios.findOneAndUpdate({"email": req.body.emailAddress}, {"password": passwordEncriptada});
     console.log(clienteRecuperando)
 
     if (!clienteRecuperando) {

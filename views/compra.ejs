@@ -7,6 +7,7 @@
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 </head>
 
 <body onload="renderProductos()">
@@ -17,9 +18,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="text-center">Información para el envío</h3>
-                        <form id="formulario-envio" method="post" action="finalizarcompra">
+                        <form id="formulario-envio" method="post" action="finalizarcompra" onsubmit="guardarInfo()">
                             <!-- Nombre y celular -->
                             <div class="row mb-3">
+                                <input type="text" hidden id="listaDeProductos" name="listaDeProductos">
                                 <div class="col-md-6">
                                     <label for="nombreEnvio" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" name="nombreEnvio" id="nombreEnvio" value="<%= usuario.nombre %>" required>
@@ -70,7 +72,12 @@
         let marcador = L.marker([<%= usuario.ubicacion.centro %>]).addTo(mapa);
     </script>
 <script src="/scripts/finalizarCompra.js"></script>
-
+<script>
+    function guardarInfo(){
+        const carrito = localStorage.getItem('carrito');
+        let EnviarCarrito = document.getElementById('listaDeProductos').value = carrito;
+    }
+</script>
 </body>
 
 </html>

@@ -3,6 +3,8 @@ const venta = require('../models/ventas');
 const cliente = require('../models/clientes');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
+const usuario = require('../models/usuarios');
+const { json } = require('express');
 const secret = process.env.JWT_SECRET
 
 exports.verificarUsuario = async (req, res) => {
@@ -12,10 +14,11 @@ exports.verificarUsuario = async (req, res) => {
             res.redirect('/store/v1/signin');
         } else {
             const id = decoded.id;
-            const usuario = await cliente.findById(id);
+            const infoUsuario = await usuario.findById(id);
+            const infoCliente = await cliente.findOne({email: infoUsuario.email});
             res.render('compra', {
-                "usuario": usuario
-            })
+                "usuario": infoCliente
+            });
         }
     })
 }
@@ -27,6 +30,8 @@ exports.actualizarDireccion = async (req, res) => {
 exports.finalizarCompra = async (req, res) => {    
     try {
         let comprador = await cliente.findOne({ email: req.body.emailEnvio });
+        let carrito = JSON.parse(req.body.listaDeProductos);
+        console.log(carrito)
 
         const fechaVenta = new Date();
         comprador.historialCompras.push(fechaVenta);
@@ -58,7 +63,7 @@ exports.finalizarCompra = async (req, res) => {
             }
         });
 
-        res.render('confirmacionCompra');
+        res.render('confirmacioncompra');
 
     } catch (error) {
         res.status(500).json({ message: 'Error al procesar la compra' });

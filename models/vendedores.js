@@ -1,7 +1,7 @@
 const mongoose = require('../config/connection');
 
 const schemaVendedor = new mongoose.Schema({
-    nombre: {
+    nombreCompleto: {
         type: String,
         required: true
     },
@@ -10,8 +10,17 @@ const schemaVendedor = new mongoose.Schema({
         required: true,
         unique: true
     },
+    correo: {
+        type: String,
+        required: true,
+    },
     ventasDespachadas: {
-        type: Array
+        type: Array,
+        default: []
+    },
+    password: {
+        type: String,
+        required: true
     }
 });
 
