@@ -131,28 +131,37 @@ exports.contacto = (req, res) => {
     res.render('formulario')
 }
 
-exports.sendEmail = (req, res) => {
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',  //Se define que servicio de correo se va a utilizar para enviar el mensaje
-        auth: {
-            user: 'egarcia9543@misena.edu.co', //se pone el correo que va a enviar el mensaje
-            pass: `${process.env.GPASS}` //Contraseña de aplicación generada
-        }
-    });
+exports.sendEmail = async (req, res) => {
+    const nuevaContrasena = Math.random().toString(36).slice(-8);
+    const passwordEncriptada = await bcrypt.hash(nuevaContrasena, 12);
+    const clienteRecuperando =  await cliente.findOneAndUpdate({"email": req.body.emailAddress}, {"password": passwordEncriptada});
+    console.log(clienteRecuperando)
 
-    let mailOptions = {
-        from: 'egarcia9543@misena.edu.co', //Correo que va a enviar el mensaje
-        to: req.body.emailAddress, //correo que lo va a recibir
-        subject: req.body.asunto, //asunto del correo
-        text: req.body.mensaje //texto del correo
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-            res.redirect('index')
-        }
-    });
+    if (!clienteRecuperando) {
+        return res.json({ error: 'Este usuario no existe' });
+    } else {
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',  //Se define que servicio de correo se va a utilizar para enviar el mensaje
+            auth: {
+                user: 'egarcia9543@misena.edu.co', //se pone el correo que va a enviar el mensaje
+                pass: `${process.env.GPASS}` //Contraseña de aplicación generada
+            }
+        });
+    
+        let mailOptions = {
+            from: 'egarcia9543@misena.edu.co', //Correo que va a enviar el mensaje
+            to: req.body.emailAddress, //correo que lo va a recibir
+            subject: req.body.asunto, //asunto del correo
+            text: `Hola, recibimos tu solicitud para recuperar tu contraseña, aquí tienes una nueva, recuerda cambiarla: ${nuevaContrasena}` //texto del correo
+        };
+    
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                res.redirect('index')
+            }
+        });
+    }
 }
