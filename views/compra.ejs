@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/indexHead') %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body onload="renderProductos()">
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <!-- Formulario -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center">Información para el envío</h3>
+                        <form id="formulario-envio" method="post" action="finalizarcompra">
+                            <!-- Nombre y celular -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="nombreEnvio" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" name="nombreEnvio" id="nombreEnvio" value="<%= usuario.nombre %>" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="telefonoEnvio" class="form-label">Celular</label>
+                                    <input type="text" class="form-control" name="telefonoEnvio" id="telefonoEnvio" value="<%= usuario.telefono %>" required>
+                                </div>
+                            </div>
+                            <!-- Correo electrónico -->
+                            <div class="mb-3" id="datosCompra">
+                                <label for="emailEnvio" class="form-label">Correo electrónico</label>
+                                <input type="emailEnvio" class="form-control" id="emailEnvio" name="emailEnvio" value="<%= usuario.email %>" required>
+                            </div>
+                            <!-- Dirección de envío -->
+                            <div class="mb-3">
+                                <label for="direccion-envio" class="form-label">Dirección de envío</label>
+                                <div id="mapa" style="height: 400px;">
+
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido del carrito -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body" id="contenidoCheckout">
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center" id="totalAPagar">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mapa = L.map('mapa').setView([<%= usuario.ubicacion.centro %>], <%= usuario.ubicacion.zoom %>);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', { foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(mapa);
+    
+        let marcador = L.marker([<%= usuario.ubicacion.centro %>]).addTo(mapa);
+    </script>
+<script src="/scripts/finalizarCompra.js"></script>
+
+</body>
+
+</html>

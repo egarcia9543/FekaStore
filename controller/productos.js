@@ -18,9 +18,22 @@ exports.nuevoProducto = async (req, res) => {
 }
 
 exports.catalogo = async (req, res) => {
-    let productos = await producto.find();
-    
-    res.render('catalogo', {
-        "productos": productos
-    })
+    let productos = await producto.find({ "habilitado": "true" });
+    const productosPorPagina = 18;
+    const paginaActual = parseInt(req.query.page) || 1;
+    const inicio = (paginaActual - 1) * productosPorPagina;
+    const fin = inicio + productosPorPagina;
+
+    // Assuming 'productos' is your array of products
+    const productosEnPagina = productos.slice(inicio, fin);
+
+    // Calculate the total number of pages
+    const paginasTotales = Math.ceil(productos.length / productosPorPagina);
+
+    // Render the 'products' template and pass the paginated products and paginasTotales as variables
+    res.render('catalogo', { productos: productosEnPagina, paginasTotales, paginaActual });
+
+    // res.render('catalogo', {
+    //     "productos": productos
+    // })
 }

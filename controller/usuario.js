@@ -2,7 +2,6 @@ const cliente = require('../models/clientes')
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
-const { json } = require('express');
 const secret = process.env.JWT_SECRET
 const expires = process.env.JWT_EXPIRE
 //JWT_SECRET = '235fe06beb59e31f0a7f03edce80b19c7ad35b6bd4614f104f6ff9d4fc26f403481526'

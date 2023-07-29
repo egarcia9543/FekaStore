@@ -1,6 +1,7 @@
 var shoppingCart = JSON.parse(localStorage.getItem('carrito')) || [];
-let cartContent = document.getElementById('offcanvasBody');
+let cartContent = document.getElementById('cartBody');
 let totalPriceContainer = document.getElementById('totalPrice');
+
 
 function totalCarrito() {
     const total = shoppingCart.reduce((acc, el) => acc + parseFloat(el.precio) * el.cantidad, 0);
@@ -11,11 +12,10 @@ function totalCarrito() {
         totalPriceContainer.innerHTML = `
         <div class="d-flex justify-content-evenly align-items-center mt-3 mb-3">
             <p class="text-center fw-bold text-success m-0">Total: $${total.toFixed(2)}</p>
-            <a href="/store/v1/realizarcompra" class="btn btn-success">Finalizar compra</a>
+            <a href="/store/v1/compra" class="btn btn-success">Finalizar compra</a>
         </div>`;
-        }
     }
-    // <button type="button" class="btn btn-success" onclick="finCompra('${total}')">Finalizar compra</button>
+}
     
 function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     //Creamos el objeto con los parametros que recibe la funcion
@@ -43,7 +43,7 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     saveLocalStorage();
 }
 
-function restar(id, precio) {
+function restar(id) {
     shoppingCart.find(existing => {
         if (existing.id === id) {
             existing.cantidad--;
@@ -56,7 +56,7 @@ function restar(id, precio) {
     actualizarCarritoDOM();
 }
 
-function sumar(id, precio, stock) {
+function sumar(id, stock) {
     shoppingCart.find(existing => {
         if (existing.id === id) {
             if (existing.cantidad < stock) {
@@ -92,10 +92,12 @@ function actualizarCarritoDOM() {
     shoppingCart.forEach(producto => {
         let productDetail = document.createElement('div');
         productDetail.setAttribute('id', producto.id);
-        productDetail.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'mb-3');
+        productDetail.classList.add('d-flex', 'justify-content-center', 'align-items-center', 'mb-3');
         productDetail.innerHTML = `
         <div class="d-flex align-items-center">
-            <img src="${producto.imagen}${producto.nombre}" class="imagenCarrito rounded">
+            <div>
+                <img src="${producto.imagen}${producto.nombre}" class="imagenCarrito rounded">
+            </div>
             <div>
                 <div class="d-flex justify-content-center flex-column align-items-center">
                     <p class="m-0 fw-bold">${producto.nombre}</p>
@@ -109,8 +111,10 @@ function actualizarCarritoDOM() {
                         </div>
                 </div>
             </div>
+            <div>
+                <button class="btn btn-danger" onclick="eliminarProducto('${producto.id}')"><i class="bi bi-trash"></i></button>
+            </div>
         </div>
-        <button class="btn btn-danger" onclick="eliminarProducto('${producto.id}')"><i class="bi bi-trash"></i></button>
     `;
         cartContent.appendChild(productDetail);
     });
@@ -150,9 +154,4 @@ function verDetalles(id, precio, nombre, imagen, descripcion, stock) {
     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
     `;
 }
-
-// function finCompra(total) {
-//     alert(`Pago por $${total} realizado con éxito`);
-//     localStorage.clear();
-//     location.reload();
-// }
+z|

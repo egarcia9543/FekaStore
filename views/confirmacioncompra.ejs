@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/indexHead') %>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card text-center">
+            <div class="card-img-top bg-primary d-flex justify-content-center align-items-center p-4">
+                <i class="bi bi-check-circle-fill" style="font-size: 48px; color: white;"></i>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">¡Muchas gracias por tu compra!</h5>
+            </div>
+            <div class="card-footer">
+                <a href="index" class="btn btn-primary btn-block" onclick="finalizarCompra()">Seguir comprando</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function finalizarCompra(){
+        localStorage.clear();
+    }
+</script>
+</html>

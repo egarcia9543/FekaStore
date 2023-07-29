@@ -29,7 +29,9 @@ router.get('/recuperar', userFunctions.contacto)
 router.post('/email', userFunctions.sendEmail)
 
 //Ventas
-router.get('/realizarcompra', ventasFunctions.realizarCompra);
+// router.get('/realizarcompra', ventasFunctions.realizarCompra);
+router.get('/compra', ventasFunctions.verificarUsuario);
+router.post('/finalizarcompra', ventasFunctions.finalizarCompra);
 
 //Productos
 router.get('/registroproductos', productFunctions.registroProducto);

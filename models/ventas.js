@@ -15,7 +15,8 @@ const schemaVenta = new mongoose.Schema({
     },
     impuesto: {
         type: Number,
-        required: true
+        required: true,
+        default: 19
     },
     totalVenta: {
         type: Number,
@@ -27,7 +28,8 @@ const schemaVenta = new mongoose.Schema({
     },
     vendedor: {
         type: Object,
-        required: true
+        required: true,
+        default: 'admin'
     }
 })
 
