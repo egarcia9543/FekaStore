@@ -31,9 +31,9 @@ exports.nuevoVendedor = async(req, res) => {
     const email = req.body.emailVendedor;
     const password = req.body.pswdVendedor
     const passwordEncriptada = await bcrypt.hash(req.body.pswdVendedor, 12)
-
+    
     const vendedorRegistrado = await vendedor.findOne({email});
-
+    
     try {
         if (!email || !password) {
             return res.json({
@@ -45,7 +45,7 @@ exports.nuevoVendedor = async(req, res) => {
                 message: 'Este correo ya está registrado'
             });
         }
-
+        
         const nuevoVendedor = new vendedor({
             nombreCompleto: req.body.nombreVendedor,
             documento: req.body.documentoVendedor,
@@ -53,7 +53,7 @@ exports.nuevoVendedor = async(req, res) => {
             password: passwordEncriptada
         });
         await nuevoVendedor.save();
-
+        
         const usuarioTipoVendedor = new usuarios({
             email: nuevoVendedor.correo,
             password: nuevoVendedor.password,
@@ -72,7 +72,6 @@ exports.listOfWorkers = async (req, res) => {
         "vendedores": vendedores
     });
 };
-
 exports.actualizarHabilitado = async (req, res) => {
     let estadoProducto = await producto.findById(req.params.id);
     estadoProducto.habilitado = !estadoProducto.habilitado;

@@ -3,8 +3,9 @@
 
 <head>
     <%- include('../partials/indexHead') %>
-    <%- include('./datatable') %>
+        <%- include('./datatable') %>
 </head>
+
 <body>
     <div>
         <div class="card mb-4">
@@ -49,7 +50,9 @@
                             <%= cliente.historialCompras %>
                         </td>
                         <td class="text-center">
-                            <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarModal"><i class="bi bi-pen-fill"></i></button>
+                            <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarModal"
+                                onclick="llenarDatosModal(`<%= cliente.nombre %>`, `<%= cliente.email %>`, `<%= cliente.telefono %>`)"><i
+                                    class="bi bi-pen-fill"></i></button>
                         </td>
                         <td class="text-center">
                             <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
@@ -62,41 +65,43 @@
 
     <div class="modal fade" id="editarModal" tabindex="-1">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formularioModal" method="post">
+                        <div class="form-group mb-3">
+                            <label for="nombreCliente">Nombre:</label>
+                            <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="emailCliente">Email:</label>
+                            <input type="text" name="emailCliente" class="form-control" id="emailCliente">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="telefonoCliente">Telefono:</label>
+                            <input type="text" name="telefonoCliente" class="form-control" id="telefonoCliente">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="formularioModal" method="post">
-                    <div class="form-group mb-3">
-                        <label for="nombreCliente">Nombre:</label>
-                        <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="emailCliente">Email:</label>
-                        <input type="text" name="emailCliente" class="form-control" id="emailCliente">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="telefonoCliente">Telefono:</label>
-                        <input type="text" name="telefonoCliente" class="form-control" id="telefonoCliente">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </div>
         </div>
-      </div>
-      
+    </div>
+
 
 </body>
 <script>
     $('#products').DataTable();
 
-    function llenarDatosModal(nombre, email, telefono){
-
+    function llenarDatosModal(nombre, email, telefono) {
+        nombreCliente.value = nombre;
+        emailCliente.value = email;
+        telefonoCliente.value = telefono;
     }
 </script>
 

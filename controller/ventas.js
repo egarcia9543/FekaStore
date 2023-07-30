@@ -31,8 +31,17 @@ exports.finalizarCompra = async (req, res) => {
     try {
         let comprador = await cliente.findOne({ email: req.body.emailEnvio });
         let carrito = JSON.parse(req.body.listaDeProductos);
-        console.log(carrito)
-
+        const registroVenta = new venta({
+            productosVenta: carrito,
+            subtotal: req.body.subtotalVenta,
+            fechaVenta: new Date(),
+            impuesto: 19,
+            totalVenta: (req.body.subtotalVenta * 1.19).toFixed(2),
+            cliente: comprador.nombre,
+            vendedor: 'portal'
+        });
+        await registroVenta.save();
+        
         const fechaVenta = new Date();
         comprador.historialCompras.push(fechaVenta);
 

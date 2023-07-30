@@ -74,7 +74,8 @@ exports.loginCLiente = async (req, res) => {
         }
         const usuarioRegistrado = await usuarios.findOne({ email: req.body.emailLogin });
         if (!usuarioRegistrado) {
-            return res.json({ error: 'Este usuario no existe' });
+            // return res.json({ error: 'Este usuario no existe' });
+            return res.redirect('signin?error=Este%20usuario%20no%20existe');
         }
         const passwordCorrecta = await bcrypt.compare(password, usuarioRegistrado.password);
         if (passwordCorrecta) {

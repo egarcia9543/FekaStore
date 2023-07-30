@@ -31,8 +31,13 @@
                             </div>
                             <div class="d-flex justify-content-center mt-3">
                                 <p>¿No tienes cuenta? <a href="registroclientes">Creala aquí</a></p>
+                            </form>
                             </div>
-                        </form>
+                            <% if (typeof error !== 'undefined') { %>
+                                <div class="alert alert-danger" role="alert">
+                                    <%= error %>
+                                </div>
+                            <% } %>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 <head>
     <%- include('./partials/indexHead') %>
 </head>
-<body>
+<body onload="finalizarCompra()">
     <div class="container mt-5">
         <div class="card text-center">
             <div class="card-img-top bg-primary d-flex justify-content-center align-items-center p-4">
@@ -13,7 +13,7 @@
                 <h5 class="card-title">¡Muchas gracias por tu compra!</h5>
             </div>
             <div class="card-footer">
-                <a href="index" class="btn btn-primary btn-block" onclick="finalizarCompra()">Seguir comprando</a>
+                <a href="index" class="btn btn-primary btn-block">Seguir comprando</a>
             </div>
         </div>
     </div>
@@ -21,8 +21,7 @@
 
 <script>
     function finalizarCompra(){
-        const carrito = localStorage.getItem('carrito');
-        console.log(carrito);
+        localStorage.clear();
     }
 </script>
 </html>
