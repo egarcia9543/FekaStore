@@ -60,6 +60,7 @@ exports.nuevoVendedor = async(req, res) => {
             rol: 'vendedor'
         });
         await usuarioTipoVendedor.save();
+        res.redirect('/store/v1/datatablevendedores')
 
     } catch (error) {
         return res.json({error: error})
@@ -72,6 +73,7 @@ exports.listOfWorkers = async (req, res) => {
         "vendedores": vendedores
     });
 };
+
 exports.actualizarHabilitado = async (req, res) => {
     let estadoProducto = await producto.findById(req.params.id);
     estadoProducto.habilitado = !estadoProducto.habilitado;
@@ -89,3 +91,24 @@ exports.actualizarDataProducto = async (req, res) => {
     });
     res.redirect('/store/v1/datatableproductos');
 };
+
+exports.actualizarInfoClientes = async (req, res) => {
+    await cliente.findByIdAndUpdate(req.body.idCliente, {
+        nombre: req.body.nombreCliente,
+        email: req.body.emailCliente,
+        telefono: req.body.telefonoCliente
+    });
+    await usuarios.findOneAndUpdate({email: req.body.emailCliente}, {
+        email: req.body.emailCliente,
+    })
+    res.redirect('/store/v1/datatableclientes');
+}
+
+exports.eliminarCliente = async (req, res) => {
+    await cliente.findByIdAndDelete({'_id': req.params.id});
+    res.redirect('/store/v1/datatableclientes');
+    // await usuarios.findOneAndDelete({})
+    // await cliente.findByIdAndDelete({"_id": req.params.id});
+}
+
+// Cliente se registra e ingresa a hacer una compra de tres productos => resultado: cliente almacenado, compra registrada

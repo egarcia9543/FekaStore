@@ -48,14 +48,17 @@
                         </td>
                         <td>
                             <%= cliente.historialCompras %>
+                            
                         </td>
                         <td class="text-center">
                             <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarModal"
-                                onclick="llenarDatosModal(`<%= cliente.nombre %>`, `<%= cliente.email %>`, `<%= cliente.telefono %>`)"><i
+                                onclick="llenarDatosModal(`<%= cliente.id %>`, `<%= cliente.nombre %>`, `<%= cliente.email %>`, `<%= cliente.telefono %>`)"><i
                                     class="bi bi-pen-fill"></i></button>
                         </td>
                         <td class="text-center">
-                            <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                            <button class="btn btn-danger" onclick="eliminar(`<%= cliente.id %>`)"
+                                data-bs-toggle="modal" data-bs-target="#modalDelete"><i
+                                    class="bi bi-trash-fill"></i></button>
                         </td>
                     </tr>
                     <% }); %>
@@ -63,6 +66,7 @@
         </table>
     </div>
 
+    <!-- Modal para editar -->
     <div class="modal fade" id="editarModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -71,7 +75,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formularioModal" method="post">
+                    <form id="formularioModal" method="post" action="actualizarcliente">
+                        <input type="text" name="idCliente" hidden id="idCliente">
                         <div class="form-group mb-3">
                             <label for="nombreCliente">Nombre:</label>
                             <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
@@ -84,10 +89,28 @@
                             <label for="telefonoCliente">Telefono:</label>
                             <input type="text" name="telefonoCliente" class="form-control" id="telefonoCliente">
                         </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar -->
+    <div class="modal fade" id="modalDelete" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">¿Estás seguro de que deseas eliminar este registro?</h4>
+                    <form action="eliminarcliente" method="post">
+                        <input type="text" hidden id="idCliente" name="idCliente">
+                        <input type="text" hidden id="emailCliente" name="emailCliente">
+                        <a type="submit" id="triggerEliminar" class="btn btn-primary">Enviar</a>
+                    </form>
                 </div>
             </div>
         </div>
@@ -98,10 +121,16 @@
 <script>
     $('#products').DataTable();
 
-    function llenarDatosModal(nombre, email, telefono) {
+    function llenarDatosModal(id, nombre, email, telefono) {
+        idCliente.value = id;
         nombreCliente.value = nombre;
         emailCliente.value = email;
         telefonoCliente.value = telefono;
+    }
+
+    function eliminar(id) {
+        let trigger = document.getElementById('triggerEliminar');
+        trigger.setAttribute('href', `eliminarcliente/${id}`)
     }
 </script>
 
