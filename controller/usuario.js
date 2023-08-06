@@ -176,5 +176,6 @@ exports.sendEmail = async (req, res) => {
                 res.redirect('index')
             }
         });
+        return res.redirect('signin');
     }
 }
