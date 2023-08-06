@@ -1,7 +1,8 @@
 const producto = require('../models/productos');
-const usuarios = require('../models/usuarios')
+const usuarios = require('../models/usuarios');
 const vendedor = require('../models/vendedores');
-const cliente = require('../models/clientes')
+const cliente = require('../models/clientes');
+const ventas = require('../models/ventas');
 const bcrypt = require('bcrypt');
 
 
@@ -74,6 +75,13 @@ exports.listOfWorkers = async (req, res) => {
     });
 };
 
+exports.listOfVentas = async (req, res) => {
+    let listaVentas = await ventas.find();
+    res.render('admin/listOfVentas', {
+        'ventas': listaVentas
+    });
+}
+
 exports.actualizarHabilitado = async (req, res) => {
     let estadoProducto = await producto.findById(req.params.id);
     estadoProducto.habilitado = !estadoProducto.habilitado;
@@ -107,8 +115,24 @@ exports.actualizarInfoClientes = async (req, res) => {
 exports.eliminarCliente = async (req, res) => {
     await cliente.findByIdAndDelete({'_id': req.params.id});
     res.redirect('/store/v1/datatableclientes');
-    // await usuarios.findOneAndDelete({})
-    // await cliente.findByIdAndDelete({"_id": req.params.id});
 }
+
+exports.actualizarInfoVendedor = async (req, res) => {
+    await vendedor.findByIdAndUpdate(req.body.idVendedor, {
+        nombreCompleto: req.body.nombreVendedor,
+        documento: req.body.documentoVendedor,
+        correo: req.body.correoVendedor
+    })
+    await usuarios.findOneAndUpdate({email: req.body.correoVendedor}, {
+        email: req.body.correoVendedor
+    })
+    res.redirect('/store/v1/datatablevendedores');
+}
+
+exports.eliminarVendedor = async (req, res) => {
+    await vendedor.findByIdAndDelete({'_id': req.params.id});
+    res.redirect('/store/v1/datatablevendedores');
+}
+
 
 // Cliente se registra e ingresa a hacer una compra de tres productos => resultado: cliente almacenado, compra registrada

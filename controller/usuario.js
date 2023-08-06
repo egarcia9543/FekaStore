@@ -178,7 +178,7 @@ exports.mapa = async (req, res) => {
 exports.contacto = (req, res) => {
     res.render('formulario')
 }
-
+//yfujnpwgdnpnqpli
 exports.sendEmail = async (req, res) => {
     const nuevaContrasena = Math.random().toString(36).slice(-8);
     const passwordEncriptada = await bcrypt.hash(nuevaContrasena, 12);

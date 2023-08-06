@@ -43,12 +43,15 @@ router.get('/indexadmin', adminFunctions.landingAdmin);
 router.get('/datatableproductos', adminFunctions.listOfProducts);
 router.get('/datatableclientes', adminFunctions.listOfClients);
 router.get('/datatablevendedores', adminFunctions.listOfWorkers);
+router.get('/datatableventas', adminFunctions.listOfVentas);
 router.get('/habilitado/:id', adminFunctions.actualizarHabilitado);
 router.post('/actualizarproducto', adminFunctions.actualizarDataProducto);
 router.get('/registrovendedor', adminFunctions.vendedorRegistro);
 router.post('/nuevovendedor', adminFunctions.nuevoVendedor);
 router.post('/actualizarcliente', adminFunctions.actualizarInfoClientes);
-router.get('/eliminarcliente/:id', adminFunctions.eliminarCliente) 
+router.get('/eliminarcliente/:id', adminFunctions.eliminarCliente);
+router.post('/actualizarvendedor', adminFunctions.actualizarInfoVendedor);
+router.get('/eliminarvendedor/:id', adminFunctions.eliminarVendedor);
 
 
 //Otros

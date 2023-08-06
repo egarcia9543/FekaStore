@@ -20,29 +20,88 @@
               <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Documento</th>
-                <th scope="col">Descripción</th>
+                <th scope="col">Correo</th>
                 <th scope="col">Ventas</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
-                <% vendedores.forEach(vendedor => { %>
+                <!-- <% vendedores.forEach(vendedor => { %>
               <tr>
                 <td><%= vendedor.nombreCompleto %></td>
                 <td><%= vendedor.documento %></td>
                 <td><%= vendedor.correo %></td>
                 <td><%= vendedor.ventasDespachadas %></td>
                 <td class="d-flex">
-                    <button class="btn btn-warning me-2"><i class="bi bi-pen-fill"></i></button>
-                    <button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                    <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarVendedor" onclick="llenarDatosModal(`<%= vendedor._id %>`, `<%= vendedor.nombreCompleto %>`, `<%= vendedor.documento %>`, `<%= vendedor.correo %>`)"><i class="bi bi-pen-fill"></i></button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar" onclick="eliminar(`<%= vendedor._id %>`)"><i class="bi bi-trash-fill"></i></button>
                 </td>
               </tr>
-              <% }); %>
+              <% }); %> -->
             </tbody>
-          </table>    
+          </table>
     </div>
 </body>
+
+<!-- Modal para editar -->
+<div class="modal fade" id="editarVendedor" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="formularioModal" method="post" action="actualizarvendedor">
+                  <input type="text" name="idVendedor" hidden id="idVendedor">
+                  <div class="form-group mb-3">
+                      <label for="nombreVendedor">Nombre:</label>
+                      <input type="text" name="nombreVendedor" class="form-control" id="nombreVendedor">
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="documentoVendedor">Documento:</label>
+                    <input type="text" name="documentoVendedor" class="form-control" id="documentoVendedor">
+                </div>
+                  <div class="form-group mb-3">
+                      <label for="correoVendedor">Email:</label>
+                      <input type="text" name="correoVendedor" class="form-control" id="correoVendedor">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <h5 class="text-center">¿Estás seguro de que deseas eliminar este registro?</h4>
+              <a id="eliminarButton" class="btn btn-primary">Enviar</a>
+          </div>
+      </div>
+  </div>
+</div>
+
 <script>
     $('#vendedores').DataTable();
+
+    function llenarDatosModal(id, nombre, documento, email) {
+        idVendedor.value = id;
+        nombreVendedor.value = nombre;
+        documentoVendedor.value = documento;
+        correoVendedor.value = email;
+    }
+
+    function eliminar(id) {
+        let trigger = document.getElementById('eliminarButton');
+        trigger.setAttribute('href', `eliminarvendedor/${id}`)
+    }
 </script>
 </html>
