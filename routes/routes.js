@@ -47,6 +47,9 @@ router.get('/habilitado/:id', adminFunctions.actualizarHabilitado);
 router.post('/actualizarproducto', adminFunctions.actualizarDataProducto);
 router.get('/registrovendedor', adminFunctions.vendedorRegistro);
 router.post('/nuevovendedor', adminFunctions.nuevoVendedor);
+router.post('/actualizarcliente', adminFunctions.actualizarInfoClientes);
+router.get('/eliminarcliente/:id', adminFunctions.eliminarCliente) 
+
 
 //Otros
 router.get('/excel', routeExcel.descargarExcel)

@@ -2,6 +2,7 @@ const mongoose = require('../config/connection');
 const schemaUsuario = new mongoose.Schema({
     email: {
         type: String,
+        unique: true
     },
     password: {
         type: String

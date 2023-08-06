@@ -4,18 +4,17 @@ const cliente = require('../models/clientes');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const usuario = require('../models/usuarios');
-const { json } = require('express');
 const secret = process.env.JWT_SECRET
 
 exports.verificarUsuario = async (req, res) => {
     const token = req.cookies.token;
-    jwt.verify(token, secret, async (err, decoded) => {
+    jwt.verify(token, secret, async (err, decoded) => {        
         if (err) {
             res.redirect('/store/v1/signin');
         } else {
             const id = decoded.id;
-            const infoUsuario = await usuario.findById(id);
-            const infoCliente = await cliente.findOne({email: infoUsuario.email});
+            const infoCliente = await cliente.findById(id);
+    
             res.render('compra', {
                 "usuario": infoCliente
             });
@@ -41,6 +40,8 @@ exports.finalizarCompra = async (req, res) => {
             vendedor: 'portal'
         });
         await registroVenta.save();
+
+        
         
         const fechaVenta = new Date();
         comprador.historialCompras.push(fechaVenta);

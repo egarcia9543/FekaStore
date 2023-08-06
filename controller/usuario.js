@@ -37,6 +37,12 @@ exports.nuevoCliente = async (req, res) => {
             });
         }
 
+        if (password.length < 8) {
+            return res.json({
+                message: 'Ingresa una contraseña de 8 caracteres'
+            })
+        }
+
         const clienteRegistrado = new cliente({
             nombre: req.body.nombreCliente,
             email: email,
@@ -56,6 +62,33 @@ exports.nuevoCliente = async (req, res) => {
         const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires, });
         res.cookie('token', token).redirect('perfil');
 
+
+        let transporter = nodemailer.createTransport({
+            service: 'gmail', 
+            auth: {
+                user: 'egarcia9543@misena.edu.co', 
+                pass: `${process.env.GPASS}` 
+            }
+        });
+    
+        let mailOptions = {
+            from: 'egarcia9543@misena.edu.co', 
+            to: email, 
+            subject: 'Confirmación de Registro', 
+            text: `¡Hola, ${clienteRegistrado.nombre}! Gracias por registrarte en nuestra tienda`
+        };
+    
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                res.redirect('index')
+            }
+        });
+
+
+
     } catch (error) {
         return res.json({ error: error });
     }
@@ -72,14 +105,15 @@ exports.loginCLiente = async (req, res) => {
         if (!email || !password) {
             return res.json({ error: 'Ingresa todas las credenciales' });
         }
+        const clienteRegistrado = await cliente.findOne({email: req.body.emailLogin});
         const usuarioRegistrado = await usuarios.findOne({ email: req.body.emailLogin });
         if (!usuarioRegistrado) {
             // return res.json({ error: 'Este usuario no existe' });
-            return res.redirect('signin?error=Este%20usuario%20no%20existe');
+            return res.json({error: 'Este usuario no existe'});
         }
         const passwordCorrecta = await bcrypt.compare(password, usuarioRegistrado.password);
         if (passwordCorrecta) {
-            const token = jwt.sign({ id: usuarioRegistrado._id }, secret, { expiresIn: expires });
+            const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires });
             if (usuarioRegistrado.rol === 'cliente') {
                 return res.cookie( 'token',  token ).redirect('perfil');
             } else {
@@ -118,10 +152,11 @@ exports.tokenVerification = async (req, res, next) => {
 
 exports.perfilCliente = async (req, res) => {
     try {
-        const clienteLogeado = await usuarios.findById(req.id);
-        const infoCliente = await cliente.findOne({email: clienteLogeado.email})
+        console.log(req.id)
+        const clienteLogeado = await cliente.findById({'_id': req.id})
+        console.log(clienteLogeado)
         res.render('perfil', {
-            "perfilCliente": infoCliente
+            "perfilCliente": clienteLogeado
         })
     } catch (error) {
         console.log(error)
