@@ -1,9 +1,13 @@
 const venta = require('../models/productos')
+const vendedores = require('../models/vendedores')
 
-exports.graficos = async (req, res)=> {
-    const productos = await venta.find({}, {nombre:1, stock:1, _id:0});
+exports.renderGraficos = async (req, res) => {
+    res.render('admin/listaGraficas')
+}
 
-    res.render('graficas', {
-        productos
+exports.cantidadVentas = async (req, res)=> {
+    const listaVendedores = await vendedores.find({}, {nombreCompleto:1, ventasDespachadas:1 ,_id:0});
+    res.render('admin/graficaCantidad', {
+        'vendedores': listaVendedores,
     });
 }

@@ -47,8 +47,11 @@
                             <%= cliente.totalComprado %>
                         </td>
                         <td>
-                            <%= cliente.historialCompras %>
-                            
+                            <ul> 
+                                <% cliente.historialCompras.forEach(compra => { %>
+                                    <li><%= compra %></li>
+                                <% }); %>
+                            </ul>
                         </td>
                         <td class="text-center">
                             <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarModal"

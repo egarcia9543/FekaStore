@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/indexHead') %>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2>Formulario de Venta</h2>
+        <form action="finalizarventa" method="POST">
+            <div class="mb-3" id="productosDinamicos">
+                <label for="productosVenta" class="form-label">Productos</label>
+                <select class="form-select" id="productosVenta" name="productosVenta" required onchange="calcularTotal()">
+                    <option value="" selected disabled>Selecciona un producto</option>
+                    <% productos.forEach(producto=> { %>
+                        <option value="<%= producto._id %>">
+                            <%= producto.nombre %>, $<%= producto.precio %>, <%= producto.referencia %>
+                        </option>
+                        <% }); %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="subtotal" class="form-label">Subtotal</label>
+                <input type="text" class="form-control" id="subtotal" name="subtotal" required>
+            </div>
+            <div class="mb-3">
+                <label for="fechaVenta" class="form-label">Fecha de Venta</label>
+                <input type="date" class="form-control" id="fechaVenta" name="fechaVenta" required>
+            </div>
+            <div class="mb-3">
+                <label for="impuesto" class="form-label">Impuesto (%)</label>
+                <input type="number" class="form-control" id="impuesto" name="impuesto" value="19" readonly disabled>
+            </div>
+            <div class="mb-3">
+                <label for="totalVenta" class="form-label">Total de la Venta</label>
+                <input type="text" class="form-control" id="totalVenta" name="totalVenta" required>
+            </div>
+            <div class="mb-3">
+                <label for="cliente" class="form-label">Correo del cliente</label>
+                <input type="email" class="form-control" id="cliente" name="cliente" required>
+            </div>
+            <div class="mb-3">
+                <label for="vendedor" class="form-label">Vendedor</label>
+                <input type="text" class="form-control" id="vendedor" name="vendedor" value="<%= vendedor.correo %>"
+                    readonly disabled>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Venta</button>
+        </form>
+    </div>
+    <script>
+        function calcularTotal(){
+            const productosVenta = document.getElementById('productosVenta');
+            const subtotal = document.getElementById('subtotal');
+            const impuesto = document.getElementById('impuesto');
+            const totalVenta = document.getElementById('totalVenta');
+
+            const productoSeleccionado = productosVenta.options[productosVenta.selectedIndex].value;
+            const productoSeleccionadoPrecio = productosVenta.options[productosVenta.selectedIndex].text.split(',')[1].split('$')[1];
+
+            subtotal.value = productoSeleccionadoPrecio;
+            totalVenta.value = (productoSeleccionadoPrecio * (1 + (impuesto.value / 100))).toFixed(2);
+        }
+    </script>
+</body>
+
+</html>

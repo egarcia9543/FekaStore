@@ -29,7 +29,6 @@ const schemaVenta = new mongoose.Schema({
     vendedor: {
         type: Object,
         required: true,
-        default: 'admin'
     }
 })
 

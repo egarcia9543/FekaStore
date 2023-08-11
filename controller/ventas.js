@@ -1,9 +1,10 @@
 const producto = require('../models/productos');
 const venta = require('../models/ventas');
 const cliente = require('../models/clientes');
+const usuario = require('../models/usuarios');
+const vendedor = require('../models/vendedores');
 const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
-const usuario = require('../models/usuarios');
 const secret = process.env.JWT_SECRET
 
 exports.verificarUsuario = async (req, res) => {
@@ -22,11 +23,12 @@ exports.verificarUsuario = async (req, res) => {
     })
 }
 
-exports.actualizarDireccion = async (req, res) => {
-    
-}
-
 exports.finalizarCompra = async (req, res) => {    
+    const fechaVenta = new Date();
+    const dia = fechaVenta.getDate(); 
+    const year = fechaVenta.getFullYear(); 
+    const mes = fechaVenta.getMonth() + 1;
+    const fecha = `${year}-${mes}-${dia}`;
     try {
         let comprador = await cliente.findOne({ email: req.body.emailEnvio });
         let carrito = JSON.parse(req.body.listaDeProductos);
@@ -36,15 +38,29 @@ exports.finalizarCompra = async (req, res) => {
             fechaVenta: new Date(),
             impuesto: 19,
             totalVenta: (req.body.subtotalVenta * 1.19).toFixed(2),
-            cliente: comprador.nombre,
-            vendedor: 'portal'
+            cliente: comprador.email,
+            vendedor: 'portal@gmail.com'
         });
         await registroVenta.save();
 
+        const vendedorVenta = await vendedor.findOne({ correo: 'portal@gmail.com' });
+        vendedorVenta.ventasDespachadas.push({
+            productosVenta: carrito,
+            totalVenta: (req.body.subtotalVenta * 1.19).toFixed(2),
+            fechaVenta: new Date(),
+        })
+        await vendedorVenta.save(); 
+
+        for (let i = 0; i < carrito.length; i++) {
+            let productoComprado = await producto.findOne({ _id: carrito[i].id });
+            let stockRestante = productoComprado.stock -= carrito[i].cantidad;
+            if (stockRestante < 1) {
+                productoComprado.habilitado = false;
+            }
+            await productoComprado.save();
+        }
+        comprador.historialCompras.push(fecha);
         
-        
-        const fechaVenta = new Date();
-        comprador.historialCompras.push(fechaVenta);
 
         comprador.totalComprado += parseFloat(req.body.subtotalVenta);
 

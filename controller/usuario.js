@@ -1,8 +1,10 @@
 const cliente = require('../models/clientes');
 const usuarios = require('../models/usuarios');
+const vendedores = require('../models/vendedores')
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const venta = require('../models/ventas');
 const secret = process.env.JWT_SECRET
 const expires = process.env.JWT_EXPIRE
 //JWT_SECRET = '235fe06beb59e31f0a7f03edce80b19c7ad35b6bd4614f104f6ff9d4fc26f403481526'
@@ -22,7 +24,8 @@ exports.nuevoCliente = async (req, res) => {
     const password = req.body.pswdCliente;
     const passwordEncriptada = await bcrypt.hash(password, 12);
 
-    const userEmail = await cliente.findOne({ email });
+    const clienteRegistrado = await cliente.findOne({ email });
+    const usuarioRegistrado = await usuarios.findOne({ email })
 
     try {
         if (!email || !password) {
@@ -31,7 +34,7 @@ exports.nuevoCliente = async (req, res) => {
             });
         }
 
-        if (userEmail) {
+        if (clienteRegistrado || usuarioRegistrado) {
             return res.json({
                 message: 'El correo ya existe, inicia sesión'
             });
@@ -43,7 +46,7 @@ exports.nuevoCliente = async (req, res) => {
             })
         }
 
-        const clienteRegistrado = new cliente({
+        const nuevoCliente = new cliente({
             nombre: req.body.nombreCliente,
             email: email,
             telefono: req.body.telefonoCliente,
@@ -52,16 +55,15 @@ exports.nuevoCliente = async (req, res) => {
             },
             password: passwordEncriptada,
         })
-        await clienteRegistrado.save();
+        await nuevoCliente.save();
         const usuarioTipoCliente = new usuarios({
-            email: clienteRegistrado.email,
-            password: clienteRegistrado.password,
+            email: nuevoCliente.email,
+            password: nuevoCliente.password,
             rol: 'cliente'
         })
         await usuarioTipoCliente.save();
-        const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires, });
+        const token = jwt.sign({ id: nuevoCliente._id }, secret, { expiresIn: expires, });
         res.cookie('token', token).redirect('perfil');
-
 
         let transporter = nodemailer.createTransport({
             service: 'gmail', 
@@ -75,7 +77,7 @@ exports.nuevoCliente = async (req, res) => {
             from: 'egarcia9543@misena.edu.co', 
             to: email, 
             subject: 'Confirmación de Registro', 
-            text: `¡Hola, ${clienteRegistrado.nombre}! Gracias por registrarte en nuestra tienda`
+            text: `¡Hola, ${nuevoCliente.nombre}! Gracias por registrarte en nuestra tienda`
         };
     
         transporter.sendMail(mailOptions, function (error, info) {
@@ -86,9 +88,6 @@ exports.nuevoCliente = async (req, res) => {
                 res.redirect('index')
             }
         });
-
-
-
     } catch (error) {
         return res.json({ error: error });
     }
@@ -105,22 +104,30 @@ exports.loginCLiente = async (req, res) => {
         if (!email || !password) {
             return res.json({ error: 'Ingresa todas las credenciales' });
         }
-        const clienteRegistrado = await cliente.findOne({email: req.body.emailLogin});
         const usuarioRegistrado = await usuarios.findOne({ email: req.body.emailLogin });
         if (!usuarioRegistrado) {
-            // return res.json({ error: 'Este usuario no existe' });
-            return res.json({error: 'Este usuario no existe'});
+            return res.json({ error: 'Este usuario no existe' });
         }
-        const passwordCorrecta = await bcrypt.compare(password, usuarioRegistrado.password);
-        if (passwordCorrecta) {
-            const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires });
-            if (usuarioRegistrado.rol === 'cliente') {
-                return res.cookie( 'token',  token ).redirect('perfil');
+        if (usuarioRegistrado.rol == 'cliente') {
+            const clienteRegistrado = await cliente.findOne({ email: req.body.emailLogin });
+            const passwordCorrecta = await bcrypt.compare(password, usuarioRegistrado.password);
+            if (passwordCorrecta) {
+                const token = jwt.sign({ id: clienteRegistrado._id }, secret, { expiresIn: expires });
+                return res.cookie('token', token).redirect('perfil');
             } else {
+                return res.json({ error: 'Contraseña incorrecta' });
+            }
+        } else if (usuarioRegistrado.rol == 'vendedor') {
+            const vendedorRegistrado = await vendedores.findOne({ correo: req.body.emailLogin });
+            const passwordCorrecta = await bcrypt.compare(password, usuarioRegistrado.password);
+            if (passwordCorrecta) {
+                const token = jwt.sign({ id: vendedorRegistrado._id }, secret, { expiresIn: expires });
                 return res.cookie('token', token).redirect('indexadmin');
+            } else {
+                return res.json({ error: 'Contraseña incorrecta' });
             }
         } else {
-            return res.json({ error: 'Contraseña incorrecta' });
+            return res.json({ error: 'No tienes autorización para acceder a este sitio' });
         }
     } catch (err) {
         console.log(err)
@@ -135,7 +142,7 @@ exports.tokenVerification = async (req, res, next) => {
             return;
         }
         jwt.verify(token, secret, (err, user) => {
-            if (err) {perfil
+            if (err) {
                 return res.status(401).json({
                     message: "Token inválido"
                 });
@@ -152,9 +159,7 @@ exports.tokenVerification = async (req, res, next) => {
 
 exports.perfilCliente = async (req, res) => {
     try {
-        console.log(req.id)
         const clienteLogeado = await cliente.findById({'_id': req.id})
-        console.log(clienteLogeado)
         res.render('perfil', {
             "perfilCliente": clienteLogeado
         })
@@ -178,7 +183,7 @@ exports.mapa = async (req, res) => {
 exports.contacto = (req, res) => {
     res.render('formulario')
 }
-//yfujnpwgdnpnqpli
+
 exports.sendEmail = async (req, res) => {
     const nuevaContrasena = Math.random().toString(36).slice(-8);
     const passwordEncriptada = await bcrypt.hash(nuevaContrasena, 12);

@@ -39,23 +39,28 @@ router.post('/nuevoproducto', productFunctions.nuevoProducto);
 router.get('/catalogo', productFunctions.catalogo);
 
 //Admin
-router.get('/indexadmin', adminFunctions.landingAdmin);
+router.get('/indexadmin', userFunctions.tokenVerification, adminFunctions.landingAdmin);
 router.get('/datatableproductos', adminFunctions.listOfProducts);
 router.get('/datatableclientes', adminFunctions.listOfClients);
 router.get('/datatablevendedores', adminFunctions.listOfWorkers);
 router.get('/datatableventas', adminFunctions.listOfVentas);
 router.get('/habilitado/:id', adminFunctions.actualizarHabilitado);
 router.post('/actualizarproducto', adminFunctions.actualizarDataProducto);
+router.get('/eliminarproducto/:id', adminFunctions.eliminarProducto);
 router.get('/registrovendedor', adminFunctions.vendedorRegistro);
 router.post('/nuevovendedor', adminFunctions.nuevoVendedor);
 router.post('/actualizarcliente', adminFunctions.actualizarInfoClientes);
 router.get('/eliminarcliente/:id', adminFunctions.eliminarCliente);
 router.post('/actualizarvendedor', adminFunctions.actualizarInfoVendedor);
 router.get('/eliminarvendedor/:id', adminFunctions.eliminarVendedor);
+router.get('/registroventas', adminFunctions.registroVenta);
+router.post('/finalizarventa', adminFunctions.finalizarVenta);
+router.get('/eliminarventa/:id', adminFunctions.eliminarVenta);
 
 
 //Otros
-router.get('/excel', routeExcel.descargarExcel)
-router.get('/graficos', routeGraficos.graficos)
+router.get('/excel', routeExcel.descargarExcel);
+router.get('/graficos', routeGraficos.renderGraficos);
+router.get('/cantidadventas', routeGraficos.cantidadVentas);
 
 module.exports = router

@@ -32,7 +32,11 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     if (productInCart) {
         shoppingCart.map(existing => {
             if (existing.id === producto.id) {
-                existing.cantidad++;
+                if (existing.cantidad >= stock) {
+                    alert('No hay más stock disponible');
+                } else {
+                    existing.cantidad++;
+                }
             }
         });
     } else {
@@ -104,10 +108,10 @@ function actualizarCarritoDOM() {
                 </div>    
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <div class="d-flex justify-content-between align-items-center ms-4 me-4">
-                        <button class="btn restar" onclick="restar('${producto.id}', '${producto.precio}')">-</button>
-                            <input class="m-1 form-control form-control-xs text-center" readonly value="${producto.cantidad}"></input>
-                        <button class="btn sumar" onclick="sumar('${producto.id}', '${producto.precio}', '${producto.stock}')">+</button>
-                        </div>
+                        <button class="btn restar" onclick="restar('${producto.id}')">-</button>
+                            <input class="m-1 form-control form-control-xs text-center" readonly value="${producto.cantidad}">
+                        <button class="btn sumar" onclick="sumar('${producto.id}', '${producto.stock}')">+</button>
+                    </div>
                 </div>
             </div>
             <div>
