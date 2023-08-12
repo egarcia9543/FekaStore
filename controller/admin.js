@@ -9,6 +9,11 @@ const jwt = require('jsonwebtoken');
 
 exports.landingAdmin = async (req, res) => {
     const vendedorLogueado = await vendedor.findById({'_id': req.id})
+    if (!vendedorLogueado){
+        return res.json({
+            Error: 'No tienes permiso'
+        })
+    }
     res.render('admin/index', {
         'vendedor': vendedorLogueado
     });
