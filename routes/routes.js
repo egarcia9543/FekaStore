@@ -18,6 +18,7 @@ router.post('/nuevocliente', userFunctions.nuevoCliente);
 router.post('/login', userFunctions.loginCLiente);
 router.get('/perfil', userFunctions.tokenVerification, userFunctions.perfilCliente);
 router.get('/logout', userFunctions.logout);
+router.post('/editarperfil', userFunctions.actualizarPerfil);
 
 
 router.get('/mapa', userFunctions.mapa);

@@ -4,7 +4,7 @@ const vendedores = require('../models/vendedores')
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const venta = require('../models/ventas');
+const ventas = require('../models/ventas');
 const secret = process.env.JWT_SECRET
 const expires = process.env.JWT_EXPIRE
 //JWT_SECRET = '235fe06beb59e31f0a7f03edce80b19c7ad35b6bd4614f104f6ff9d4fc26f403481526'
@@ -66,20 +66,20 @@ exports.nuevoCliente = async (req, res) => {
         res.cookie('token', token).redirect('perfil');
 
         let transporter = nodemailer.createTransport({
-            service: 'gmail', 
+            service: 'gmail',
             auth: {
-                user: 'egarcia9543@misena.edu.co', 
-                pass: `${process.env.GPASS}` 
+                user: 'egarcia9543@misena.edu.co',
+                pass: `${process.env.GPASS}`
             }
         });
-    
+
         let mailOptions = {
-            from: 'egarcia9543@misena.edu.co', 
-            to: email, 
-            subject: 'Confirmación de Registro', 
+            from: 'egarcia9543@misena.edu.co',
+            to: email,
+            subject: 'Confirmación de Registro',
             text: `¡Hola, ${nuevoCliente.nombre}! Gracias por registrarte en nuestra tienda`
         };
-    
+
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
@@ -159,10 +159,18 @@ exports.tokenVerification = async (req, res, next) => {
 
 exports.perfilCliente = async (req, res) => {
     try {
-        const clienteLogeado = await cliente.findById({'_id': req.id})
-        res.render('perfil', {
-            "perfilCliente": clienteLogeado
-        })
+        const clienteLogeado = await cliente.findById({ '_id': req.id })
+        const ventasRealizadas = await ventas.find({cliente: clienteLogeado.email})
+        if (!ventasRealizadas) {
+            res.render('perfil', {
+                "perfilCliente": clienteLogeado,
+            })
+        } else {
+            res.render('perfil', {
+                "perfilCliente": clienteLogeado,
+                "ventas": ventasRealizadas
+            })
+        }
     } catch (error) {
         console.log(error)
     }
@@ -171,7 +179,6 @@ exports.perfilCliente = async (req, res) => {
 exports.logout = async (req, res) => {
     res.clearCookie('token').redirect('index')
 }
-
 
 exports.mapa = async (req, res) => {
     let clienteU = await cliente.findOne({ "email": "testsena@gmail.com" });
@@ -187,7 +194,7 @@ exports.contacto = (req, res) => {
 exports.sendEmail = async (req, res) => {
     const nuevaContrasena = Math.random().toString(36).slice(-8);
     const passwordEncriptada = await bcrypt.hash(nuevaContrasena, 12);
-    const clienteRecuperando =  await usuarios.findOneAndUpdate({"email": req.body.emailAddress}, {"password": passwordEncriptada});
+    const clienteRecuperando = await usuarios.findOneAndUpdate({ "email": req.body.emailAddress }, { "password": passwordEncriptada });
     console.log(clienteRecuperando)
 
     if (!clienteRecuperando) {
@@ -200,14 +207,14 @@ exports.sendEmail = async (req, res) => {
                 pass: `${process.env.GPASS}` //Contraseña de aplicación generada
             }
         });
-    
+
         let mailOptions = {
             from: 'egarcia9543@misena.edu.co', //Correo que va a enviar el mensaje
             to: req.body.emailAddress, //correo que lo va a recibir
             subject: req.body.asunto, //asunto del correo
             text: `Hola, recibimos tu solicitud para recuperar tu contraseña, aquí tienes una nueva, recuerda cambiarla: ${nuevaContrasena}` //texto del correo
         };
-    
+
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
@@ -218,4 +225,17 @@ exports.sendEmail = async (req, res) => {
         });
         return res.redirect('signin');
     }
+}
+
+exports.actualizarPerfil = async (req, res) => {
+    const infoCliente = await cliente.findById(req.body.idCliente);
+    await cliente.findByIdAndUpdate(req.body.idCliente, {
+        nombre: req.body.nombreCliente,
+        email: req.body.emailCliente,
+        telefono: req.body.telefonoCliente
+    });
+    await usuarios.findOneAndUpdate({ email: infoCliente.email }, {
+        email: req.body.emailCliente,
+    })
+    res.redirect('/store/v1/perfil');
 }

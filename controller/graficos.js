@@ -1,4 +1,4 @@
-const venta = require('../models/productos')
+const ventas = require('../models/ventas')
 const vendedores = require('../models/vendedores')
 
 exports.renderGraficos = async (req, res) => {

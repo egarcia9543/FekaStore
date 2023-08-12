@@ -29,6 +29,20 @@
                                     </h5>
                                 </div>
                             </div>
+                            <% if (ventas.length > 0) { %>
+                                <div class="card">
+                                    <div class="card-header text-center">
+                                        <h3>Tus compras</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <% ventas.forEach(venta => { %>
+                                                <li><%= venta.productosVenta[0].nombre %> - $<%= venta.totalVenta %></li>
+                                            <% }); %>
+                                        </ul>
+                                    </div>
+                                </div>
+                            <% } %>
                         </div>
                         <div class="col-lg-8">
                             <div class="card mb-4">
@@ -75,9 +89,15 @@
                                         </div>
                                     </div>
                                     <hr>
-                                    <div class="row">
-                                        <div class="col-sm-12">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="">
                                             <a class="btn btn-danger " href="logout">Cerrar Sesión</a>
+                                        </div>
+                                        <div class="">
+                                            <button class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#editarInfoUsuario"
+                                                onclick="llenarDatosModal(`<%= perfilCliente.id %>`, `<%= perfilCliente.nombre %>`, `<%= perfilCliente.email %>`, `<%= perfilCliente.telefono %>`)">Editar
+                                                Perfil</button>
                                         </div>
                                     </div>
                                 </div>
@@ -89,11 +109,47 @@
         </section>
     </main>
     <%- include('./partials/indexModals'); %>
+        <!-- Modal para editar -->
+        <div class="modal fade" id="editarInfoUsuario" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formularioModal" method="post" action="editarperfil">
+                            <input type="text" name="idCliente" hidden id="idCliente">
+                            <div class="form-group mb-3">
+                                <label for="nombreCliente">Nombre:</label>
+                                <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="emailCliente">Email:</label>
+                                <input type="text" name="emailCliente" class="form-control" id="emailCliente">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="telefonoCliente">Telefono:</label>
+                                <input type="text" name="telefonoCliente" class="form-control" id="telefonoCliente">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
             let mapa = L.map('mapa').setView([<%= perfilCliente.ubicacion.centro %>], <%= perfilCliente.ubicacion.zoom %>);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', { foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(mapa);
 
             let marcador = L.marker([<%= perfilCliente.ubicacion.centro %>]).addTo(mapa);
+
+            function llenarDatosModal(id, nombre, email, telefono) {
+                idCliente.value = id;
+                nombreCliente.value = nombre;
+                emailCliente.value = email;
+                telefonoCliente.value = telefono;
+            }
         </script>
 </body>
 
