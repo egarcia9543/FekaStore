@@ -6,14 +6,14 @@ const path = require('path')
 const cors = require('cors')
 
 const express = require('express');
-const ruta = require('./routes/routes');
+const ruta = require('./backend/routes/routes');
 const cookieParser = require("cookie-parser");
 const app = express();
 
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "/views"));
-app.use(express.static(path.join(__dirname, "/public")));
+app.set("views", path.join(__dirname, "/frontend/views"));
+app.use(express.static(path.join(__dirname, "/frontend/public")));
 
 
 app.use(express.urlencoded({ extended: true }));  //Usar express.json
