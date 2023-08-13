@@ -180,12 +180,6 @@ exports.logout = async (req, res) => {
     res.clearCookie('token').redirect('index')
 }
 
-exports.mapa = async (req, res) => {
-    let clienteU = await cliente.findOne({ "email": "testsena@gmail.com" });
-    res.render('mapa', {
-        "clientes": clienteU
-    })
-}
 
 exports.contacto = (req, res) => {
     res.render('formulario')

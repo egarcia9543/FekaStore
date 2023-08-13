@@ -1,28 +1,27 @@
 const express = require('express');
 
-const userFunctions = require('../controller/usuario')
 const routeExcel = require('../controller/excelfornode')
-const routeGraficos = require('../controller/graficos')
-const productFunctions = require('../controller/productos')
+const userFunctions = require('../controller/usuario')
+const graphFunctions = require('../controller/graficos')
 const adminFunctions = require('../controller/admin')
-const ventasFunctions = require('../controller/ventas')
+const salesFunctions = require('../controller/ventas')
 
 
 const router = express.Router();
 
+//----------Render landing page------------//
+router.get('/index', userFunctions.landing);
 
-//Clientes
+//-----------------Funciones de usuario---------------------- //
 router.get('/registroclientes', userFunctions.registroCliente);
 router.get('/signin', userFunctions.renderLogin);
-router.post('/nuevocliente', userFunctions.nuevoCliente);
-router.post('/login', userFunctions.loginCLiente);
 router.get('/perfil', userFunctions.tokenVerification, userFunctions.perfilCliente);
 router.get('/logout', userFunctions.logout);
 router.post('/editarperfil', userFunctions.actualizarPerfil);
+router.post('/nuevocliente', userFunctions.nuevoCliente);
+router.post('/login', userFunctions.loginCLiente);
 
 
-router.get('/mapa', userFunctions.mapa);
-router.get('/index', userFunctions.landing);
 
 
 
@@ -30,38 +29,42 @@ router.get('/recuperar', userFunctions.contacto)
 router.post('/email', userFunctions.sendEmail)
 
 //Ventas
-// router.get('/realizarcompra', ventasFunctions.realizarCompra);
-router.get('/compra', ventasFunctions.verificarUsuario);
-router.post('/finalizarcompra', ventasFunctions.finalizarCompra);
+router.get('/compra', salesFunctions.verificarUsuario);
+router.post('/finalizarcompra', salesFunctions.finalizarCompra);
 
 //Productos
-router.get('/registroproductos', productFunctions.registroProducto);
-router.post('/nuevoproducto', productFunctions.nuevoProducto);
-router.get('/catalogo', productFunctions.catalogo);
+router.get('/catalogo', adminFunctions.renderCatalogue);
 
-//Admin
-router.get('/indexadmin', userFunctions.tokenVerification, adminFunctions.landingAdmin);
-router.get('/datatableproductos', adminFunctions.listOfProducts);
-router.get('/datatableclientes', adminFunctions.listOfClients);
-router.get('/datatablevendedores', adminFunctions.listOfWorkers);
-router.get('/datatableventas', adminFunctions.listOfVentas);
-router.get('/habilitado/:id', adminFunctions.actualizarHabilitado);
-router.post('/actualizarproducto', adminFunctions.actualizarDataProducto);
-router.get('/eliminarproducto/:id', adminFunctions.eliminarProducto);
-router.get('/registrovendedor', adminFunctions.vendedorRegistro);
-router.post('/nuevovendedor', adminFunctions.nuevoVendedor);
-router.post('/actualizarcliente', adminFunctions.actualizarInfoClientes);
-router.get('/eliminarcliente/:id', adminFunctions.eliminarCliente);
-router.post('/actualizarvendedor', adminFunctions.actualizarInfoVendedor);
-router.get('/eliminarvendedor/:id', adminFunctions.eliminarVendedor);
-router.get('/registroventas', adminFunctions.registroVenta);
-router.post('/finalizarventa', adminFunctions.finalizarVenta);
-router.get('/eliminarventa/:id', adminFunctions.eliminarVenta);
+//------------------Funciones de administrador------------------//
+
+router.get('/indexadmin', userFunctions.tokenVerification, adminFunctions.renderAdminView);
+
+router.get('/datatableproductos', adminFunctions.listProducts);
+router.get('/eliminarproducto/:id', adminFunctions.deleteProduct);
+router.get('/habilitado/:id', adminFunctions.updateState);
+router.get('/registroproductos', adminFunctions.renderProductForm);
+router.post('/actualizarproducto', adminFunctions.updateProductData);
+router.post('/nuevoproducto', adminFunctions.registerNewProduct);
+
+router.get('/datatableclientes', adminFunctions.listClients);
+router.get('/eliminarcliente/:id', adminFunctions.deleteClient);
+router.post('/actualizarcliente', adminFunctions.updateClientData);
+
+router.get('/datatablevendedores', adminFunctions.listWorkers);
+router.get('/registrovendedor', adminFunctions.renderWorkerSignup);
+router.get('/eliminarvendedor/:id', adminFunctions.deleteWorker);
+router.post('/nuevovendedor', adminFunctions.registerNewWorker);
+router.post('/actualizarvendedor', adminFunctions.updateWorkerData);
+
+router.get('/datatableventas', adminFunctions.listSales);
+router.get('/registroventas', adminFunctions.renderSaleForm);
+router.get('/eliminarventa/:id', adminFunctions.deleteSale);
+router.post('/finalizarventa', adminFunctions.finishSale);
 
 
 //Otros
 router.get('/excel', routeExcel.descargarExcel);
-router.get('/graficos', routeGraficos.renderGraficos);
-router.get('/cantidadventas', routeGraficos.cantidadVentas);
+router.get('/graficos', graphFunctions.renderListGraphs);
+router.get('/cantidadventas', graphFunctions.salesQuantity);
 
 module.exports = router
