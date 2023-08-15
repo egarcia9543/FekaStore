@@ -1,4 +1,4 @@
-const mongoose = require('../config/connection');
+const mongoose = require('../config/database');
 const schemaCliente = new mongoose.Schema({
     nombre: {
         type: String,

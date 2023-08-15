@@ -1,4 +1,4 @@
-const mongoose = require('../config/connection');
+const mongoose = require('../config/database');
 const schemaUsuario = new mongoose.Schema({
     email: {
         type: String,

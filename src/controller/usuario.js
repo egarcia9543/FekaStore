@@ -11,14 +11,6 @@ const expires = process.env.JWT_EXPIRE
 
 
 
-exports.landing = (req, res) => {
-    res.render('index')
-}
-
-exports.registroCliente = (req, res) => {
-    res.render('signup')
-}
-
 exports.nuevoCliente = async (req, res) => {
     const email = req.body.emailCliente;
     const password = req.body.pswdCliente;
@@ -91,10 +83,6 @@ exports.nuevoCliente = async (req, res) => {
     } catch (error) {
         return res.json({ error: error });
     }
-}
-
-exports.renderLogin = async (req, res) => {
-    res.render('signin');
 }
 
 exports.loginCLiente = async (req, res) => {
@@ -180,10 +168,6 @@ exports.logout = async (req, res) => {
     res.clearCookie('token').redirect('index')
 }
 
-
-exports.contacto = (req, res) => {
-    res.render('formulario')
-}
 
 exports.sendEmail = async (req, res) => {
     const nuevaContrasena = Math.random().toString(36).slice(-8);

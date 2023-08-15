@@ -29,11 +29,21 @@ exports.finalizarCompra = async (req, res) => {
     const year = fechaVenta.getFullYear(); 
     const mes = fechaVenta.getMonth() + 1;
     const fecha = `${year}-${mes}-${dia}`;
+    let productosVenta = []
     try {
         let comprador = await cliente.findOne({ email: req.body.emailEnvio });
         let carrito = JSON.parse(req.body.listaDeProductos);
+        carrito.forEach(producto => {
+            productosVenta.push({
+                id: producto.id,
+                precio: parseFloat(producto.precio),
+                nombre: producto.nombre,
+                imagen: producto.imagen,
+                cantidad: producto.cantidad
+            })
+        });
         const registroVenta = new venta({
-            productosVenta: carrito,
+            productosVenta: productosVenta,
             subtotal: req.body.subtotalVenta,
             fechaVenta: new Date(),
             impuesto: 19,

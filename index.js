@@ -6,7 +6,7 @@ const path = require('path')
 const cors = require('cors')
 
 const express = require('express');
-const ruta = require('./backend/routes/routes');
+const ruta = require('./src/routes/routes');
 const cookieParser = require("cookie-parser");
 const app = express();
 
