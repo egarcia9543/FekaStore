@@ -23,7 +23,7 @@ router.get('/recuperar', clientesController.renderRecoverForm);
 router.get('/perfil', userFunctions.tokenVerification, userFunctions.perfilCliente);
 router.get('/logout', userFunctions.logout);
 router.post('/editarperfil', userFunctions.actualizarPerfil);
-router.post('/nuevocliente', userFunctions.nuevoCliente);
+router.post('/nuevocliente', clientesController.registerNewClient);
 router.post('/login', userFunctions.loginCLiente);
 
 

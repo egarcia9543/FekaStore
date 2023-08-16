@@ -1,5 +1,4 @@
 const clientes = require('../models/clientes');
-const clientes = require('../models/clientes');
 
 exports.create = async (data) => {
     return await clientes.create(data);
