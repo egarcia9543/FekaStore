@@ -12,8 +12,8 @@ const app = express();
 
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "/frontend/views"));
-app.use(express.static(path.join(__dirname, "/frontend/public")));
+app.set("views", path.join(__dirname, "/src/views"));
+app.use(express.static(path.join(__dirname, "/src/public")));
 
 
 app.use(express.urlencoded({ extended: true }));  //Usar express.json

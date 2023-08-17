@@ -6,6 +6,11 @@ exports.changeState = async(productId) => {
         return { error: 'El producto no existe' };
     }
 
-    producto.habilitado = !producto.habilitado;
+    if (producto.stock > 0) {
+        producto.habilitado = !producto.habilitado;
+    } else {
+        return { error: 'No se puede habilitar un producto sin stock' };
+    }
+
     return await productData.saveChanges(producto);
 }

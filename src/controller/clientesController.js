@@ -57,13 +57,14 @@ exports.listClients = async (req, res) => {
 exports.viewProfile = async (req, res) => {
     try {
         const resultado = await viewProfileUsecase.getClient(req.id);
-        if (!resultado){
+        if (resultado.error){
             return res.status(404).json({
                 error: 'No se encontró este perfil'
             })
         }
         return res.render('perfil', {
-            'perfilCliente': resultado
+            'perfilCliente': resultado.client,
+            'ventas': resultado.sales
         });
     } catch (error) {
         return res.status(500).json({
@@ -82,6 +83,7 @@ exports.editProfile = async (req, res) => {
         }
         return res.redirect('/store/v1/perfil');
     } catch (error) {
+        console.error(error)
         return res.status(500).json({
             error: 'Error al actualizar el cliente'
         });

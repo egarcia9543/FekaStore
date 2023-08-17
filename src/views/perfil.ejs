@@ -29,7 +29,22 @@
                                     </h5>
                                 </div>
                             </div>
-
+                            <% if (ventas.length> 0) { %>
+                                <div class="card">
+                                    <div class="card-header text-center">
+                                        <h3>Tus compras</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <% ventas.forEach(venta=> { %>
+                                                <li>
+                                                    <%= venta.productosVenta[0].nombre %> - $<%= venta.totalVenta %>
+                                                </li>
+                                                <% }); %>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <% } %>
                         </div>
                         <div class="col-lg-8">
                             <div class="card mb-4">
@@ -118,6 +133,10 @@
                             <div class="form-group mb-3">
                                 <label for="telefonoCliente">Telefono:</label>
                                 <input type="text" name="telefonoCliente" class="form-control" id="telefonoCliente">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="newPassword">Contraseña:</label>
+                                <input type="password" name="newPassword" class="form-control" id="newPassword">
                             </div>
                             <button type="submit" class="btn btn-primary">Enviar</button>
                         </form>

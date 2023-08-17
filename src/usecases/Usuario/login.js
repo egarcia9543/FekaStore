@@ -27,7 +27,6 @@ exports.loginUser = async (email, password) => {
         }
     } else if (user.rol == 'vendedor') {
         const seller = await sellerData.findByEmail(email);
-        console.log(seller)
         const passwordCorrect = await bcrypt.compare(password, user.password);
         if (passwordCorrect) {
             token = jwt.sign({ id: seller._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });

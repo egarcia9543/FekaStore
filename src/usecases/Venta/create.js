@@ -2,83 +2,64 @@ const saleData = require('../../data/ventasData');
 const productData = require('../../data/productosData');
 const clientData = require('../../data/clientesData');
 const sellerData = require('../../data/vendedoresData');
+const sendEmail = require('../../utils/emailService');
 
 exports.createSaleRecord = async (saleInfo) => {
-    const { emailEnvio, listaDeProductos,  subtotalVenta, productosVenta, cliente } = saleInfo;
-    const fechaVenta = new Date();
-    const dia = fechaVenta.getDate(); 
-    const year = fechaVenta.getFullYear(); 
-    const mes = fechaVenta.getMonth() + 1;
-    const fecha = `${year}-${mes}-${dia}`;
+    const { listaDeProductos, nombreEnvio, telefonoEnvio, emailEnvio, subtotalVenta } = saleInfo;
+
     const products = [];
-    
-    if (listaDeProductos) {
-        const cart = JSON.parse(listaDeProductos);
-        cart.forEach(product => {
-            products.push({
-                id: product.id,
-                precio: parseFloat(product.precio),
-                nombre: product.nombre,
-                imagen: product.imagen,
-                cantidad: product.cantidad,
-            })
-        });
-        const newSale = {
-            productosVenta: products,
-            subtotal: subtotalVenta,
-            fechaVenta: fecha,
-            impuesto: 19,
-            totalVenta: (subtotalVenta * 1.19).toFixed(2),
-            cliente: emailEnvio,
-            vendedor: 'portal@gmail.com'
-        }
-        await saleData.create(newSale);
-
-        const seller = await sellerData.findByEmail({ email: 'portal@gmail.com'});
-        seller.ventasDespachadas.push({
-            productosVenta: products,
-            totalVenta: (subtotalVenta * 1.19).toFixed(2),
-            fechaVenta: fecha,
-        })
-        await sellerData.saveChanges(seller);
-
-        const client = await clientData.findByEmail(emailEnvio);
-        if (!client) {
-            return { error: 'No se encontró el cliente' }
-        }
-        client.historialCompras.push(fecha);
-        client.totalComprado += (subtotalVenta * 1.19).toFixed(2);
-        await clientData.saveChanges(client);
-    } else {
-        const product = await productData.findById(productosVenta);
+    const cart = JSON.parse(listaDeProductos);
+    cart.forEach(product => {
         products.push({
-            id: productosVenta,
+            id: product.id,
             precio: parseFloat(product.precio),
             nombre: product.nombre,
             imagen: product.imagen,
-            cantidad: 1,
+            cantidad: product.cantidad,
         })
-        product.stock -= 1;
+    });
+    for (let i = 0; i < products.length; i++) {
+        const product = await productData.findById(products[i].id);
+        product.stock -= products[i].cantidad;
+        if (product.stock <= 0) {
+            const habilitado = false;
+            product.habilitado = habilitado;
+        }
         await productData.saveChanges(product);
-
-        const client = await clientData.findByEmail(cliente);
-        if (!client) {
-            return { error: 'No se encontró el cliente' }
-        }
-        client.historialCompras.push(fecha);
-        client.totalComprado += (product.precio * 1.19).toFixed(2);
-        await clientData.saveChanges(client);
-
-        const newSale = {
-            productosVenta: products,
-            subtotal: product.precio,
-            fechaVenta: fecha,
-            impuesto: 19,
-            totalVenta: (product.precio * 1.19).toFixed(2),
-            cliente: cliente,
-            vendedor: seller.email,
-        }
-        await saleData.create(newSale);
     }
+    const seller = await sellerData.findByEmail('portal@gmail.com');
+    seller.ventasDespachadas.push({
+        productosVenta: products,
+        totalVenta: parseFloat((subtotalVenta * 1.19).toFixed(2)),
+        fechaVenta: new Date(),
+    })
+    await sellerData.saveChanges(seller);
+
+    const client = await clientData.findByEmail(emailEnvio);
+    client.historialCompras.push(new Date());
+    client.totalComprado += parseFloat((subtotalVenta * 1.19).toFixed(2));
+    await clientData.saveChanges(client);
+
+    const newSale = {
+        productosVenta: products,
+        subtotal: subtotalVenta,
+        fechaVenta: new Date(),
+        impuesto: 19,
+        totalVenta: parseFloat((subtotalVenta * 1.19).toFixed(2)),
+        cliente: emailEnvio,
+        vendedor: 'portal@gmail.com'
+    }
+    await saleData.create(newSale);
+    await sendEmail.sendEmail(
+        emailEnvio,
+        'Compra realizada',
+        `Gracias por comprar en nuestra tienda
+        Estos son los productos que compraste:
+            ${cart.map(product => `${product.nombre} - ${product.cantidad} unidades`)}
+        El total de tu compra es: ${parseFloat((subtotalVenta * 1.19).toFixed(2))}`
+    )
+
+    return { message: 'Venta registrada' };
 }
+
 

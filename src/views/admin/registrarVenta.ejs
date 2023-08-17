@@ -15,7 +15,7 @@
                     <option value="" selected disabled>Selecciona un producto</option>
                     <% productos.forEach(producto=> { %>
                         <option value="<%= producto._id %>">
-                            <%= producto.nombre %>, $<%= producto.precio %>, <%= producto.referencia %>
+                            <%= producto.nombre %>, $<%= producto.precio %>, <%= producto.referencia %>, <%= producto.stock %>
                         </option>
                         <% }); %>
                 </select>
@@ -30,7 +30,7 @@
             </div>
             <div class="mb-3">
                 <label for="impuesto" class="form-label">Impuesto (%)</label>
-                <input type="number" class="form-control" id="impuesto" name="impuesto" value="19" readonly disabled>
+                <input type="number" class="form-control" id="impuesto" name="impuesto" value="19" readonly>
             </div>
             <div class="mb-3">
                 <label for="totalVenta" class="form-label">Total de la Venta</label>
@@ -43,7 +43,7 @@
             <div class="mb-3">
                 <label for="vendedor" class="form-label">Vendedor</label>
                 <input type="text" class="form-control" id="vendedor" name="vendedor" value="<%= vendedor.email %>"
-                    readonly disabled>
+                    readonly>
             </div>
             <button type="submit" class="btn btn-primary">Guardar Venta</button>
         </form>

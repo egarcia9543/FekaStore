@@ -37,14 +37,14 @@
                             <%= vendedor.documento %>
                         </td>
                         <td>
-                            <%= vendedor.correo %>
+                            <%= vendedor.email %>
                         </td>
                         <td>
                             <%= vendedor.ventasDespachadas.length %>
                         </td>
                         <td class="d-flex">
                             <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarVendedor"
-                                onclick="llenarDatosModal(`<%= vendedor._id %>`, `<%= vendedor.nombreCompleto %>`, `<%= vendedor.documento %>`, `<%= vendedor.correo %>`)"><i
+                                onclick="llenarDatosModal(`<%= vendedor._id %>`, `<%= vendedor.nombreCompleto %>`, `<%= vendedor.documento %>`, `<%= vendedor.email %>`)"><i
                                     class="bi bi-pen-fill"></i></button>
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar"
                                 onclick="eliminar(`<%= vendedor._id %>`)"><i class="bi bi-trash-fill"></i></button>

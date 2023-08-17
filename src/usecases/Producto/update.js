@@ -4,9 +4,17 @@ exports.updateProduct = async (productInfo) => {
     const {id, referencia, nombre, descripcion, stock, precio} = productInfo;
     const habilitado = stock > 0 ? true : false;
 
-    const referenciaRegistrada = await productData.findByReferencia(referencia);
-    if (referenciaRegistrada){
-        return { error: 'Ya existe un producto con la misma referencia' }
+    
+    const existingProduct = await productData.findById(id);
+    if (!existingProduct) {
+        return { error: 'No se encontró el producto' };
+    }
+
+    if (referencia !== existingProduct.referencia) {
+        const referenciaRegistrada = await productData.findByReferencia(referencia);
+        if (referenciaRegistrada) {
+            return { error: 'Ya existe un producto con la misma referencia' };
+        }
     }
 
     const updatedInfo = {

@@ -3,6 +3,7 @@ const listSellerUsecase = require('../usecases/Vendedor/list');
 const updateSellerUsecase = require('../usecases/Vendedor/update');
 const deleteSelerUsecase = require('../usecases/Vendedor/delete');
 const viewProfileUsecase = require('../usecases/Vendedor/viewprofile');
+const createSaleRecord = require('../usecases/Vendedor/registersale');
 
 exports.renderSignupForm = (req, res) => {
     res.render('admin/formularioRegistroVendedor');
@@ -85,5 +86,18 @@ exports.deleteSeller = async (req, res) => {
 }
 
 exports.registerSale = async (req, res) => {
-    console.log(req.body);
+    try {
+        const resultado = await createSaleRecord.createSaleRecord(req.body);
+        if (resultado.error){
+            return res.status(400).json({
+                error: resultado.error
+            });
+        }
+        return res.redirect('/store/v1/datatableventas');
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: 'Error al registrar la venta'
+        });
+    }
 }
