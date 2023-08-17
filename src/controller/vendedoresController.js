@@ -2,9 +2,26 @@ const createSellerUsecase = require('../usecases/Vendedor/create');
 const listSellerUsecase = require('../usecases/Vendedor/list');
 const updateSellerUsecase = require('../usecases/Vendedor/update');
 const deleteSelerUsecase = require('../usecases/Vendedor/delete');
+const viewProfileUsecase = require('../usecases/Vendedor/viewprofile');
 
 exports.renderSignupForm = (req, res) => {
     res.render('admin/formularioRegistroVendedor');
+}
+
+exports.viewSellerProfile = async (req, res) => {
+    try {
+        const resultado = await viewProfileUsecase.getSeller(req.id);
+        if (!resultado){
+            return res.status(400).json({
+                error: 'Error al obtener el vendedor'
+            });
+        }
+        return res.render('admin/index', {
+            'vendedor': resultado
+        })
+    } catch (error) {
+        
+    }
 }
 
 exports.registerNewSeller = async (req, res) => {
@@ -43,7 +60,7 @@ exports.updateSellerInfo = async (req, res) => {
         const resultado = await updateSellerUsecase.updateSeller(req.body);
         if (!resultado){
             return res.status(400).json({
-                error: resultado.error
+                error: 'Error al actualizar el vendedor'
             });
         }
         return res.redirect('/store/v1/datatablevendedores');
@@ -65,4 +82,8 @@ exports.deleteSeller = async (req, res) => {
             error: 'Error al eliminar el vendedor'
         });
     }
+}
+
+exports.registerSale = async (req, res) => {
+    console.log(req.body);
 }

@@ -7,10 +7,10 @@ exports.updateSeller = async (sellerInfo) => {
     const updatedInfo = {
         nombreCompleto: nombreVendedor,
         documento: documentoVendedor,
-        correo: correoVendedor
+        email: correoVendedor
     }
     await sellerData.updateById(idVendedor, updatedInfo);
-    await userData.findByEmailAndUpdate(correoVendedor, {email: updatedInfo.correo})
+    await userData.findByEmailAndUpdate(correoVendedor, {email: updatedInfo.email})
     
     return { message: 'Vendedor actualizado' };
 }

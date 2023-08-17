@@ -15,13 +15,13 @@ exports.createNewSeller = async (sellerInfo) => {
     }
 
     if (emailRegistered || documentRegistered || userRegistered) {
-        return { error: 'El correo o documento ya existe' };
+        return { error: 'El email o documento ya existe' };
     }
 
     const newSeller = {
         nombreCompleto: nombreVendedor,
         documento: documentoVendedor,
-        correo: emailVendedor,
+        email: emailVendedor,
         password: passwordEncrypted
     };
     await sellerData.createSeller(newSeller);

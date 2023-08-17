@@ -24,6 +24,7 @@ exports.verificarUsuario = async (req, res) => {
 }
 
 exports.finalizarCompra = async (req, res) => {    
+    console.log(req.body);
     const fechaVenta = new Date();
     const dia = fechaVenta.getDate(); 
     const year = fechaVenta.getFullYear(); 
@@ -82,26 +83,7 @@ exports.finalizarCompra = async (req, res) => {
                 pass: `${process.env.GPASS}`
             }
         });
-    
-        let mailOptions = {
-            from: 'egarcia9543@misena.edu.co',
-            to: req.body.emailEnvio , 
-            subject: 'Confirmación de compra', 
-            text: 'Gracias por confiar en nosotros, tu compra llegará en 2 días.' 
-        };
-    
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-                res.redirect('index')
-            }
-        });
-
-        res.render('confirmacioncompra');
-
     } catch (error) {
-        res.status(500).json({ message: 'Error al procesar la compra' });
+        console.log(error);
     }
 }

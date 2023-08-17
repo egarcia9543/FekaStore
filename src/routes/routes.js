@@ -9,6 +9,8 @@ const salesFunctions = require('../controller/ventas')
 const productController = require('../controller/productosController');
 const vendedoresController = require('../controller/vendedoresController');
 const clientesController = require('../controller/clientesController');
+const usuariosController = require('../controller/usuariosController');
+const ventasController = require('../controller/ventasController');
 
 const router = express.Router();
 
@@ -20,28 +22,28 @@ router.get('/registroclientes', clientesController.renderSignupForm);
 router.get('/signin', clientesController.renderLoginForm);
 router.get('/recuperar', clientesController.renderRecoverForm);
 
-router.get('/perfil', userFunctions.tokenVerification, userFunctions.perfilCliente);
-router.get('/logout', userFunctions.logout);
-router.post('/editarperfil', userFunctions.actualizarPerfil);
+router.get('/perfil', usuariosController.tokenVerification, clientesController.viewProfile);
+router.get('/logout', usuariosController.logout);
+router.post('/editarperfil', clientesController.editProfile);
 router.post('/nuevocliente', clientesController.registerNewClient);
-router.post('/login', userFunctions.loginCLiente);
+router.post('/login', usuariosController.login);
 
 
 
 
 
-router.post('/email', userFunctions.sendEmail)
+router.post('/finrecuperacion', usuariosController.recoverPassword)
 
 //Ventas
 router.get('/compra', salesFunctions.verificarUsuario);
-router.post('/finalizarcompra', salesFunctions.finalizarCompra);
+router.post('/finalizarcompra', ventasController.registerSale);
 
 //Productos
 router.get('/catalogo', productController.showCatalogue);
 
 //------------------Funciones de administrador------------------//
 
-router.get('/indexadmin', userFunctions.tokenVerification, adminFunctions.renderAdminView);
+router.get('/indexadmin', usuariosController.tokenVerification, vendedoresController.viewSellerProfile);
 
 router.get('/datatableproductos', productController.listProducts);
 router.get('/eliminarproducto/:id', productController.deleteProduct);
@@ -50,9 +52,9 @@ router.get('/habilitado/:id', productController.updateState);
 router.post('/actualizarproducto', productController.updateProductData);
 router.post('/nuevoproducto', productController.registerNewProduct);
 
-router.get('/datatableclientes', adminFunctions.listClients);
-router.get('/eliminarcliente/:id', adminFunctions.deleteClient);
-router.post('/actualizarcliente', adminFunctions.updateClientData);
+router.get('/datatableclientes', clientesController.listClients);
+router.get('/eliminarcliente/:id', clientesController.deleteClient);
+router.post('/actualizarcliente', clientesController.updateClientInfo);
 
 router.get('/datatablevendedores', vendedoresController.listSellers);
 router.get('/registrovendedor', vendedoresController.renderSignupForm);
@@ -63,7 +65,7 @@ router.post('/actualizarvendedor', vendedoresController.updateSellerInfo);
 router.get('/datatableventas', adminFunctions.listSales);
 router.get('/registroventas', adminFunctions.renderSaleForm);
 router.get('/eliminarventa/:id', adminFunctions.deleteSale);
-router.post('/finalizarventa', adminFunctions.finishSale);
+router.post('/finalizarventa', vendedoresController.registerSale);
 
 
 //Otros

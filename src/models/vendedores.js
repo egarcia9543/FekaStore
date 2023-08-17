@@ -10,7 +10,7 @@ const schemaVendedor = new mongoose.Schema({
         required: true,
         unique: true
     },
-    correo: {
+    email: {
         type: String,
         required: true,
     },

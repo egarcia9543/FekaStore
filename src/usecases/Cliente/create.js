@@ -39,6 +39,6 @@ exports.createNewClient = async (clientInfo) => {
         'Bienvenido a la tienda en línea más top de todo el mundo'
         )
         
-    const token = await jwt.sign({ id: client._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
+    const token = jwt.sign({ id: client._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
     return { token };
 }

@@ -3,21 +3,7 @@ const usuarios = require('../models/usuarios');
 const vendedor = require('../models/vendedores');
 const cliente = require('../models/clientes');
 const ventas = require('../models/ventas');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-exports.renderAdminView = async (req, res) => {
-    const vendedorLogueado = await vendedor.findById({'_id': req.id})
-    if (!vendedorLogueado){
-        return res.json({
-            Error: 'No tienes permiso'
-        })
-    }
-    res.render('admin/index', {
-        'vendedor': vendedorLogueado
-    });
-};
-
 
 //---------Funciones CRUD ventas------------//
 exports.listSales = async (req, res) => {
@@ -32,6 +18,7 @@ exports.renderSaleForm = async (req, res) => {
     const vendedorLogueado = await vendedor.findById({'_id': decoded.id});
     const listaProductos = await producto.find();
     const listaClientes = await cliente.find();
+    console.log(vendedorLogueado)
     res.render('admin/registrarVenta', {
         'vendedor': vendedorLogueado,
         'productos': listaProductos,
@@ -106,33 +93,6 @@ exports.deleteSale = async (req, res) => {
 
 
 
-//--------Funciones CRUD clientes-----------//
-exports.listClients = async (req, res) => {
-    let clientes = await cliente.find();
-    res.render('admin/listOfClients', {
-        "clientes": clientes
-    });
-};
 
-exports.updateClientData = async (req, res) => {
-    const infoCliente = await cliente.findById(req.body.idCliente);
-    await cliente.findByIdAndUpdate(req.body.idCliente, {
-        nombre: req.body.nombreCliente,
-        email: req.body.emailCliente,
-        telefono: req.body.telefonoCliente
-    });
-    await usuarios.findOneAndUpdate({email: infoCliente.email}, {
-        email: req.body.emailCliente,
-    })
-    res.redirect('/store/v1/datatableclientes');
-}
-
-exports.deleteClient = async (req, res) => {
-    const infoCliente = await  cliente.findById(req.params.id);
-    await cliente.findByIdAndDelete({'_id': req.params.id});
-    await usuarios.findOneAndDelete({email: infoCliente.email});
-    res.redirect('/store/v1/datatableclientes');
-}
-//-----------------FIN---------------------//
 
 
