@@ -1,102 +1,103 @@
-var shoppingCart = JSON.parse(localStorage.getItem('carrito')) || [];
-let cartContent = document.getElementById('cartBody');
-let totalPriceContainer = document.getElementById('totalPrice');
+let shoppingCart = JSON.parse(localStorage.getItem("carrito")) || [];
+const cartContent = document.getElementById("cartBody");
+const totalPriceContainer = document.getElementById("totalPrice");
 
-
+// Sumar el total de los productos
 function totalCarrito() {
-    const total = shoppingCart.reduce((acc, el) => acc + parseFloat(el.precio) * el.cantidad, 0);
-    
-    if (total === 0) {
-        totalPriceContainer.innerHTML = '';
-    } else {
-        totalPriceContainer.innerHTML = `
+  const total = shoppingCart.reduce((acc, el) => acc + parseFloat(el.precio) * el.cantidad, 0);
+
+  if (total === 0) {
+    totalPriceContainer.innerHTML = "";
+  } else {
+    totalPriceContainer.innerHTML = `
         <div class="d-flex justify-content-evenly align-items-center mt-3 mb-3">
             <p class="text-center fw-bold text-success m-0">Total: $${total.toFixed(2)}</p>
             <a href="/store/v1/compra" class="btn btn-success">Finalizar compra</a>
         </div>`;
-    }
+  }
 }
-    
+
+// Creamos el objeto con los parametros que recibe la funcion
 function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
-    //Creamos el objeto con los parametros que recibe la funcion
-    let producto = {
-        id: id,
-        precio: precio,
-        nombre: nombre,
-        imagen: imagen,
-        stock: stock,
-        cantidad: cantidad
-    }
-    //Se añade al carrito el objeto
-    const productInCart = shoppingCart.find(existing => existing.id === producto.id);
-    if (productInCart) {
-        shoppingCart.map(existing => {
-            if (existing.id === producto.id) {
-                if (existing.cantidad >= stock) {
-                    alert('No hay más stock disponible');
-                } else {
-                    existing.cantidad++;
-                }
-            }
-        });
-    } else {
-        shoppingCart.push(producto);
-    } 
+  const producto = {
+    id: id,
+    precio: precio,
+    nombre: nombre,
+    imagen: imagen,
+    stock: stock,
+    cantidad: cantidad,
+  };
+  // Se añade al carrito el objeto
+  const productInCart = shoppingCart.find((existing) => existing.id === producto.id);
+  if (productInCart) {
+    shoppingCart.map((existing) => {
+      if (existing.id === producto.id) {
+        if (existing.cantidad >= stock) {
+          alert("No hay más stock disponible");
+        } else {
+          existing.cantidad++;
+        }
+      }
+    });
+  } else {
+    shoppingCart.push(producto);
+  }
 
-    saveLocalStorage();
+  saveLocalStorage();
 }
 
+// Funcion para restar la cantidad de productos
 function restar(id) {
-    shoppingCart.find(existing => {
-        if (existing.id === id) {
-            existing.cantidad--;
-            if (existing.cantidad === 0) {
-                eliminarProducto(id);
-            }
-        }
-    });
-    saveLocalStorage();
-    actualizarCarritoDOM();
+  shoppingCart.find((existing) => {
+    if (existing.id === id) {
+      existing.cantidad--;
+      if (existing.cantidad === 0) {
+        eliminarProducto(id);
+      }
+    }
+  });
+  saveLocalStorage();
+  actualizarCarritoDOM();
 }
 
 function sumar(id, stock) {
-    shoppingCart.find(existing => {
-        if (existing.id === id) {
-            if (existing.cantidad < stock) {
-                existing.cantidad++;
-            } else {
-                alert('No hay más stock disponible');
-            }
-        }
-    });
-    saveLocalStorage();
-    actualizarCarritoDOM();
+  shoppingCart.find((existing) => {
+    if (existing.id === id) {
+      if (existing.cantidad < stock) {
+        existing.cantidad++;
+      } else {
+        alert("No hay más stock disponible");
+      }
+    }
+  });
+  saveLocalStorage();
+  actualizarCarritoDOM();
 }
 
 function saveLocalStorage() {
-    localStorage.setItem('carrito', JSON.stringify(shoppingCart));
+  localStorage.setItem("carrito", JSON.stringify(shoppingCart));
 }
 
 function eliminarProducto(id) {
-    //Eliminar del carrito
-    shoppingCart = shoppingCart.filter(producto => producto.id != id);
-    //Eliminar del DOM
-    let productDetail = document.getElementById(id);
-    productDetail.remove();
+  // Eliminar del carrito
+  shoppingCart = shoppingCart.filter((producto) => producto.id != id);
+  // Eliminar del DOM
+  const productDetail = document.getElementById(id);
+  productDetail.remove();
 
-    totalCarrito();
-    saveLocalStorage();
+  totalCarrito();
+  saveLocalStorage();
 }
 
 function actualizarCarritoDOM() {
-    // Limpiar el contenido del carrito antes de actualizarlo
-    cartContent.innerHTML = '';
+  // Limpiar el contenido del carrito antes de actualizarlo
+  cartContent.innerHTML = "";
 
-    shoppingCart.forEach(producto => {
-        let productDetail = document.createElement('div');
-        productDetail.setAttribute('id', producto.id);
-        productDetail.classList.add('d-flex', 'justify-content-center', 'align-items-center', 'mb-3');
-        productDetail.innerHTML = `
+  shoppingCart.forEach((producto) => {
+    const productDetail = document.createElement("div");
+    productDetail.setAttribute("id", producto.id);
+    productDetail.classList.add("d-flex", "justify-content-center", "align-items-center", "mb-3");
+    productDetail.innerHTML = `
         <div class="d-flex align-items-center">
             <div>
                 <img src="${producto.imagen}${producto.nombre}" class="imagenCarrito rounded">
@@ -119,14 +120,14 @@ function actualizarCarritoDOM() {
             </div>
         </div>
     `;
-        cartContent.appendChild(productDetail);
-    });
-    totalCarrito();
+    cartContent.appendChild(productDetail);
+  });
+  totalCarrito();
 }
 
 function verDetalles(id, precio, nombre, imagen, descripcion, stock) {
-    let details = document.getElementById('details');
-    details.innerHTML = `
+  const details = document.getElementById("details");
+  details.innerHTML = `
     <div class="d-flex justify-content-center w-50">
         <img src="${imagen}${nombre}" class="rounded img-fluid object-fit-cover">
     </div>
@@ -151,8 +152,8 @@ function verDetalles(id, precio, nombre, imagen, descripcion, stock) {
     </div>
     `;
 
-    let footer = document.getElementById('modalFooter');
-    footer.innerHTML = `
+  const footer = document.getElementById("modalFooter");
+  footer.innerHTML = `
     <button type="button" class="btn btn-primary" onclick="agregarAlCarrito('${id}', '${precio}', '${nombre}', '${imagen}', '${stock}', 1)">Agregar al Carrito</button>
     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
     `;

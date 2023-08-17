@@ -1,13 +1,13 @@
-let contenedorProductos = document.getElementById('contenidoCheckout');
-let totalCheckout = document.getElementById('totalAPagar');
-let shoppingCart = JSON.parse(localStorage.getItem('carrito')) || [];
+const contenedorProductos = document.getElementById("contenidoCheckout");
+const totalCheckout = document.getElementById("totalAPagar");
+const shoppingCart = JSON.parse(localStorage.getItem("carrito")) || [];
 
 function renderProductos() {
-    shoppingCart.forEach(producto => {
-        let productDetail = document.createElement('div');
-        productDetail.setAttribute('id', producto.id);
-        productDetail.classList.add('d-flex', 'justify-content-center', 'align-items-center', 'mb-3');
-        productDetail.innerHTML = `
+  shoppingCart.forEach((producto) => {
+    const productDetail = document.createElement("div");
+    productDetail.setAttribute("id", producto.id);
+    productDetail.classList.add("d-flex", "justify-content-center", "align-items-center", "mb-3");
+    productDetail.innerHTML = `
                 <div class="d-flex align-items-center">
                     <div>
                         <img src="${producto.imagen}${producto.nombre}" class="imagenCarrito rounded">
@@ -25,25 +25,24 @@ function renderProductos() {
                     </div>
                 </div>
             `;
-        contenidoCheckout.appendChild(productDetail);
-    });
-    precioTotal();
-    
+    contenedorProductos.appendChild(productDetail);
+  });
+  precioTotal();
 }
 
 
-let subtotalContenedor = document.getElementById('datosCompra');
+const subtotalContenedor = document.getElementById("datosCompra");
 
 function precioTotal() {
-    let total = 0;
-    shoppingCart.forEach(producto => {
-        total += producto.precio * producto.cantidad;
-    });
-    totalCheckout.innerHTML = `<input class="m-1 form-control form-control-xs text-center" name="subtotal" value="$${total.toFixed(2)}" readonly>`;
-    let subtotal = document.createElement('input');
-    subtotal.setAttribute('name', 'subtotalVenta');
-    subtotal.setAttribute('value', total.toFixed(2));
-    subtotal.setAttribute('hidden', true);
-    subtotalContenedor.appendChild(subtotal);
+  let total = 0;
+  shoppingCart.forEach((producto) => {
+    total += producto.precio * producto.cantidad;
+  });
+  totalCheckout.innerHTML = `<input class="m-1 form-control form-control-xs text-center" name="subtotal" value="$${total.toFixed(2)}" readonly>`;
+  const subtotal = document.createElement("input");
+  subtotal.setAttribute("name", "subtotalVenta");
+  subtotal.setAttribute("value", total.toFixed(2));
+  subtotal.setAttribute("hidden", true);
+  subtotalContenedor.appendChild(subtotal);
 }
 

@@ -1,5 +1,5 @@
-const productData = require('../../data/productosData');
+const productData = require("../../data/productosData");
 
 exports.listCatalogue = async () => {
-    return await productData.findEnabled();
-}
+  return await productData.findEnabled();
+};

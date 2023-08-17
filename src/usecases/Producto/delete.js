@@ -1,6 +1,6 @@
-const productData = require('../../data/productosData');
+const productData = require("../../data/productosData");
 
 exports.deleteProduct = async (productId) => {
-    await productData.deleteById(productId);
-    return;
-}
+  await productData.deleteById(productId);
+  return;
+};
