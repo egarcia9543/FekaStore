@@ -120,7 +120,11 @@
 
 </body>
 <script>
-    $('#products').DataTable();
+    $('#products').DataTable( {
+    buttons: [
+        'copy', 'excel', 'pdf'
+    ]
+} );
 
     function llenarDatosModal(id, nombre, email, telefono) {
         idCliente.value = id;
