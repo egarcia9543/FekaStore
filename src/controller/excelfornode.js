@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const producto = require("../models/productos");
 const xl = require("excel4node");
 const path = require("path");

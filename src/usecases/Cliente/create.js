@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const clientData = require("../../data/clientesData");
 const userData = require("../../data/usuariosData");
 const sendEmail = require("../../utils/emailService");

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const userData = require("../../data/usuariosData");
 const clientData = require("../../data/clientesData");
 const sellerData = require("../../data/vendedoresData");

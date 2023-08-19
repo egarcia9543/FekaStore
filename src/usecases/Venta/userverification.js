@@ -1,5 +1,7 @@
+/* eslint-disable no-undef */
 const clientData = require("../../data/clientesData");
 const jwt = require("jsonwebtoken");
+
 
 exports.verifyUser = async (token) => {
   try {

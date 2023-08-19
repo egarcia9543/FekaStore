@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const logger = require("morgan");
 const dotenv = require("dotenv");
 dotenv.config();

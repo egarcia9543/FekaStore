@@ -1,8 +1,8 @@
+/* eslint-disable require-jsdoc */
+/* eslint-disable no-unused-vars */
 let shoppingCart = JSON.parse(localStorage.getItem("carrito")) || [];
 const cartContent = document.getElementById("cartBody");
 const totalPriceContainer = document.getElementById("totalPrice");
-
-// Sumar el total de los productos
 function totalCarrito() {
   const total = shoppingCart.reduce((acc, el) => acc + parseFloat(el.precio) * el.cantidad, 0);
 
@@ -17,7 +17,6 @@ function totalCarrito() {
   }
 }
 
-// Creamos el objeto con los parametros que recibe la funcion
 function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
   const producto = {
     id: id,
@@ -27,7 +26,6 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     stock: stock,
     cantidad: cantidad,
   };
-  // Se añade al carrito el objeto
   const productInCart = shoppingCart.find((existing) => existing.id === producto.id);
   if (productInCart) {
     shoppingCart.map((existing) => {
@@ -46,7 +44,6 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
   saveLocalStorage();
 }
 
-// Funcion para restar la cantidad de productos
 function restar(id) {
   shoppingCart.find((existing) => {
     if (existing.id === id) {
@@ -79,9 +76,7 @@ function saveLocalStorage() {
 }
 
 function eliminarProducto(id) {
-  // Eliminar del carrito
   shoppingCart = shoppingCart.filter((producto) => producto.id != id);
-  // Eliminar del DOM
   const productDetail = document.getElementById(id);
   productDetail.remove();
 
@@ -90,7 +85,6 @@ function eliminarProducto(id) {
 }
 
 function actualizarCarritoDOM() {
-  // Limpiar el contenido del carrito antes de actualizarlo
   cartContent.innerHTML = "";
 
   shoppingCart.forEach((producto) => {

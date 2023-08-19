@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const loginUsecase = require("../usecases/Usuario/login");
 const recoverUsecase = require("../usecases/Usuario/recover");
 const jwt = require("jsonwebtoken");

@@ -8,6 +8,7 @@ const ventasController = require("../controller/ventasController");
 const routeExcel = require("../controller/excelfornode");
 const graphFunctions = require("../controller/graficos");
 
+// eslint-disable-next-line new-cap
 const router = express.Router();
 
 router.get("/index", clientesController.renderLandingPage);

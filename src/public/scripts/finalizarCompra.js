@@ -1,7 +1,9 @@
+/* eslint-disable require-jsdoc */
 const contenedorProductos = document.getElementById("contenidoCheckout");
 const totalCheckout = document.getElementById("totalAPagar");
 const shoppingCart = JSON.parse(localStorage.getItem("carrito")) || [];
 
+// eslint-disable-next-line no-unused-vars
 function renderProductos() {
   shoppingCart.forEach((producto) => {
     const productDetail = document.createElement("div");

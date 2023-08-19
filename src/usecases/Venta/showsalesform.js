@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const productData = require("../../data/productosData");
 const sellerData = require("../../data/vendedoresData");
 const jwt = require("jsonwebtoken");
