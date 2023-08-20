@@ -11,7 +11,7 @@ const graphFunctions = require("../controller/graficos");
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
-router.get("/index", clientesController.renderLandingPage);
+router.get("/", clientesController.renderLandingPage);
 router.get("/registroclientes", clientesController.renderSignupForm);
 router.get("/signin", clientesController.renderLoginForm);
 router.get("/recuperar", clientesController.renderRecoverForm);
