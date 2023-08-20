@@ -95,13 +95,14 @@
     </div>
 
     <script>
-        $('#ventas').DataTable();
-
-
-        function eliminar(id) {
-            let trigger = document.getElementById('eliminarButton');
-            trigger.setAttribute('href', `eliminarventa/${id}`)
-        }
+          $(document).ready(function() {
+    $('#ventas').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
     </script>
 </body>
 

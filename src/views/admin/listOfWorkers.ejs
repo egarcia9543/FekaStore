@@ -103,7 +103,14 @@
 </div>
 
 <script>
-    $('#vendedores').DataTable();
+    $(document).ready(function () {
+        $('#vendedores').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
 
     function llenarDatosModal(id, nombre, documento, email) {
         idVendedor.value = id;
