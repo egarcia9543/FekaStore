@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(cors());
 
 
-app.use("/store/v1/", ruta);
+app.use("/", ruta);
 app.use(logger("dev"));
 
 
