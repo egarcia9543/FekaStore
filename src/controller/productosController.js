@@ -19,7 +19,7 @@ exports.registerNewProduct = async (req, res) => {
       });
     }
 
-    return res.redirect("/store/v1/datatableproductos");
+    return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -72,7 +72,7 @@ exports.updateProductData = async (req, res) => {
         error: resultado.error,
       });
     }
-    return res.redirect("/store/v1/datatableproductos");
+    return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -89,7 +89,7 @@ exports.updateState = async (req, res) => {
         error: resultado.error,
       });
     }
-    return res.redirect("/store/v1/datatableproductos");
+    return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -101,7 +101,7 @@ exports.updateState = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
   try {
     await deleteProductUsecase.deleteProduct(req.params.id);
-    return res.redirect("/store/v1/datatableproductos");
+    return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
     return res.status(500).json({

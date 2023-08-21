@@ -44,7 +44,7 @@ exports.deleteSale = async (req, res) => {
         error: resultado.error,
       });
     }
-    return res.redirect("/store/v1/datatableventas");
+    return res.redirect("/datatableventas");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -77,7 +77,7 @@ exports.userTokenVerification = async (req, res) => {
   try {
     const resultado = await verifyUserUsecase.verifyUser(req.cookies.token);
     if (resultado.error) {
-      return res.redirect("/store/v1/signin");
+      return res.redirect("/signin");
     }
     return res.render("compra", {
       usuario: resultado.cliente,

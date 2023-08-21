@@ -81,7 +81,7 @@ exports.editProfile = async (req, res) => {
         error: "No se pudo actualizar el cliente",
       });
     }
-    return res.redirect("/store/v1/perfil");
+    return res.redirect("/perfil");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -98,7 +98,7 @@ exports.updateClientInfo = async (req, res) => {
         error: "No se pudo actualizar el cliente",
       });
     }
-    return res.redirect("/store/v1/datatableclientes");
+    return res.redirect("/datatableclientes");
   } catch (error) {
     return res.status(500).json({
       error: "Error al actualizar el cliente",
@@ -109,7 +109,7 @@ exports.updateClientInfo = async (req, res) => {
 exports.deleteClient = async (req, res) => {
   try {
     await deleteClientUsecase.deleteClient(req.params.id);
-    return res.redirect("/store/v1/datatableclientes");
+    return res.redirect("/datatableclientes");
   } catch (error) {
     return res.status(500).json({
       error: "Error al eliminar el cliente",

@@ -36,7 +36,7 @@ exports.registerNewSeller = async (req, res) => {
         error: resultado.error,
       });
     }
-    return res.redirect("/store/v1/datatablevendedores");
+    return res.redirect("/datatablevendedores");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -67,7 +67,7 @@ exports.updateSellerInfo = async (req, res) => {
         error: "Error al actualizar el vendedor",
       });
     }
-    return res.redirect("/store/v1/datatablevendedores");
+    return res.redirect("/datatablevendedores");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -79,7 +79,7 @@ exports.updateSellerInfo = async (req, res) => {
 exports.deleteSeller = async (req, res) => {
   try {
     await deleteSelerUsecase.deleteSeller(req.params.id);
-    return res.redirect("/store/v1/datatablevendedores");
+    return res.redirect("/datatablevendedores");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -96,7 +96,7 @@ exports.registerSale = async (req, res) => {
         error: resultado.error,
       });
     }
-    return res.redirect("/store/v1/datatableventas");
+    return res.redirect("/datatableventas");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
