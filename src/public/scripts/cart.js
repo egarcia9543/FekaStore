@@ -12,7 +12,7 @@ function totalCarrito() {
     totalPriceContainer.innerHTML = `
         <div class="d-flex justify-content-evenly align-items-center mt-3 mb-3">
             <p class="text-center fw-bold text-success m-0">Total: $${total.toFixed(2)}</p>
-            <a href="/store/v1/compra" class="btn btn-success">Finalizar compra</a>
+            <a href="/compra" class="btn btn-success">Finalizar compra</a>
         </div>`;
   }
 }

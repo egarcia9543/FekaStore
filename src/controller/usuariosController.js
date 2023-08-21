@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = async (req, res) => {
-  res.clearCookie("token").redirect("index");
+  res.clearCookie("token").redirect("/");
 };
 
 exports.tokenVerification = async (req, res, next) => {
