@@ -24,8 +24,8 @@ exports.registerNewClient = async (req, res) => {
   try {
     const {token, error} = await createClientUsecae.createNewClient(req.body);
     if (error) {
-      return res.status(400).json({
-        error: error.message,
+      return res.render("signup", {
+        error: error,
       });
     }
     return res.cookie("token", token).redirect("perfil");

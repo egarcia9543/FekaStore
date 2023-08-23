@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-const productData = require("../../data/productosData");
-const sellerData = require("../../data/vendedoresData");
+const productData = require("../../data/productos.data");
+const sellerData = require("../../data/vendedores.data");
 const jwt = require("jsonwebtoken");
 
 exports.generateForm = async (token) => {

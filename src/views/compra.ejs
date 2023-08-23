@@ -10,7 +10,7 @@
 
 </head>
 
-<body onload="renderProductos()">
+<body onload="renderProductos()" id="body">
     <div class="container mt-5 mb-5">
         <div class="row">
             <!-- Formulario -->
@@ -24,17 +24,17 @@
                                 <input type="text" hidden id="listaDeProductos" name="listaDeProductos">
                                 <div class="col-md-6">
                                     <label for="nombreEnvio" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" name="nombreEnvio" id="nombreEnvio" value="<%= usuario.nombre %>" required>
+                                    <input type="text" class="form-control" name="nombreEnvio" id="nombreEnvio" value="<%= usuario.nombre %>" required readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="telefonoEnvio" class="form-label">Celular</label>
-                                    <input type="text" class="form-control" name="telefonoEnvio" id="telefonoEnvio" value="<%= usuario.telefono %>" required>
+                                    <input type="tel" class="form-control" name="telefonoEnvio" id="telefonoEnvio" value="<%= usuario.telefono %>" required readonly>
                                 </div>
                             </div>
                             <!-- Correo electrónico -->
                             <div class="mb-3" id="datosCompra">
                                 <label for="emailEnvio" class="form-label">Correo electrónico</label>
-                                <input type="emailEnvio" class="form-control" id="emailEnvio" name="emailEnvio" value="<%= usuario.email %>" required>
+                                <input type="email" class="form-control" id="emailEnvio" name="emailEnvio" value="<%= usuario.email %>" required readonly>
                             </div>
                             <!-- Dirección de envío -->
                             <div class="mb-3">
@@ -70,13 +70,13 @@
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', { foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(mapa);
     
         let marcador = L.marker([<%= usuario.ubicacion.centro %>]).addTo(mapa);
+        function guardarInfo(){
+            const carrito = localStorage.getItem('carrito');
+            let EnviarCarrito = document.getElementById('listaDeProductos').value = carrito;
+        }
     </script>
 <script src="/scripts/finalizarCompra.js"></script>
 <script>
-    function guardarInfo(){
-        const carrito = localStorage.getItem('carrito');
-        let EnviarCarrito = document.getElementById('listaDeProductos').value = carrito;
-    }
 </script>
 </body>
 

@@ -1,4 +1,4 @@
-const productData = require("../../data/productosData");
+const productData = require("../../data/productos.data");
 
 exports.changeState = async (productId) => {
   const producto = await productData.findById(productId);

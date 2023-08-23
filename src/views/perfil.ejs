@@ -105,6 +105,8 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="text center" id="reminder">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -124,19 +126,19 @@
                             <input type="text" name="idCliente" hidden id="idCliente">
                             <div class="form-group mb-3">
                                 <label for="nombreCliente">Nombre:</label>
-                                <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
+                                <input type="text" name="nombreCliente" class="form-control" id="nombreCliente" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="emailCliente">Email:</label>
-                                <input type="text" name="emailCliente" class="form-control" id="emailCliente">
+                                <input type="email" name="emailCliente" class="form-control" id="emailCliente">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="telefonoCliente">Telefono:</label>
-                                <input type="text" name="telefonoCliente" class="form-control" id="telefonoCliente">
+                                <input type="tel" name="telefonoCliente" class="form-control" id="telefonoCliente" pattern="[0-9]{7}|[0-9]{10}">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="newPassword">Contraseña:</label>
-                                <input type="password" name="newPassword" class="form-control" id="newPassword">
+                                <input type="password" name="newPassword" class="form-control" id="newPassword" minlength="8">
                             </div>
                             <button type="submit" class="btn btn-primary">Enviar</button>
                         </form>
@@ -155,6 +157,15 @@
                 nombreCliente.value = nombre;
                 emailCliente.value = email;
                 telefonoCliente.value = telefono;
+            }
+
+            const reminder = document.getElementById('reminder');
+            let cart = JSON.parse(localStorage.getItem('carrito'));
+            if (cart.length > 0) {
+                reminder.innerHTML = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Tienes productos en el carrito</strong>, termina tu compra <a href="/compra">aquí</a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>`;
             }
         </script>
 </body>

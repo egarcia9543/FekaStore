@@ -14,14 +14,24 @@
             <div class="col-lg-4 col-md-6">
                 <div class="card mt-5">
                     <div class="card-body">
-                        <form method="post" action="finrecuperacion">
-                                <input type="hidden" class="form-control" name="asunto" value="Recupera tu contraseña">
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Introduce tu correo electrónico</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" name="emailAddress">
+                        <% if (locals.error) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <%= locals.error %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                             </div>
-                            <button type="submit" class="btn btn-primary">Recuperar</button>
-                        </form>
+                            <% } %>
+                                <form method="post" action="finrecuperacion">
+                                    <input type="hidden" class="form-control" name="asunto"
+                                        value="Recupera tu contraseña">
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Introduce tu correo
+                                            electrónico</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            name="emailAddress">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Recuperar</button>
+                                </form>
                     </div>
                 </div>
             </div>

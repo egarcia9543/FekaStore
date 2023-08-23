@@ -2,9 +2,27 @@
 const contenedorProductos = document.getElementById("contenidoCheckout");
 const totalCheckout = document.getElementById("totalAPagar");
 const shoppingCart = JSON.parse(localStorage.getItem("carrito")) || [];
+const body = document.getElementById('body');
 
 // eslint-disable-next-line no-unused-vars
 function renderProductos() {
+  if (shoppingCart.length === 0) {
+    body.innerHTML = `
+        <div class="container mt-5">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="text-center">No hay productos en el carrito</h4>
+            </div>
+            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+              <img src="/imgs/empty.gif" class="img-fluid mt-3 mb-3" alt="Carrito vacío">
+              <a href="/catalogo" class="btn btn-success mt-5">Volver al catálogo</a>
+            </div>
+          </div>
+        </div>
+        `;
+
+    return;
+  }
   shoppingCart.forEach((producto) => {
     const productDetail = document.createElement("div");
     productDetail.setAttribute("id", producto.id);

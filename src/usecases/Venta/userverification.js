@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const clientData = require("../../data/clientesData");
+const clientData = require("../../data/clientes.data");
 const jwt = require("jsonwebtoken");
 
 

@@ -10,9 +10,15 @@
 <body>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-6 col-md-6">
                 <div class="card mt-5">
                     <div class="card-body">
+                        <% if (locals.error) { %>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <%= locals.error %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <% } %>
                         <h3 class="card-title text-center mb-4">Inicio de Sesión</h3>
                         <form action="login" method="post">
                             <div class="">

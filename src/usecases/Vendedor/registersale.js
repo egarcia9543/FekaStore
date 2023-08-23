@@ -1,7 +1,7 @@
-const saleData = require("../../data/ventasData");
-const productData = require("../../data/productosData");
-const clientData = require("../../data/clientesData");
-const sellerData = require("../../data/vendedoresData");
+const saleData = require("../../data/ventas.data");
+const productData = require("../../data/productos.data");
+const clientData = require("../../data/clientes.data");
+const sellerData = require("../../data/vendedores.data");
 
 exports.createSaleRecord = async (saleInfo) => {
   const {productosVenta, subtotal, fechaVenta, impuesto, totalVenta, cliente, vendedor} = saleInfo;

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
-const userData = require("../../data/usuariosData");
-const clientData = require("../../data/clientesData");
-const sellerData = require("../../data/vendedoresData");
+const userData = require("../../data/usuarios.data");
+const clientData = require("../../data/clientes.data");
+const sellerData = require("../../data/vendedores.data");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 

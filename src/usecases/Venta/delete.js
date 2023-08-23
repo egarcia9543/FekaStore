@@ -1,7 +1,7 @@
-const salesData = require("../../data/ventasData");
-const productData = require("../../data/productosData");
-const sellerData = require("../../data/vendedoresData");
-const clientData = require("../../data/clientesData");
+const salesData = require("../../data/ventas.data");
+const productData = require("../../data/productos.data");
+const sellerData = require("../../data/vendedores.data");
+const clientData = require("../../data/clientes.data");
 
 exports.deleteSale = async (saleId) => {
   const saleDetails = await salesData.findById(saleId);

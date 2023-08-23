@@ -7,7 +7,7 @@ exports.login = async (req, res) => {
   try {
     const resultado = await loginUsecase.loginUser(req.body.emailLogin, req.body.pwdLogin);
     if (resultado.error) {
-      return res.json({
+      return res.render("signin", {
         error: resultado.error,
       });
     }
@@ -49,9 +49,9 @@ exports.recoverPassword = async (req, res) => {
   try {
     const resultado = await recoverUsecase.recoverPassword(req.body.emailAddress);
     if (resultado.error) {
-      return res.json({
+      return res.render("formularioRecuperacion", {
         error: resultado.error,
-      });
+      })
     }
     return res.redirect("signin");
   } catch (error) {

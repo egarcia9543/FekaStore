@@ -1,4 +1,4 @@
-const productData = require("../../data/productosData");
+const productData = require("../../data/productos.data");
 
 exports.updateProduct = async (productInfo) => {
   const {id, referencia, nombre, descripcion, stock, precio} = productInfo;

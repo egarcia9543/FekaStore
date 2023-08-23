@@ -1,5 +1,5 @@
-const sellerData = require("../../data/vendedoresData");
-const userData = require("../../data/usuariosData");
+const sellerData = require("../../data/vendedores.data");
+const userData = require("../../data/usuarios.data");
 
 exports.deleteSeller = async (sellerId) => {
   const seller = await sellerData.findById(sellerId);

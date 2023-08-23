@@ -1,4 +1,4 @@
-const productData = require("../../data/productosData");
+const productData = require("../../data/productos.data");
 
 exports.createNewProduct = async (reqData) => {
   const {referenciaProducto, nombreProducto, descripcionProducto, precioProducto, stockProducto, imagenProducto} = reqData;

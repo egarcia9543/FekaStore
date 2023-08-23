@@ -1,5 +1,5 @@
-const userData = require("../../data/usuariosData");
-const clientData = require("../../data/clientesData");
+const userData = require("../../data/usuarios.data");
+const clientData = require("../../data/clientes.data");
 const sendEmail = require("../../utils/emailService");
 const bcrypt = require("bcrypt");
 

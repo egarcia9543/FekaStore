@@ -5,7 +5,6 @@ const clientesController = require("../controller/clientesController");
 const usuariosController = require("../controller/usuariosController");
 const ventasController = require("../controller/ventasController");
 
-const routeExcel = require("../controller/excelfornode");
 const graphFunctions = require("../controller/graficos");
 
 // eslint-disable-next-line new-cap
@@ -51,7 +50,6 @@ router.get("/datatableventas", ventasController.listSales);
 router.get("/registroventas", ventasController.saleForm);
 router.get("/eliminarventa/:id", ventasController.deleteSale);
 
-router.get("/excel", routeExcel.descargarExcel);
 router.get("/graficos", graphFunctions.renderListGraphs);
 router.get("/cantidadventas", graphFunctions.salesQuantity);
 

@@ -1,5 +1,5 @@
-const clientData = require("../../data/clientesData");
-const salesData = require("../../data/ventasData");
+const clientData = require("../../data/clientes.data");
+const salesData = require("../../data/ventas.data");
 
 exports.getClient = async (id) => {
   const client = await clientData.findById(id);

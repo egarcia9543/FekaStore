@@ -12,15 +12,21 @@
 
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-6 col-md-6">
                 <div class="card mt-5">
                     <div class="card-body">
+                        <% if (locals.error) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <%= locals.error %>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <% } %>
                         <h3 class="card-title text-center mb-4">Formulario de Registro</h3>
                         <form action="nuevocliente" method="post">
                             <div class="mb-3">
                                 <label for="nombreCliente" class="form-label">Nombre:</label>
                                 <input type="text" class="form-control" id="nombreCliente"
-                                    placeholder="Ingresa tu nombre" name="nombreCliente" required>
+                                    placeholder="Ingresa tu nombre" name="nombreCliente" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+">
                             </div>
                             <div class="mb-3">
                                 <label for="emailCliente" class="form-label">Email:</label>
@@ -29,13 +35,13 @@
                             </div>
                             <div class="mb-3">
                                 <label for="telefonoCliente" class="form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="telefonoCliente"
-                                    placeholder="Ingresa tu teléfono" name="telefonoCliente" required>
+                                <input type="tel" class="form-control" id="telefonoCliente"
+                                    placeholder="Ingresa tu teléfono" name="telefonoCliente" required pattern="[0-9]{7}|[0-9]{10}">
                             </div>
                             <div class="mb-3">
                                 <label for="pswdCliente" class="form-label">Contraseña:</label>
                                 <input type="password" class="form-control" id="pswdCliente"
-                                    placeholder="Ingresa tu contraseña" name="pswdCliente" required>
+                                    placeholder="Ingresa tu contraseña" name="pswdCliente" required minlength="8">
                             </div>
                             <div>
                                 <input type="hidden" id="latitudCliente" name="latitudCliente">
@@ -52,7 +58,6 @@
         </div>
     </div>
 
-    <!-- Alerts -->
     <%- include('./partials/indexModals'); %>
 
 </body>

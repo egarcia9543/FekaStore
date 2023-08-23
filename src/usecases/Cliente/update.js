@@ -1,5 +1,5 @@
-const clientData = require("../../data/clientesData");
-const userData = require("../../data/usuariosData");
+const clientData = require("../../data/clientes.data");
+const userData = require("../../data/usuarios.data");
 const bcrypt = require("bcrypt");
 
 exports.updateClient = async (clientInfo) => {
