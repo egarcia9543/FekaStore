@@ -1,8 +1,9 @@
 const sellerData = require("../../data/vendedores.data");
 const userData = require("../../data/usuarios.data");
+const bcrypt = require("bcrypt");
 
 exports.updateSeller = async (sellerInfo) => {
-  const {idVendedor, nombreVendedor, documentoVendedor, correoVendedor} = sellerInfo;
+  const {idVendedor, nombreVendedor, documentoVendedor, correoVendedor, passwordVendedor} = sellerInfo;
 
   const existingSeller = await sellerData.findById(idVendedor);
   if (!existingSeller) {
@@ -15,6 +16,10 @@ exports.updateSeller = async (sellerInfo) => {
       return {error: "El correo ya está registrado"};
     }
   }
+  const documentRegistered = await sellerData.findByDocument(documentoVendedor);
+  if (documentRegistered && documentoVendedor !== existingSeller.documento) {
+    return {error: "El documento ya está registrado"};
+  }
 
   const updatedInfo = {
     nombreCompleto: nombreVendedor,
@@ -22,8 +27,13 @@ exports.updateSeller = async (sellerInfo) => {
     email: correoVendedor,
   };
 
+  if (passwordVendedor) {
+    const passwordEncrypted = await bcrypt.hash(passwordVendedor, 12);
+    updatedInfo.password = passwordEncrypted;
+  }
+
   await sellerData.updateById(idVendedor, updatedInfo);
-  await userData.findByEmailAndUpdate(existingSeller.email, {email: correoVendedor});
+  await userData.findByEmailAndUpdate(existingSeller.email, {email: correoVendedor, password: updatedInfo.password});
 
   return {message: "Vendedor actualizado"};
 };
