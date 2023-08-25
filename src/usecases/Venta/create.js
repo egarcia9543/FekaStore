@@ -16,6 +16,7 @@ exports.createSaleRecord = async (saleInfo) => {
       nombre: product.nombre,
       imagen: product.imagen,
       cantidad: product.cantidad,
+      talla: product.talla,
     });
   });
   for (let i = 0; i < products.length; i++) {
@@ -55,7 +56,7 @@ exports.createSaleRecord = async (saleInfo) => {
       "Compra realizada",
       `Gracias por comprar en nuestra tienda
         Estos son los productos que compraste:
-            ${cart.map((product) => `${product.nombre} - ${product.cantidad} unidades`)}
+            ${cart.map((product) => `${product.nombre} Talla ${product.talla} - ${product.cantidad} unidades`)}
         El total de tu compra es: ${parseFloat((subtotalVenta * 1.19).toFixed(2))}`,
   );
 

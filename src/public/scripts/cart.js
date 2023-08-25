@@ -43,34 +43,38 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
     });
     return;
   }
-  Swal.fire({
-    icon: "success",
-    title: "Producto agregado al carrito",
-    text: "El producto " + nombre + " ha sido agregado al carrito.",
-    confirmButtonText: "Aceptar",
-  });
-  const producto = {
-    id: id,
-    precio: precio,
-    nombre: nombre,
-    imagen: imagen,
-    stock: stock,
-    cantidad: cantidad,
-    talla: tallaSeleccionada,
-  };
-  const productInCart = shoppingCart.find((existing) => existing.id === producto.id);
+
+  const productInCart = shoppingCart.find((existing) => existing.id === id && existing.talla === tallaSeleccionada);
+
   if (productInCart) {
-    shoppingCart.map((existing) => {
-      if (existing.id === producto.id) {
-        if (existing.cantidad >= stock) {
-          alert("No hay más stock disponible");
-        } else {
-          existing.cantidad++;
-        }
-      }
-    });
+    if (productInCart.cantidad >= stock) {
+      alert("No hay más stock disponible");
+    } else {
+      productInCart.cantidad++;
+      Swal.fire({
+        icon: "success",
+        title: "Cantidad actualizada en el carrito",
+        text: `La cantidad del producto ${nombre} (talla: ${tallaSeleccionada}) ha sido actualizada en el carrito.`,
+        confirmButtonText: "Aceptar",
+      });
+    }
   } else {
-    shoppingCart.push(producto);
+    shoppingCart.push({
+      id: id,
+      precio: precio,
+      nombre: nombre,
+      imagen: imagen,
+      stock: stock,
+      cantidad: cantidad,
+      talla: tallaSeleccionada,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Producto agregado al carrito",
+      text: `El producto ${nombre} (talla: ${tallaSeleccionada}) ha sido agregado al carrito.`,
+      confirmButtonText: "Aceptar",
+    });
   }
 
   saveLocalStorage();
