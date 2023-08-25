@@ -19,7 +19,7 @@ exports.updateClient = async (clientInfo) => {
   if (emailCliente !== existingClient.email) {
     const userRegistered = await userData.findByEmail(emailCliente);
     if (userRegistered) {
-      return {error: "El correo ya está registrado en la colección de usuarios"};
+      return {error: "Este correo ya está registrado"};
     }
 
     await userData.findByEmailAndUpdate(existingClient.email, {email: emailCliente});
@@ -30,7 +30,7 @@ exports.updateClient = async (clientInfo) => {
     updatedClient.password = passwordEncrypted;
   }
 
-  await clientData.updateById(idCliente, updatedClient);
+  const clientUpdated = await clientData.updateById(idCliente, updatedClient);
   await userData.findByEmailAndUpdate(existingClient.email, {
     email: emailCliente,
     password: updatedClient.password,

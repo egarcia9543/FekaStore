@@ -4,6 +4,8 @@ const catalogueProductUsecase = require("../usecases/Producto/catalogue");
 const updateProductUsecase = require("../usecases/Producto/update");
 const updateStateProductUsecase = require("../usecases/Producto/state");
 const deleteProductUsecase = require("../usecases/Producto/delete");
+const getuser = require("../usecases/Usuario/getinfo");
+const getseller = require("../usecases/Vendedor/viewprofile");
 
 exports.renderProductsForm = async (req, res) => {
   res.render("registroProductos");
@@ -12,17 +14,15 @@ exports.renderProductsForm = async (req, res) => {
 exports.registerNewProduct = async (req, res) => {
   try {
     const resultado = await createProductUsecase.createNewProduct(req.body);
-
     if (resultado.error) {
-      return res.status(400).json({
+      return res.render("error400", {
         error: resultado.error,
       });
     }
-
     return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    return res.render("error500", {
       error: "Error al registrar el producto",
     });
   }
@@ -35,7 +35,8 @@ exports.listProducts = async (req, res) => {
       "productos": resultado,
     });
   } catch (error) {
-    return res.status(500).json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al listar los productos",
     });
   }
@@ -58,7 +59,8 @@ exports.showCatalogue = async (req, res) => {
       paginaActual,
     });
   } catch (error) {
-    return res.status(500).json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al listar los productos",
     });
   }
@@ -68,14 +70,14 @@ exports.updateProductData = async (req, res) => {
   try {
     const resultado = await updateProductUsecase.updateProduct(req.body);
     if (resultado.error) {
-      return res.status(400).json({
+      return res.render("error400", {
         error: resultado.error,
       });
     }
     return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    return res.render("error500", {
       error: "Error al actualizar el producto",
     });
   }
@@ -85,14 +87,14 @@ exports.updateState = async (req, res) => {
   try {
     const resultado = await updateStateProductUsecase.changeState(req.params.id);
     if (resultado.error) {
-      return res.status(400).json({
+      return res.render("error400", {
         error: resultado.error,
       });
     }
     return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    return res.render("error500", {
       error: "Error al actualizar el estado del producto",
     });
   }
@@ -104,7 +106,7 @@ exports.deleteProduct = async (req, res) => {
     return res.redirect("/datatableproductos");
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    return res.render("error500", {
       error: "Error al eliminar el producto",
     });
   }

@@ -20,3 +20,9 @@ img.imagenCarrito {
 a {
     text-decoration: none;
 }
+
+#img-product-details {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

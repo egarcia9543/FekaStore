@@ -8,6 +8,10 @@ exports.findByEmail = async (email) => {
   return await usuarios.findOne({email});
 };
 
+exports.findById = async (id) => {
+  return await usuarios.findById(id);
+};
+
 exports.findByEmailAndUpdate = async (email, userData) => {
   return await usuarios.findOneAndUpdate({email}, userData);
 };

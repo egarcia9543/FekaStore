@@ -28,7 +28,7 @@ router.post("/finalizarcompra", ventasController.registerSale);
 
 router.get("/catalogo", productController.showCatalogue);
 
-router.get("/datatableproductos", productController.listProducts);
+router.get("/datatableproductos", usuariosController.tokenVerification, productController.listProducts);
 router.get("/eliminarproducto/:id", productController.deleteProduct);
 router.get("/registroproductos", productController.renderProductsForm);
 router.get("/habilitado/:id", productController.updateState);

@@ -30,7 +30,8 @@ exports.registerNewClient = async (req, res) => {
     }
     return res.cookie("token", token).redirect("perfil");
   } catch (error) {
-    return res.status(500).json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al registrar el cliente",
     });
   }
@@ -40,17 +41,18 @@ exports.listClients = async (req, res) => {
   try {
     const resultado = await listClientUsecase.listAllClients();
     if (!resultado) {
-      return res.status(404).json({
-        error: "No hay clientes registrados",
-      });
+      return res.render("error404", {
+        error: "No hay clientes registrados"
+        });
     }
     return res.render("admin/listOfClients", {
       "clientes": resultado,
     });
   } catch (error) {
-    return res.status(500).json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al listar los clientes",
-    });
+      });
   }
 };
 
@@ -58,16 +60,17 @@ exports.viewProfile = async (req, res) => {
   try {
     const resultado = await viewProfileUsecase.getClient(req.id);
     if (resultado.error) {
-      return res.status(404).json({
-        error: "No se encontró este perfil",
-      });
+      return res.clearCookie("token").status(404).render("error404", {
+        error: resultado.error,
+      })
     }
     return res.render("perfil", {
       "perfilCliente": resultado.client,
       "ventas": resultado.sales,
     });
   } catch (error) {
-    return res.status(500).json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al listar el perfil",
     });
   }
@@ -76,15 +79,14 @@ exports.viewProfile = async (req, res) => {
 exports.editProfile = async (req, res) => {
   try {
     const resultado = await updateClientUsecase.updateClient(req.body);
-    if (!resultado) {
-      return res.status(400).json({
-        error: "No se pudo actualizar el cliente",
+    if (resultado.error) {
+      return res.render("error400", {
+        error: resultado.error,
       });
     }
-    return res.redirect("/perfil");
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    return res.render("error500", {
       error: "Error al actualizar el cliente",
     });
   }
@@ -93,14 +95,15 @@ exports.editProfile = async (req, res) => {
 exports.updateClientInfo = async (req, res) => {
   try {
     const resultado = await updateClientUsecase.updateClient(req.body);
-    if (!resultado) {
-      return res.status(400).json({
-        error: "No se pudo actualizar el cliente",
+    if (resultado.error) {
+      return res.render("error400", {
+        error: resultado.error,
       });
     }
     return res.redirect("/datatableclientes");
   } catch (error) {
-    return res.status(500).json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al actualizar el cliente",
     });
   }
@@ -111,7 +114,8 @@ exports.deleteClient = async (req, res) => {
     await deleteClientUsecase.deleteClient(req.params.id);
     return res.redirect("/datatableclientes");
   } catch (error) {
-    return res.status(500).json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al eliminar el cliente",
     });
   }

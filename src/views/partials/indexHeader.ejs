@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Feka's Store</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <button class="navbar-toggler" aria-label="Menu hamburguesa" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mynavbar">
@@ -13,8 +13,8 @@
                     <a class="nav-link" href="catalogo">Productos</a>
                 </li>
             </ul>
-            <a class="btn btn-outline-light me-2" href="perfil"><i class="bi bi-person-fill"></i></a>
-            <button class="btn btn-outline-light me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito" aria-controls="offcanvasCarrito" onclick="actualizarCarritoDOM()"><i class="bi bi-cart"></i></button>
+            <a class="btn btn-outline-light me-2" href="perfil" aria-label="Boton para ingresar al perfil"><i class="bi bi-person-fill"></i></a>
+            <button class="btn btn-outline-light me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito" aria-label="Boton para ver el carrito" aria-controls="offcanvasCarrito" onclick="actualizarCarritoDOM()"><i class="bi bi-cart"></i></button>
         </div>
     </div>
 </nav>

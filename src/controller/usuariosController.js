@@ -13,7 +13,8 @@ exports.login = async (req, res) => {
     }
     return res.cookie("token", resultado.token).redirect(resultado.path);
   } catch (error) {
-    return res.json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al iniciar sesión",
     });
   }
@@ -32,8 +33,8 @@ exports.tokenVerification = async (req, res, next) => {
     }
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        return res.status(401).json({
-          message: "Token inválido",
+        return res.clearCookie("token").status(401).render("error401", {
+          error: "Token inválido",
         });
       }
       req.id = user.id;
@@ -41,7 +42,10 @@ exports.tokenVerification = async (req, res, next) => {
       return;
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return res.render("error500", {
+      error: "Error al verificar el token",
+    });
   }
 };
 
@@ -51,11 +55,12 @@ exports.recoverPassword = async (req, res) => {
     if (resultado.error) {
       return res.render("formularioRecuperacion", {
         error: resultado.error,
-      })
+      });
     }
     return res.redirect("signin");
   } catch (error) {
-    return res.json({
+    console.error(error);
+    return res.render("error500", {
       error: "Error al recuperar contraseña",
     });
   }

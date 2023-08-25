@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 const nodemailer = require("nodemailer");
-
+// Esta función se encarga de enviar un correo electrónico por medio de nodemailer
+// recibe como parámetros el correo electrónico del usuario, el asunto y el texto del correo.
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {

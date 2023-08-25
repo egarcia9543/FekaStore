@@ -2,7 +2,7 @@
 const contenedorProductos = document.getElementById("contenidoCheckout");
 const totalCheckout = document.getElementById("totalAPagar");
 const shoppingCart = JSON.parse(localStorage.getItem("carrito")) || [];
-const body = document.getElementById('body');
+const body = document.getElementById("body");
 
 // eslint-disable-next-line no-unused-vars
 function renderProductos() {
@@ -35,6 +35,7 @@ function renderProductos() {
                     <div>
                         <div class="d-flex justify-content-center flex-column align-items-center">
                             <p class="m-0 fw-bold" id="${producto.id}">${producto.nombre}</p>
+                            <p class="m-0">Talla: ${(producto.talla)}</p>
                             <p class="m-0 fw-bold text-success">$${(producto.precio * producto.cantidad).toFixed(2)}</p>
                         </div>    
                         <div class="d-flex flex-column justify-content-center align-items-center">

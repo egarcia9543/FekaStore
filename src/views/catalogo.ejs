@@ -3,6 +3,7 @@
 
 <head>
     <%- include('partials/indexHead') %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -14,20 +15,16 @@
             <div class="d-flex flex-wrap justify-content-center">
                 <% productos.forEach(producto=> { %>
                     <div class="card m-3 productCard" style="width: 17rem;">
-                        <img src="<%= producto.imagen%><%= producto.nombre%>" class="card-img-top object-fit-cover">
+                        <img src="<%= producto.imagen%><%= producto.nombre%>" class="card-img-top object-fit-cover" alt="Imagen del producto <%= producto.nombre %>">
                         <div class="card-body d-flex justify-content-between">
                             <div class="d-flex flex-column justify-content-center">
                                 <p class="card-text text-success fw-bold">$<%= producto.precio %></p>
                                 <p class="card-title fw-bold"><%= producto.nombre %></p>
                             </div>
                             <div class="d-flex align-items-center">
-                                <button class="btn btn-dark me-2" data-bs-toggle="modal" data-bs-target="#detailModal"
-                                    onclick="verDetalles(`<%=producto._id %>`, `<%=producto.precio %>`, `<%=producto.nombre %>`, `<%=producto.imagen %>`, `<%=producto.descripcion %>`, `<%=producto.stock %>`)">
+                                <button class="btn btn-dark me-2" data-bs-toggle="modal" data-bs-target="#detailModal" aria-label="Boton para ver información del producto"
+                                    onclick="verDetalles(`<%=producto._id %>`, `<%=producto.precio %>`, `<%=producto.nombre %>`, `<%=producto.imagen %>`, `<%=producto.descripcion %>`, `<%=producto.stock %>`, `<%=producto.referencia %>`)">
                                     <i class="bi bi-eye"></i>
-                                </button>
-                                <button class="btn btn-dark" type="submit"
-                                    onclick="agregarAlCarrito(`<%=producto._id %>`, `<%=producto.precio %>`, `<%=producto.nombre %>`, `<%=producto.imagen %>`, `<%=producto.stock %>`, 1)">
-                                    <i class="bi bi-cart"></i>
                                 </button>
                             </div>
                         </div>
@@ -36,7 +33,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-center">
                 <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
+                    <ul class="pagination justify-content-center d-flex flex-wrap">
                         <% for (let i = 1; i <= paginasTotales; i++) { %>
                             <li class="page-item <% if (i === paginaActual) { %>active<% } %>">
                                 <a class="page-link" href="?page=<%= i %>"><%= i %></a>

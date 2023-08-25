@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 exports.loginUser = async (email, password) => {
   let token;
   let path;
+  let sudo;
   const user = await userData.findByEmail(email);
   if (!email || !password) {
     return {error: "Faltan datos"};
@@ -32,9 +33,20 @@ exports.loginUser = async (email, password) => {
     if (passwordCorrect) {
       token = jwt.sign({id: seller._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRE});
       path = "indexadmin";
+      sudo = false;
+    } else {
+      return {error: "Contraseña incorrecta"};
+    }
+  } else if (user.rol == "admin") {
+    const seller = await sellerData.findByEmail(email);
+    const passwordCorrect = await bcrypt.compare(password, user.password);
+    if (passwordCorrect) {
+      token = jwt.sign({id: seller._id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRE});
+      path = "indexadmin";
+      sudo = true;
     } else {
       return {error: "Contraseña incorrecta"};
     }
   }
-  return {token, path};
+  return {token, path, sudo};
 };
