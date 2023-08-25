@@ -100,6 +100,7 @@ exports.editProfile = async (req, res) => {
         error: resultado.error,
       });
     }
+    return res.redirect("perfil");
   } catch (error) {
     console.error(error);
     return res.render("error500", {
