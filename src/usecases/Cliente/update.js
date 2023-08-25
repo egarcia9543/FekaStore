@@ -30,7 +30,7 @@ exports.updateClient = async (clientInfo) => {
     updatedClient.password = passwordEncrypted;
   }
 
-  const clientUpdated = await clientData.updateById(idCliente, updatedClient);
+  await clientData.updateById(idCliente, updatedClient);
   await userData.findByEmailAndUpdate(existingClient.email, {
     email: emailCliente,
     password: updatedClient.password,

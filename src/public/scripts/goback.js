@@ -1,5 +1,5 @@
 const btnBack = document.getElementById("btnBack");
 
 btnBack.addEventListener("click", () => {
-    window.history.back();
+  window.history.back();
 });

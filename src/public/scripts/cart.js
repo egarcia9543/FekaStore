@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable require-jsdoc */
 /* eslint-disable no-unused-vars */
 
@@ -28,25 +29,25 @@ function agregarAlCarrito(id, precio, nombre, imagen, stock, cantidad) {
   let tallaSeleccionada = null;
 
   tallasRadios.forEach((radio) => {
-      if (radio.checked) {
-          tallaSeleccionada = radio.value;
-      }
+    if (radio.checked) {
+      tallaSeleccionada = radio.value;
+    }
   });
 
   if (!tallaSeleccionada) {
     Swal.fire({
-      icon: 'warning',
-      title: 'Selecciona una talla',
-      text: 'Por favor, selecciona una talla antes de agregar al carrito.',
-      confirmButtonText: 'Aceptar'
-    }); 
+      icon: "warning",
+      title: "Selecciona una talla",
+      text: "Por favor, selecciona una talla antes de agregar al carrito.",
+      confirmButtonText: "Aceptar",
+    });
     return;
   }
   Swal.fire({
-    icon: 'success',
-    title: 'Producto agregado al carrito',
-    text: 'El producto ' + nombre + ' ha sido agregado al carrito.',
-    confirmButtonText: 'Aceptar'
+    icon: "success",
+    title: "Producto agregado al carrito",
+    text: "El producto " + nombre + " ha sido agregado al carrito.",
+    confirmButtonText: "Aceptar",
   });
   const producto = {
     id: id,
@@ -97,11 +98,11 @@ function sumar(id, stock) {
         existing.cantidad++;
       } else {
         Swal.fire({
-          icon: 'warning',
-          title: 'Sin stock',
-          text: 'Este producto no tiene más stock disponible.',
-          confirmButtonText: 'Aceptar'
-        }); 
+          icon: "warning",
+          title: "Sin stock",
+          text: "Este producto no tiene más stock disponible.",
+          confirmButtonText: "Aceptar",
+        });
         return;
       }
     }

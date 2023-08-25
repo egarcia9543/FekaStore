@@ -29,7 +29,7 @@ exports.viewSellerProfile = async (req, res) => {
     if (!resultado) {
       return res.status(401).render("error401", {
         error: "No puedes acceder a este sitio",
-      })
+      });
     }
     return res.render("admin/index", {
       "vendedor": resultado,
@@ -48,7 +48,7 @@ exports.registerNewSeller = async (req, res) => {
     if (resultado.error) {
       return res.render("formularioRegistroVendedor", {
         error: resultado.error,
-        });
+      });
     }
     return res.redirect("/datatablevendedores");
   } catch (error) {

@@ -51,8 +51,8 @@ exports.listClients = async (req, res) => {
     const resultado = await listClientUsecase.listAllClients();
     if (!resultado) {
       return res.render("error404", {
-        error: "No hay clientes registrados"
-        });
+        error: "No hay clientes registrados",
+      });
     }
     return res.render("admin/listOfClients", {
       "clientes": resultado,
@@ -63,7 +63,7 @@ exports.listClients = async (req, res) => {
     console.error(error);
     return res.render("error500", {
       error: "Error al listar los clientes",
-      });
+    });
   }
 };
 
