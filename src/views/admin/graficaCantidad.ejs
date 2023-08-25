@@ -2,19 +2,15 @@
 <html>
 
 <head>
-  <%- include('../partials/indexHead'); %>
+  <%- include('./partials/head'); %>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>
-  <div>
-    <div class="card mb-4">
-      <div class="card-body d-flex justify-content-between">
-        <a class="btn btn-primary" href="indexadmin">Inicio <i class="bi bi-house-fill"></i></a>
-      </div>
-    </div>
-  </div>
-  <div id="chart-container">
+  <header>
+    <%- include('./partials/header'); %>
+  </header>
+  <div id="chart-container" class="container">
 
   </div>
   <script>
@@ -32,7 +28,7 @@
 
         let options = {
           title: 'Gráfico ventas realizadas por cada vendedor',
-          width: 2000,
+          width: 1200,
           height: 800
         };
 

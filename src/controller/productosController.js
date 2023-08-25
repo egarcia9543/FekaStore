@@ -8,7 +8,26 @@ const getuser = require("../usecases/Usuario/getinfo");
 const getseller = require("../usecases/Vendedor/viewprofile");
 
 exports.renderProductsForm = async (req, res) => {
-  res.render("registroProductos");
+  try {
+    const seller = await getseller.getSeller(req.id);
+    if (!seller) {
+      return res.render("error401", {
+        error: "No puedes acceder a este sitio",
+      });
+    }
+    const user = await getuser.getUser(seller.email);
+    if (user.rol !== "admin") {
+      return res.render("error401", {
+        error: "No puedes acceder a este sitio",
+      });
+    }
+    return res.render("registroProductos");
+  } catch (error) {
+    console.error(error);
+    return res.render("error500", {
+      error: "Error al acceder al formulario de registro de productos",
+    });
+  }
 };
 
 exports.registerNewProduct = async (req, res) => {
@@ -30,9 +49,18 @@ exports.registerNewProduct = async (req, res) => {
 
 exports.listProducts = async (req, res) => {
   try {
+    const seller = await getseller.getSeller(req.id);
     const resultado = await listProductUsecase.listAllProducts();
+    if (!seller) {
+      return res.render("error401", {
+        error: "No puedes acceder a este sitio",
+      });
+    }
+    const user = await getuser.getUser(seller.email);
     return res.render("admin/listOfProducts", {
       "productos": resultado,
+      "user": user.rol,
+      "vendedor": seller,
     });
   } catch (error) {
     console.error(error);

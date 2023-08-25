@@ -16,6 +16,10 @@ exports.findByClient = async (clientEmail) => {
   return await ventas.find({cliente: clientEmail});
 };
 
+exports.updateById = async (id, data) => {
+  return await ventas.findByIdAndUpdate(id, data);
+};
+
 exports.deleteById = async (id) => {
   return await ventas.findByIdAndDelete(id);
 };

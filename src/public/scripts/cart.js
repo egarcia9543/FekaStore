@@ -96,7 +96,13 @@ function sumar(id, stock) {
       if (existing.cantidad < stock) {
         existing.cantidad++;
       } else {
-        alert("No hay más stock disponible");
+        Swal.fire({
+          icon: 'warning',
+          title: 'Sin stock',
+          text: 'Este producto no tiene más stock disponible.',
+          confirmButtonText: 'Aceptar'
+        }); 
+        return;
       }
     }
   });

@@ -3,6 +3,8 @@ const listClientUsecase = require("../usecases/Cliente/list");
 const updateClientUsecase = require("../usecases/Cliente/update");
 const deleteClientUsecase = require("../usecases/Cliente/delete");
 const viewProfileUsecase = require("../usecases/Cliente/viewprofile");
+const getuser = require("../usecases/Usuario/getinfo");
+const getseller = require("../usecases/Vendedor/viewprofile");
 
 exports.renderLandingPage = (req, res) => {
   res.render("index");
@@ -39,6 +41,13 @@ exports.registerNewClient = async (req, res) => {
 
 exports.listClients = async (req, res) => {
   try {
+    const seller = await getseller.getSeller(req.id);
+    if (!seller) {
+      return res.render("error401", {
+        error: "No puedes acceder a este sitio",
+      });
+    }
+    const user = await getuser.getUser(seller.email);
     const resultado = await listClientUsecase.listAllClients();
     if (!resultado) {
       return res.render("error404", {
@@ -47,6 +56,8 @@ exports.listClients = async (req, res) => {
     }
     return res.render("admin/listOfClients", {
       "clientes": resultado,
+      "user": user.rol,
+      "vendedor": seller,
     });
   } catch (error) {
     console.error(error);
@@ -59,10 +70,15 @@ exports.listClients = async (req, res) => {
 exports.viewProfile = async (req, res) => {
   try {
     const resultado = await viewProfileUsecase.getClient(req.id);
+    if (resultado.seller) {
+      return res.render("admin/index", {
+        "vendedor": resultado.seller,
+      });
+    }
     if (resultado.error) {
-      return res.clearCookie("token").status(404).render("error404", {
+      return res.render("error400", {
         error: resultado.error,
-      })
+      });
     }
     return res.render("perfil", {
       "perfilCliente": resultado.client,

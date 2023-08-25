@@ -10,132 +10,169 @@
     <header>
         <%- include('./partials/header') %>
     </header>
-    <div class="container mt-4">
-        <table id="productscontainer" class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Teléfono</th>
-                    <th scope="col">Ubicación</th>
-                    <th scope="col">Total Comprado</th>
-                    <th scope="col">Historial de Compras</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% clientes.forEach(cliente=> { %>
+    <% if (user==="admin" ) { %>
+        <div class="container mt-4">
+            <table id="productscontainer" class="table table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            <%= cliente.nombre %>
-                        </td>
-                        <td>
-                            <%= cliente.email %>
-                        </td>
-                        <td>
-                            <%= cliente.telefono %>
-                        </td>
-                        <td>
-                            <%= cliente.ubicacion.centro %>
-                        </td>
-                        <td>
-                            <%= cliente.totalComprado %>
-                        </td>
-                        <td>
-                            <ul> 
-                                <% cliente.historialCompras.forEach(compra => { %>
-                                    <li><%= compra %></li>
-                                <% }); %>
-                            </ul>
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarModal"
-                                onclick="llenarDatosModal(`<%= cliente.id %>`, `<%= cliente.nombre %>`, `<%= cliente.email %>`, `<%= cliente.telefono %>`)"><i
-                                    class="bi bi-pen-fill"></i></button>
-                        </td>
-                        <td class="text-center">
-                            <button class="btn btn-danger" onclick="eliminar(`<%= cliente.id %>`)"
-                                data-bs-toggle="modal" data-bs-target="#modalDelete"><i
-                                    class="bi bi-trash-fill"></i></button>
-                        </td>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Ubicación</th>
+                        <th scope="col">Total Comprado</th>
+                        <th scope="col">Historial de Compras</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Eliminar</th>
                     </tr>
-                    <% }); %>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    <% clientes.forEach(cliente=> { %>
+                        <tr>
+                            <td>
+                                <%= cliente.nombre %>
+                            </td>
+                            <td>
+                                <%= cliente.email %>
+                            </td>
+                            <td>
+                                <%= cliente.telefono %>
+                            </td>
+                            <td>
+                                <%= cliente.ubicacion.centro %>
+                            </td>
+                            <td>
+                                <%= cliente.totalComprado %>
+                            </td>
+                            <td>
+                                <ul>
+                                    <% cliente.historialCompras.forEach(compra=> { %>
+                                        <li>
+                                            <%= compra %>
+                                        </li>
+                                        <% }); %>
+                                </ul>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-warning me-2" data-bs-toggle="modal"
+                                    data-bs-target="#editarModal"
+                                    onclick="llenarDatosModal(`<%= cliente.id %>`, `<%= cliente.nombre %>`, `<%= cliente.email %>`, `<%= cliente.telefono %>`)"><i
+                                        class="bi bi-pen-fill"></i></button>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-danger" onclick="eliminar(`<%= cliente.id %>`)"
+                                    data-bs-toggle="modal" data-bs-target="#modalDelete"><i
+                                        class="bi bi-trash-fill"></i></button>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Modal para editar -->
-    <div class="modal fade" id="editarModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formularioModal" method="post" action="actualizarcliente">
-                        <input type="text" name="idCliente" hidden id="idCliente">
-                        <div class="form-group mb-3">
-                            <label for="nombreCliente">Nombre:</label>
-                            <input type="text" name="nombreCliente" class="form-control" id="nombreCliente">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="emailCliente">Email:</label>
-                            <input type="email" name="emailCliente" class="form-control" id="emailCliente">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="telefonoCliente">Telefono:</label>
-                            <input type="tel" name="telefonoCliente" class="form-control" id="telefonoCliente">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+        <!-- Modal para editar -->
+        <div class="modal fade" id="editarModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formularioModal" method="post" action="actualizarcliente">
+                            <input type="text" name="idCliente" hidden id="idCliente">
+                            <div class="form-group mb-3">
+                                <label for="nombreCliente">Nombre:</label>
+                                <input type="text" name="nombreCliente" class="form-control" id="nombreCliente" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="emailCliente">Email:</label>
+                                <input type="email" name="emailCliente" class="form-control" id="emailCliente" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="telefonoCliente">Telefono:</label>
+                                <input type="tel" name="telefonoCliente" class="form-control" id="telefonoCliente" pattern="[0-9]{7}|[0-9]{10}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal para eliminar -->
-    <div class="modal fade" id="modalDelete" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h5 class="text-center">¿Estás seguro de que deseas eliminar este registro?</h4>
-                    <form action="eliminarcliente" method="post">
-                        <a type="submit" id="triggerEliminar" class="btn btn-primary">Enviar</a>
-                    </form>
+        <!-- Modal para eliminar -->
+        <div class="modal fade" id="modalDelete" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-center">¿Estás seguro de que deseas eliminar este registro?</h4>
+                            <form action="eliminarcliente" method="post">
+                                <a type="submit" id="eliminarButton" class="btn btn-primary">Enviar</a>
+                            </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-
+        <script src="/scripts/clientsFunctions.js"></script>
+        <% } else { %>
+            <div class="container mt-4">
+                <table id="productscontainer" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Teléfono</th>
+                            <th scope="col">Ubicación</th>
+                            <th scope="col">Total Comprado</th>
+                            <th scope="col">Historial de Compras</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% clientes.forEach(cliente=> { %>
+                            <tr>
+                                <td>
+                                    <%= cliente.nombre %>
+                                </td>
+                                <td>
+                                    <%= cliente.email %>
+                                </td>
+                                <td>
+                                    <%= cliente.telefono %>
+                                </td>
+                                <td>
+                                    <%= cliente.ubicacion.centro %>
+                                </td>
+                                <td>
+                                    <%= cliente.totalComprado %>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <% cliente.historialCompras.forEach(compra=> { %>
+                                            <li>
+                                                <%= compra %>
+                                            </li>
+                                            <% }); %>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <% } %>
 </body>
 <script>
-      $(document).ready(function() {
-    $('#productscontainer').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-    } );
-} );
-
-    function llenarDatosModal(id, nombre, email, telefono) {
-        idCliente.value = id;
-        nombreCliente.value = nombre;
-        emailCliente.value = email;
-        telefonoCliente.value = telefono;
-    }
-
-    function eliminar(id) {
-        let trigger = document.getElementById('triggerEliminar');
-        trigger.setAttribute('href', `eliminarcliente/${id}`)
-    }
+    $(document).ready(function () {
+        $('#productscontainer').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
 </script>
 
 </html>

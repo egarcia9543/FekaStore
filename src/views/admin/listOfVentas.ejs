@@ -10,10 +10,10 @@
     <header>
         <%- include('./partials/header'); %>
     </header>
+    <% if (user==="admin" ) { %>
     <div>
         <div class="card mb-4">
-            <div class="card-body d-flex justify-content-between">
-                <a class="btn btn-primary" href="indexadmin">Inicio <i class="bi bi-house-fill"></i></a>
+            <div class="card-body d-flex justify-content-end">
                 <a class="btn btn-outline-success" href="registroventas">Registrar venta <i
                         class="bi bi-database-fill-add"></i></a>
             </div>
@@ -54,7 +54,7 @@
                             <%= venta.vendedor %>
                         </td>
                         <td>
-                            <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarVenta"><i
+                            <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarVenta" onclick="llenarData(`<%= venta._id %>`, `<%= venta.cliente %>`, `<%= venta.vendedor %>`)"><i
                                     class="bi bi-pen-fill"></i></button>
                         </td>
                         <td>
@@ -75,7 +75,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
+                    <form id="formularioModal" method="post" action="actualizarventa">
+                        <input type="text" name="idventa" id="idventa" hidden>
+                        <div class="form-group mb-3">
+                            <label for="clienteventa">Cliente:</label>
+                            <input type="text" name="clienteventa" class="form-control" id="clienteventa" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="vendedorventa">Vendedor:</label>
+                            <input type="text" name="vendedorventa" class="form-control"
+                                id="vendedorventa" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -96,7 +108,54 @@
             </div>
         </div>
     </div>
-
+    <script src="/scripts/salesFunctions.js"></script>
+    <% } else { %>
+        <div>
+            <div class="card mb-4">
+                <div class="card-body d-flex justify-content-end">
+                    <a class="btn btn-outline-success" href="registroventas">Registrar venta <i
+                            class="bi bi-database-fill-add"></i></a>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="container">
+            <table id="ventas" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Productos</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Vendedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% ventas.forEach(venta=> { %>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <% venta.productosVenta.forEach(producto=> { %>
+                                        <li>
+                                            <%= producto.nombre %>
+                                        </li>
+                                        <% }); %>
+                                </ul>
+                            </td>
+                            <td>
+                                <%= venta.totalVenta.toFixed(2) %>
+                            </td>
+                            <td>
+                                <%= venta.cliente %>
+                            </td>
+                            <td>
+                                <%= venta.vendedor %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <% } %>
     <script>
           $(document).ready(function() {
     $('#ventas').DataTable( {

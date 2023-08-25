@@ -4,9 +4,23 @@ const updateSellerUsecase = require("../usecases/Vendedor/update");
 const deleteSelerUsecase = require("../usecases/Vendedor/delete");
 const viewProfileUsecase = require("../usecases/Vendedor/viewprofile");
 const createSaleRecord = require("../usecases/Vendedor/registersale");
+const getuser = require("../usecases/Usuario/getinfo");
+const getseller = require("../usecases/Vendedor/viewprofile");
 
-exports.renderSignupForm = (req, res) => {
-  res.render("admin/formularioRegistroVendedor");
+exports.renderSignupForm = async (req, res) => {
+  const seller = await getseller.getSeller(req.id);
+  if (!seller) {
+    return res.render("error401", {
+      error: "No puedes acceder a este sitio",
+    });
+  }
+  const user = await getuser.getUser(seller.email);
+  if (user.rol !== "admin") {
+    return res.render("error401", {
+      error: "No puedes acceder a este sitio",
+    });
+  }
+  return res.render("admin/formularioRegistroVendedor");
 };
 
 exports.viewSellerProfile = async (req, res) => {
@@ -47,9 +61,18 @@ exports.registerNewSeller = async (req, res) => {
 
 exports.listSellers = async (req, res) => {
   try {
+    const seller = await getseller.getSeller(req.id);
+    if (!seller) {
+      return res.render("error401", {
+        error: "No puedes acceder a este sitio",
+      });
+    }
+    const user = await getuser.getUser(seller.email);
     const resultado = await listSellerUsecase.listAllSellers();
     return res.render("admin/listOfWorkers", {
       "vendedores": resultado,
+      "user": user.rol,
+      "vendedor": seller,
     });
   } catch (error) {
     console.error(error);

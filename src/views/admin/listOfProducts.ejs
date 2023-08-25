@@ -10,71 +10,72 @@
   <header>
     <%- include('./partials/header'); %>
   </header>
-  <div>
-    <div class="card mb-4">
-      <div class="card-body d-flex justify-content-end">
-        <a class="btn btn-outline-success" href="registroproductos">Agregar producto <i
-            class="bi bi-database-fill-add"></i></a>
+  <% if (user==="admin" ) { %>
+    <div>
+      <div class="card mb-4">
+        <div class="card-body d-flex justify-content-end">
+          <a class="btn btn-outline-success" href="registroproductos">Agregar producto <i
+              class="bi bi-database-fill-add"></i></a>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="container">
-    <table id="products" class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Referencia</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Descripción</th>
-          <th scope="col">Stock</th>
-          <th scope="col">Precio</th>
-          <th scope="col">Habilitado</th>
-          <th scope="col">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% productos.forEach(producto=> { %>
+    <div class="container">
+      <table id="products" class="table table-striped">
+        <thead>
           <tr>
-            <td>
-              <%= producto.referencia %>
-            </td>
-            <td>
-              <%= producto.nombre %>
-            </td>
-            <td>
-              <%= producto.descripcion %>
-            </td>
-            <td>
-              <%= producto.stock %>
-            </td>
-            <td>
-              <%= producto.precio %>
-            </td>
-            <td>
-              <div class="form-check form-switch d-flex justify-content-between">
-                <% if(producto.habilitado===true){ %>
-                  <input class="form-check-input me-2" type="checkbox" role="switch" name="productoHabilitado" checked
-                    disabled>
-                  <a href="habilitado/<%= producto._id %>">Deshabilitar</i></a>
-
-                  <% } else { %>
-                    <input class="form-check-input me-2" type="checkbox" role="switch" name="productoHabilitado"
-                      disabled>
-                    <a href="habilitado/<%= producto._id %>">Habilitar</i></a>
-                    <% } %>
-              </div>
-            </td>
-            <td class="d-flex">
-              <button class="btn btn-outline-warning me-2"
-                onclick="llenarData(`<%= producto._id %>`,`<%= producto.referencia %>`, `<%= producto.nombre %>`, `<%= producto.descripcion %>`, `<%= producto.stock %>`, `<%= producto.precio %>`)"
-                data-bs-toggle="modal" data-bs-target="#actualizarProductos"><i class="bi bi-pen-fill"></i></button>
-              <button class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#eliminarProducto"
-                onclick="eliminar(`<%= producto._id %>`) "><i class="bi bi-trash-fill"></i></button>
-            </td>
+            <th scope="col">Referencia</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Habilitado</th>
+            <th scope="col">Acciones</th>
           </tr>
-          <% }); %>
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          <% productos.forEach(producto=> { %>
+            <tr>
+              <td>
+                <%= producto.referencia %>
+              </td>
+              <td>
+                <%= producto.nombre %>
+              </td>
+              <td>
+                <%= producto.descripcion %>
+              </td>
+              <td>
+                <%= producto.stock %>
+              </td>
+              <td>
+                <%= producto.precio %>
+              </td>
+              <td>
+                <div class="form-check form-switch d-flex justify-content-between">
+                  <% if(producto.habilitado===true){ %>
+                    <input class="form-check-input me-2" type="checkbox" role="switch" name="productoHabilitado" checked
+                      disabled>
+                    <a href="habilitado/<%= producto._id %>">Deshabilitar</i></a>
+
+                    <% } else { %>
+                      <input class="form-check-input me-2" type="checkbox" role="switch" name="productoHabilitado"
+                        disabled>
+                      <a href="habilitado/<%= producto._id %>">Habilitar</i></a>
+                      <% } %>
+                </div>
+              </td>
+              <td class="d-flex">
+                <button class="btn btn-outline-warning me-2"
+                  onclick="llenarData(`<%= producto._id %>`,`<%= producto.referencia %>`, `<%= producto.nombre %>`, `<%= producto.descripcion %>`, `<%= producto.stock %>`, `<%= producto.precio %>`)"
+                  data-bs-toggle="modal" data-bs-target="#actualizarProductos"><i class="bi bi-pen-fill"></i></button>
+                <button class="btn btn-outline-danger me-2" data-bs-toggle="modal" data-bs-target="#eliminarProducto"
+                  onclick="eliminar(`<%= producto._id %>`) "><i class="bi bi-trash-fill"></i></button>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    </div>
 </body>
 
 <!-- Modal para Actualizar -->
@@ -90,19 +91,19 @@
           <input type="text" class="form-control" id="idProducto" name="id" hidden>
           <div class="mb-2">
             <label for="referenciaProducto">Referencia</label>
-            <input type="text" class="form-control" id="referenciaProducto" name="referencia">
+            <input type="text" class="form-control" id="referenciaProducto" name="referencia" required>
           </div>
           <div class="mb-2">
             <label for="nombreProducto">Nombre</label>
-            <input type="text" class="form-control" id="nombreProducto" name="nombre">
+            <input type="text" class="form-control" id="nombreProducto" name="nombre" required>
           </div>
           <div class="mb-2">
             <label for="descripcionProducto">Descripción</label>
-            <textarea class="form-control" id="descripcionProducto" rows="3" name="descripcion"></textarea>
+            <textarea class="form-control" id="descripcionProducto" rows="3" name="descripcion" required></textarea>
           </div>
           <div class="mb-2">
             <label for="stockProducto">Stock</label>
-            <input type="number" class="form-control" id="stockProducto" name="stock">
+            <input type="number" class="form-control" id="stockProducto" name="stock" required>
           </div>
           <div class="mb-2">
             <label for="precioProducto">Precio</label>
@@ -129,37 +130,71 @@
       <div class="modal-body">
         <h5 class="text-center">¿Estás seguro de que deseas eliminar este registro?</h4>
           <form>
-            <a type="submit" id="triggerEliminar" class="btn btn-primary">Enviar</a>
+            <a type="submit" id="eliminarButton" class="btn btn-primary">Enviar</a>
           </form>
       </div>
     </div>
   </div>
 </div>
+<script src="/scripts/productsFunctions.js"></script>
+<% } else { %>
+  <div class="container mt-4">
+    <table id="products" class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Referencia</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Habilitado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% productos.forEach(producto=> { %>
+          <tr>
+            <td>
+              <%= producto.referencia %>
+            </td>
+            <td>
+              <%= producto.nombre %>
+            </td>
+            <td>
+              <%= producto.descripcion %>
+            </td>
+            <td>
+              <%= producto.stock %>
+            </td>
+            <td>
+              <%= producto.precio %>
+            </td>
+            <td>
+              <div class="form-check form-switch d-flex justify-content-between">
+                <% if(producto.habilitado===true){ %>
+                  <input class="form-check-input me-2" type="checkbox" role="switch" name="productoHabilitado" checked
+                    disabled>
 
-<script>
-  $(document).ready(function() {
-    $('#products').DataTable( {
+                  <% } else { %>
+                    <input class="form-check-input me-2" type="checkbox" role="switch" name="productoHabilitado"
+                      disabled>
+                    <% } %>
+              </div>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+  <script>
+    $(document).ready(function () {
+      $('#products').DataTable({
         dom: 'Bfrtip',
         buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
+          'copy', 'csv', 'excel', 'pdf', 'print'
         ]
-    } );
-} );
-
-  function llenarData(id, referencia, nombre, descripcion, stock, precio) {
-    idProducto.value = id;
-    referenciaProducto.value = referencia;
-    nombreProducto.value = nombre;
-    descripcionProducto.value = descripcion;
-    stockProducto.value = stock;
-    precioProducto.value = precio;
-  }
-
-  function eliminar(id) {
-    let trigger = document.getElementById('triggerEliminar');
-    trigger.setAttribute('href', `eliminarproducto/${id}`)
-  }
-
-</script>
+      });
+    });
+  </script>
 
 </html>

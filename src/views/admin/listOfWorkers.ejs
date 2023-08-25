@@ -10,122 +10,143 @@
     <header>
         <%- include('./partials/header'); %>
     </header>
-    <div>
-        <div class="card mb-4">
-            <div class="card-body d-flex justify-content-between">
-                <a class="btn btn-primary" href="indexadmin">Inicio <i class="bi bi-house-fill"></i></a>
-                <a class="btn btn-outline-success" href="registrovendedor">Registrar vendedor <i
-                        class="bi bi-database-fill-add"></i></a>
+    <% if (user==="admin" ) { %>
+        <div>
+            <div class="card mb-4">
+                <div class="card-body d-flex justify-content-end">
+                    <a class="btn btn-outline-success" href="registrovendedor">Registrar vendedor <i
+                            class="bi bi-database-fill-add"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <table id="vendedores" class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Documento</th>
-                    <th scope="col">Correo</th>
-                    <th scope="col">Ventas</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% vendedores.forEach(vendedor=> { %>
+        <div class="container">
+            <table id="vendedores" class="table table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            <%= vendedor.nombreCompleto %>
-                        </td>
-                        <td>
-                            <%= vendedor.documento %>
-                        </td>
-                        <td>
-                            <%= vendedor.email %>
-                        </td>
-                        <td>
-                            <%= vendedor.ventasDespachadas.length %>
-                        </td>
-                        <td class="d-flex">
-                            <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editarVendedor"
-                                onclick="llenarDatosModal(`<%= vendedor._id %>`, `<%= vendedor.nombreCompleto %>`, `<%= vendedor.documento %>`, `<%= vendedor.email %>`)"><i
-                                    class="bi bi-pen-fill"></i></button>
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar"
-                                onclick="eliminar(`<%= vendedor._id %>`)"><i class="bi bi-trash-fill"></i></button>
-                        </td>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Ventas</th>
+                        <th scope="col">Acciones</th>
                     </tr>
-                    <% }); %>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    <% vendedores.forEach(vendedor=> { %>
+                        <tr>
+                            <td>
+                                <%= vendedor.nombreCompleto %>
+                            </td>
+                            <td>
+                                <%= vendedor.documento %>
+                            </td>
+                            <td>
+                                <%= vendedor.email %>
+                            </td>
+                            <td>
+                                <%= vendedor.ventasDespachadas.length %>
+                            </td>
+                            <td class="d-flex">
+                                <button class="btn btn-warning me-2" data-bs-toggle="modal"
+                                    data-bs-target="#editarVendedor"
+                                    onclick="llenarDatosModal(`<%= vendedor._id %>`, `<%= vendedor.nombreCompleto %>`, `<%= vendedor.documento %>`, `<%= vendedor.email %>`)"><i
+                                        class="bi bi-pen-fill"></i></button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                                    onclick="eliminar(`<%= vendedor._id %>`)"><i class="bi bi-trash-fill"></i></button>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <!-- Modal para editar -->
+        <div class="modal fade" id="editarVendedor" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formularioModal" method="post" action="actualizarvendedor">
+                            <input type="text" name="idVendedor" hidden id="idVendedor">
+                            <div class="form-group mb-3">
+                                <label for="nombreVendedor">Nombre:</label>
+                                <input type="text" name="nombreVendedor" class="form-control" id="nombreVendedor" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="documentoVendedor">Documento:</label>
+                                <input type="number" name="documentoVendedor" class="form-control"
+                                    id="documentoVendedor" required minlength="8">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="correoVendedor">Email:</label>
+                                <input type="email" name="correoVendedor" class="form-control" id="correoVendedor" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para eliminar -->
+        <div class="modal fade" id="modalEliminar" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="text-center">¿Estás seguro de que deseas eliminar este registro?</h4>
+                            <a id="eliminarButton" class="btn btn-primary">Enviar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/scripts/sellersFunctions.js"></script>
+        <% } else { %>
+            <div class="container mt-4">
+                <table id="vendedores" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Documento</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Ventas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% vendedores.forEach(vendedor=> { %>
+                            <tr>
+                                <td>
+                                    <%= vendedor.nombreCompleto %>
+                                </td>
+                                <td>
+                                    <%= vendedor.documento %>
+                                </td>
+                                <td>
+                                    <%= vendedor.email %>
+                                </td>
+                                <td>
+                                    <%= vendedor.ventasDespachadas.length %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+            <script>
+                $(document).ready(function () {
+                    $('#vendedores').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ]
+                    });
+                });
+            </script>
 </body>
-
-<!-- Modal para editar -->
-<div class="modal fade" id="editarVendedor" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar Información</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formularioModal" method="post" action="actualizarvendedor">
-                    <input type="text" name="idVendedor" hidden id="idVendedor">
-                    <div class="form-group mb-3">
-                        <label for="nombreVendedor">Nombre:</label>
-                        <input type="text" name="nombreVendedor" class="form-control" id="nombreVendedor">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="documentoVendedor">Documento:</label>
-                        <input type="number" name="documentoVendedor" class="form-control" id="documentoVendedor">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="correoVendedor">Email:</label>
-                        <input type="email" name="correoVendedor" class="form-control" id="correoVendedor">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para eliminar -->
-<div class="modal fade" id="modalEliminar" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h5 class="text-center">¿Estás seguro de que deseas eliminar este registro?</h4>
-                    <a id="eliminarButton" class="btn btn-primary">Enviar</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    $(document).ready(function () {
-        $('#vendedores').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-    });
-
-    function llenarDatosModal(id, nombre, documento, email) {
-        idVendedor.value = id;
-        nombreVendedor.value = nombre;
-        documentoVendedor.value = documento;
-        correoVendedor.value = email;
-    }
-
-    function eliminar(id) {
-        let trigger = document.getElementById('eliminarButton');
-        trigger.setAttribute('href', `eliminarvendedor/${id}`)
-    }
-</script>
 
 </html>
