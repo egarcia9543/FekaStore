@@ -32,6 +32,10 @@
                                 <div class="card-body text-center">
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
                                         alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                        <form action="upload" enctype="multipart/form-data">
+                                            <input type="file" name="fotoperfil" id="fotoperfil">
+                                            <input type="submit" value="Enviar">
+                                        </form>
                                     <h5 class="my-3">
                                         <%= perfilCliente.nombre %>
                                     </h5>
