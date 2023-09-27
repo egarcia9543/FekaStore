@@ -3,6 +3,7 @@ const listClientUsecase = require("../usecases/Cliente/list");
 const updateClientUsecase = require("../usecases/Cliente/update");
 const deleteClientUsecase = require("../usecases/Cliente/delete");
 const viewProfileUsecase = require("../usecases/Cliente/viewprofile");
+const uploadPicture = require("../usecases/Cliente/uploadPicture");
 const getuser = require("../usecases/Usuario/getinfo");
 const getseller = require("../usecases/Vendedor/viewprofile");
 
@@ -134,6 +135,33 @@ exports.deleteClient = async (req, res) => {
     console.error(error);
     return res.render("error500", {
       error: "Error al eliminar el cliente",
+    });
+  }
+};
+
+exports.uploadProfilePicture = async (req, res) => {
+  try {
+    const clientId = req.params.clientId;
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.render("error400", {
+        error: "No se seleccionó ningún archivo.",
+      });
+    }
+
+    const resultado = await uploadPicture(clientId, req.files.profilePicture);
+
+    if (resultado.error) {
+      return res.render("error400", {
+        error: resultado.error,
+      });
+    }
+
+    return res.redirect("/perfil");
+  } catch (error) {
+    console.error(error);
+    return res.render("error500", {
+      error: "Error al subir la imagen",
     });
   }
 };

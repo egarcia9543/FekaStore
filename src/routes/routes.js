@@ -10,6 +10,10 @@ const graphFunctions = require("../controller/graficos");
 // eslint-disable-next-line new-cap
 const router = express.Router();
 
+
+router.post("/:clientId/upload-profile-picture", usuariosController.tokenVerification, clientesController.uploadProfilePicture);
+
+
 router.get("/", clientesController.renderLandingPage);
 router.get("/registroclientes", clientesController.renderSignupForm);
 router.get("/signin", clientesController.renderLoginForm);

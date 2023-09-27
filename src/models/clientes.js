@@ -35,6 +35,10 @@ const schemaCliente = new mongoose.Schema({
     type: String,
     required: true,
   },
+  urlAvatar: {
+    type: String,
+    default: "https://xytoedsrwegxiotzuqjq.supabase.co/storage/v1/object/public/profilepicture/blank-profile-picture.webp",
+  },
 });
 
 
